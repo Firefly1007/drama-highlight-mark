@@ -1,0 +1,34 @@
+import os
+import dotenv
+from openai import OpenAI
+
+dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+
+LLM_MODEL_ID = os.getenv("LLM_MODEL_ID")
+LLM_API_KEY = os.getenv("LLM_API_KEY")
+LLM_BASE_URL = os.getenv("LLM_BASE_URL")
+
+assert LLM_MODEL_ID, "LLM_MODEL_ID is not set in .env"
+assert LLM_API_KEY, "LLM_API_KEY is not set in .env"
+assert LLM_BASE_URL, "LLM_BASE_URL is not set in .env"
+
+client = OpenAI(
+    api_key=LLM_API_KEY,
+    base_url=LLM_BASE_URL,
+)
+
+model = LLM_MODEL_ID
+print(f"模型: {model}")
+print(f"地址: {os.getenv('LLM_BASE_URL')}")
+print("-" * 40)
+
+response = client.chat.completions.create(
+    model=model,
+    messages=[
+        {"role": "system", "content": "你是一个有用的助手"},
+        {"role": "user", "content": "你好，请简单介绍一下自己"},
+    ],
+    max_tokens=256,
+)
+
+print(f"回复: {response.choices[0].message.content}")
