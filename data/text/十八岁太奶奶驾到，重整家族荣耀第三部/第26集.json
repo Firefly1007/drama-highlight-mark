@@ -1,0 +1,296 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:00.000",
+    "end": "00:00:03.000",
+    "text": "距高考还有50天，这说明了什么？",
+    "speech": "单人发言",
+    "emotion": "略带调侃",
+    "voice": "语气轻松，略带反问",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:00:03.000",
+    "end": "00:00:06.000",
+    "text": "说明我还要痛苦50天。",
+    "speech": "单人发言",
+    "emotion": "疲惫、无奈",
+    "voice": "语气低沉，语速较慢",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:00:06.000",
+    "end": "00:00:10.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "轻微的物品碰撞声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:10.000",
+    "end": "00:00:13.000",
+    "text": "小野，是金子，总会发光的。",
+    "speech": "单人发言",
+    "emotion": "鼓励、安慰",
+    "voice": "语气温和，语速平缓",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:13.000",
+    "end": "00:00:16.000",
+    "text": "偏偏我是个老铁。",
+    "speech": "单人发言",
+    "emotion": "自嘲、沮丧",
+    "voice": "语气低落，略带叹息",
+    "music": "",
+    "audio_cues": [
+      "[听不清]"
+    ],
+    "uncertainty": "句末有轻微音效或杂音，导致最后一个词听不清"
+  },
+  {
+    "id": 6,
+    "start": "00:00:16.000",
+    "end": "00:00:18.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "提示音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:18.000",
+    "end": "00:00:28.000",
+    "text": "你就不能争气点吗？你看人家海桥宇，天天考第一，你呢？这里还有100道试卷，今天做不完，不许吃饭不许睡觉！",
+    "speech": "单人发言，语气严厉",
+    "emotion": "愤怒、恨铁不成钢",
+    "voice": "音量提高，语速加快，语气尖锐，充满压迫感",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:28.000",
+    "end": "00:00:31.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "急促的电子音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:31.000",
+    "end": "00:00:35.000",
+    "text": "天天这么对我，我受不了了！",
+    "speech": "单人发言",
+    "emotion": "压抑、绝望、最终爆发",
+    "voice": "从低声压抑到突然大喊，情绪激动",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:00:35.000",
+    "end": "00:00:40.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "紧张、悬疑的背景音乐开始",
+    "audio_cues": [
+      "心跳般的低音节奏"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:00:40.000",
+    "end": "00:00:45.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐节奏加快，紧张感增强",
+    "audio_cues": [
+      "类似倒计时的音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:00:45.000",
+    "end": "00:00:50.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "紧张的音乐达到高潮",
+    "audio_cues": [
+      "呼啸声、撞击声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:00:50.000",
+    "end": "00:00:53.000",
+    "text": "哎？我不做题了！他怎么跑这么快呢？",
+    "speech": "多人对话，语气惊讶",
+    "emotion": "惊讶、疑惑",
+    "voice": "语速快，音调升高",
+    "music": "紧张音乐持续",
+    "audio_cues": [
+      "奔跑的脚步声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 14,
+    "start": "00:00:53.000",
+    "end": "00:00:56.000",
+    "text": "哎？",
+    "speech": "单人发言",
+    "emotion": "疑惑",
+    "voice": "语气上扬",
+    "music": "紧张音乐持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 15,
+    "start": "00:00:56.000",
+    "end": "00:01:01.000",
+    "text": "我好像……找到他的出路了。",
+    "speech": "单人发言",
+    "emotion": "若有所思、恍然大悟",
+    "voice": "语速放缓，语气沉思",
+    "music": "紧张音乐逐渐减弱，转为悬疑",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 16,
+    "start": "00:01:01.000",
+    "end": "00:01:05.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "悬疑音乐持续",
+    "audio_cues": [
+      "重物落地声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 17,
+    "start": "00:01:05.000",
+    "end": "00:01:10.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐风格突变，变为激昂、快节奏的电子音乐",
+    "audio_cues": [
+      "类似赛车引擎启动的音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 18,
+    "start": "00:01:10.000",
+    "end": "00:01:15.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "激昂的电子音乐持续",
+    "audio_cues": [
+      "轮胎摩擦声、风声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 19,
+    "start": "00:01:15.000",
+    "end": "00:01:20.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "激昂音乐持续，加入鼓点",
+    "audio_cues": [
+      "加速声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 20,
+    "start": "00:01:20.000",
+    "end": "00:01:25.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐节奏更快，高潮迭起",
+    "audio_cues": [
+      "连续的撞击声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 21,
+    "start": "00:01:25.000",
+    "end": "00:01:30.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐达到顶点后突然停止",
+    "audio_cues": [
+      "最终的刹车声或撞击声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 22,
+    "start": "00:01:30.000",
+    "end": "00:01:36.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "短暂的寂静后，一声清脆的提示音"
+    ],
+    "uncertainty": ""
+  }
+]

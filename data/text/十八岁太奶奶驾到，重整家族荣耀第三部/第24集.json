@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:00.000",
+    "end": "00:00:01.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音乐声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:00:01.000",
+    "end": "00:00:02.000",
+    "text": "小弟你也别难过。",
+    "speech": "单人发言",
+    "emotion": "安慰中带一丝调侃",
+    "voice": "语速正常",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:00:02.000",
+    "end": "00:00:03.000",
+    "text": "你别过来。",
+    "speech": "单人发言",
+    "emotion": "抗拒",
+    "voice": "语速快",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:03.000",
+    "end": "00:00:06.000",
+    "text": "三哥给你准备了一个独一无二的礼物。",
+    "speech": "单人发言",
+    "emotion": "得意",
+    "voice": "语速正常",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:06.000",
+    "end": "00:00:08.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音效声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 6,
+    "start": "00:00:08.000",
+    "end": "00:00:09.000",
+    "text": "是。",
+    "speech": "单人发言",
+    "emotion": "疑惑",
+    "voice": "声音轻",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:09.000",
+    "end": "00:00:14.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐声",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:14.000",
+    "end": "00:00:20.000",
+    "text": "转给你个文档，里面有三哥二十多年的经验，总结的泡妹秘籍。",
+    "speech": "单人发言",
+    "emotion": "得意",
+    "voice": "语速正常",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:20.000",
+    "end": "00:00:22.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音效声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:00:22.000",
+    "end": "00:00:27.000",
+    "text": "我单身这么多年，终于能够脱单了。",
+    "speech": "单人发言",
+    "emotion": "感叹",
+    "voice": "语速慢",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:00:27.000",
+    "end": "00:00:30.000",
+    "text": "三哥。",
+    "speech": "单人发言",
+    "emotion": "无奈",
+    "voice": "声音低",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:00:30.000",
+    "end": "00:00:35.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐声",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:00:35.000",
+    "end": "00:00:40.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 14,
+    "start": "00:00:40.000",
+    "end": "00:00:45.000",
+    "text": "三哥，你没发错文件吧？怎么全是你的自拍啊？",
+    "speech": "单人发言",
+    "emotion": "疑惑",
+    "voice": "语速正常",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 15,
+    "start": "00:00:45.000",
+    "end": "00:00:46.000",
+    "text": "没错！",
+    "speech": "单人发言",
+    "emotion": "肯定",
+    "voice": "声音大",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 16,
+    "start": "00:00:46.000",
+    "end": "00:00:51.000",
+    "text": "泡妹秘籍最关键的，靠脸！",
+    "speech": "单人发言",
+    "emotion": "得意",
+    "voice": "语速正常",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 17,
+    "start": "00:00:51.000",
+    "end": "00:00:58.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "多人喊叫声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 18,
+    "start": "00:00:58.000",
+    "end": "00:01:03.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "多人喊叫声持续"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 19,
+    "start": "00:01:03.000",
+    "end": "00:01:08.000",
+    "text": "太奶奶，我生病耽误了太多时间，明天我就要回单位报道了。",
+    "speech": "单人发言",
+    "emotion": "愧疚",
+    "voice": "语速正常",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 20,
+    "start": "00:01:08.000",
+    "end": "00:01:12.000",
+    "text": "你还挺有责任心的，去忙吧。",
+    "speech": "单人发言",
+    "emotion": "欣慰",
+    "voice": "语速正常",
+    "music": "音乐声",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 21,
+    "start": "00:01:12.000",
+    "end": "00:01:18.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 22,
+    "start": "00:01:18.000",
+    "end": "00:01:21.000",
+    "text": "太奶奶，我们还会再见面。",
+    "speech": "单人发言",
+    "emotion": "不舍",
+    "voice": "语速慢",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 23,
+    "start": "00:01:21.000",
+    "end": "00:01:28.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 24,
+    "start": "00:01:28.000",
+    "end": "00:01:31.000",
+    "text": "有时间，我再回来看你。",
+    "speech": "单人发言",
+    "emotion": "不舍",
+    "voice": "声音大",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 25,
+    "start": "00:01:31.000",
+    "end": "00:01:37.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "多人喊叫声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 26,
+    "start": "00:01:37.000",
+    "end": "00:01:39.000",
+    "text": "老三，帮帮哥！",
+    "speech": "单人发言",
+    "emotion": "求助",
+    "voice": "声音大",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 27,
+    "start": "00:01:39.000",
+    "end": "00:01:40.000",
+    "text": "三哥不挺好。",
+    "speech": "单人发言",
+    "emotion": "不解",
+    "voice": "声音小",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 28,
+    "start": "00:01:40.000",
+    "end": "00:01:45.000",
+    "text": "英宝，既然现在老三的事都解决了，你也没什么理由请假了。是不是该上学啦？",
+    "speech": "单人发言",
+    "emotion": "严肃",
+    "voice": "语速正常",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 29,
+    "start": "00:01:45.000",
+    "end": "00:01:50.000",
+    "text": "同学，嗯，上学。",
+    "speech": "单人发言",
+    "emotion": "抗拒",
+    "voice": "声音低",
+    "music": "音乐声",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 30,
+    "start": "00:01:50.000",
+    "end": "00:02:00.000",
+    "text": "妈妈送孙子要上学，为什么我也要上学？命运啊，为什么折磨我？",
+    "speech": "单人发言",
+    "emotion": "崩溃",
+    "voice": "声音发抖，语速慢",
+    "music": "音乐声持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 31,
+    "start": "00:02:00.000",
+    "end": "00:02:10.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音乐声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 32,
+    "start": "00:02:10.000",
+    "end": "00:02:11.000",
+    "text": "英宝，起来上学了。",
+    "speech": "单人发言",
+    "emotion": "催促",
+    "voice": "语速正常",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 33,
+    "start": "00:02:11.000",
+    "end": "00:02:18.000",
+    "text": "哎呀，妈妈，我发烧了，我上不了学了。",
+    "speech": "单人发言",
+    "emotion": "虚弱",
+    "voice": "声音低",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 34,
+    "start": "00:02:18.000",
+    "end": "00:02:25.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音效声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 35,
+    "start": "00:02:25.000",
+    "end": "00:02:26.000",
+    "text": "英宝，上学了。",
+    "speech": "单人发言",
+    "emotion": "催促",
+    "voice": "语速正常",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 36,
+    "start": "00:02:26.000",
+    "end": "00:02:33.000",
+    "text": "妈妈，我发烧了，上不了学了。",
+    "speech": "单人发言",
+    "emotion": "虚弱",
+    "voice": "声音低",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 37,
+    "start": "00:02:33.000",
+    "end": "00:02:38.000",
+    "text": "我数三个数，三，二。",
+    "speech": "单人发言",
+    "emotion": "威胁",
+    "voice": "语速慢",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 38,
+    "start": "00:02:38.000",
+    "end": "00:02:42.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音效声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 39,
+    "start": "00:02:42.000",
+    "end": "00:02:45.000",
+    "text": "走吧宝，上学去啊。走。",
+    "speech": "单人发言",
+    "emotion": "催促",
+    "voice": "语速正常",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 40,
+    "start": "00:02:45.000",
+    "end": "00:02:48.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "音效声"
+    ],
+    "uncertainty": ""
+  }
+]

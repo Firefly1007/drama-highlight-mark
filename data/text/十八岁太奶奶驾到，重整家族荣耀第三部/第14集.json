@@ -1,0 +1,338 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:00.000",
+    "end": "00:00:04.000",
+    "text": "我刚刚可能心跳特别剧烈，估计是孩子的原因。",
+    "speech": "单人发言",
+    "emotion": "声音发抖，略带不安",
+    "voice": "语速偏快，气息不稳",
+    "music": "",
+    "audio_cues": [
+      "心跳声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:00:04.000",
+    "end": "00:00:10.000",
+    "text": "哎我有点不舒服，我下去休息了。",
+    "speech": "单人发言",
+    "emotion": "虚弱，疲惫",
+    "voice": "声音低沉，语速放慢",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:00:10.000",
+    "end": "00:00:19.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "轻柔的钢琴声",
+    "audio_cues": [
+      "脚步声渐远"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:19.000",
+    "end": "00:00:22.000",
+    "text": "哎，老三，你刚刚扎的疼不疼啊？",
+    "speech": "单人发言",
+    "emotion": "关切",
+    "voice": "语气轻松",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:22.000",
+    "end": "00:00:30.000",
+    "text": "不疼，刚刚涵涵扎针的时候，闻到的都是漂亮姐姐身上的香味。",
+    "speech": "单人发言",
+    "emotion": "天真，带着一丝得意",
+    "voice": "童声，语调上扬",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 6,
+    "start": "00:00:30.000",
+    "end": "00:00:32.000",
+    "text": "哎哟我天。",
+    "speech": "单人发言",
+    "emotion": "无奈，好笑",
+    "voice": "短促的感叹",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:32.000",
+    "end": "00:00:38.000",
+    "text": "你对你太奶奶尊重点，等你好点你看我怎么收拾你。",
+    "speech": "单人发言",
+    "emotion": "假装生气，带着宠溺",
+    "voice": "语气故作严厉，语速正常",
+    "music": "",
+    "audio_cues": [
+      "拍打声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:38.000",
+    "end": "00:00:41.000",
+    "text": "快快，起开，哎哟我的屁股。",
+    "speech": "单人发言",
+    "emotion": "吃痛，撒娇",
+    "voice": "童声，声音带着哭腔",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:41.000",
+    "end": "00:00:44.000",
+    "text": "你以后可以喊我太奶奶。",
+    "speech": "单人发言",
+    "emotion": "温和",
+    "voice": "语气平静，略带笑意",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:00:44.000",
+    "end": "00:00:46.000",
+    "text": "好的，太奶奶姐姐。",
+    "speech": "单人发言",
+    "emotion": "乖巧，俏皮",
+    "voice": "童声，语调欢快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:00:46.000",
+    "end": "00:00:50.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "轻快的背景音乐",
+    "audio_cues": [
+      "笑声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:00:50.000",
+    "end": "00:00:52.000",
+    "text": "涵涵困了。",
+    "speech": "单人发言",
+    "emotion": "困倦",
+    "voice": "童声，声音慵懒",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:00:52.000",
+    "end": "00:00:54.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "",
+    "audio_cues": [
+      "哈欠声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 14,
+    "start": "00:00:54.000",
+    "end": "00:00:57.000",
+    "text": "好了，你们也先回去休息吧。",
+    "speech": "单人发言",
+    "emotion": "平静，体贴",
+    "voice": "语气温和",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 15,
+    "start": "00:00:57.000",
+    "end": "00:01:00.000",
+    "text": "是，叫奶奶。",
+    "speech": "单人发言",
+    "emotion": "顺从",
+    "voice": "语气恭敬",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 16,
+    "start": "00:01:00.000",
+    "end": "00:01:13.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "舒缓的钢琴曲",
+    "audio_cues": [
+      "脚步声远去"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 17,
+    "start": "00:01:13.000",
+    "end": "00:01:18.000",
+    "text": "妈妈，真是对不起，我没教育好这帮孙子，还让你替我带孩子。",
+    "speech": "单人发言",
+    "emotion": "愧疚，自责",
+    "voice": "声音低沉，语速缓慢，有停顿",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 18,
+    "start": "00:01:18.000",
+    "end": "00:01:23.000",
+    "text": "我当年离开的时候，你也还只是个孩子。",
+    "speech": "单人发言",
+    "emotion": "感慨，带着一丝悲伤",
+    "voice": "语气平静，声音略带颤抖",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 19,
+    "start": "00:01:23.000",
+    "end": "00:01:28.000",
+    "text": "现在这孩子看起来和你当年一样。",
+    "speech": "单人发言",
+    "emotion": "怀念，温和",
+    "voice": "语气轻柔",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 20,
+    "start": "00:01:28.000",
+    "end": "00:01:30.000",
+    "text": "妈妈。",
+    "speech": "单人发言",
+    "emotion": "依赖",
+    "voice": "声音哽咽",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 21,
+    "start": "00:01:30.000",
+    "end": "00:01:34.000",
+    "text": "太奶奶姐姐是我的，谁也别想抢。",
+    "speech": "单人发言",
+    "emotion": "占有欲，赌气",
+    "voice": "童声，语气坚定",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 22,
+    "start": "00:01:34.000",
+    "end": "00:01:46.000",
+    "text": "",
+    "speech": "",
+    "emotion": "",
+    "voice": "",
+    "music": "紧张悬疑的背景音乐",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 23,
+    "start": "00:01:46.000",
+    "end": "00:01:52.000",
+    "text": "你工作丢了，老爷子把我的卡也收了，你倒是快想想怎么办呀！",
+    "speech": "单人发言",
+    "emotion": "焦急，愤怒",
+    "voice": "语速快，音量拔高",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 24,
+    "start": "00:01:52.000",
+    "end": "00:01:57.000",
+    "text": "急什么呀，反正那傻子一时半会儿也醒不过来。",
+    "speech": "单人发言",
+    "emotion": "不屑，冷静",
+    "voice": "语气轻蔑，语速平缓",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 25,
+    "start": "00:01:57.000",
+    "end": "00:02:02.000",
+    "text": "什么醒不来，一个叫什么容钰的都快把他扎好了，到时候你害他的事全都藏不住了！",
+    "speech": "单人发言",
+    "emotion": "惊慌，指责",
+    "voice": "声音发抖，语速极快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 26,
+    "start": "00:02:02.000",
+    "end": "00:02:07.000",
+    "text": "之前你为了还赌债，偷了三少爷的百达翡丽。",
+    "speech": "单人发言",
+    "emotion": "质问，愤怒",
+    "voice": "语气严厉，咬字清晰",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 27,
+    "start": "00:02:07.000",
+    "end": "00:02:11.000",
+    "text": "小倩，我丢的那块百达翡丽是你偷的吧。",
+    "speech": "单人发言",
+    "emotion": "冰冷，威胁",
+    "voice": "声音低沉，充满压迫感",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  }
+]
