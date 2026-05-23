@@ -25,13 +25,24 @@ class Segment(BaseModel):
     id: int
     start: str = Field(pattern=TIMESTAMP_PATTERN)
     end: str = Field(pattern=TIMESTAMP_PATTERN)
-    text: str
-    speech: str
-    emotion: str
-    voice: str
-    music: str
-    audio_cues: list[str]
-    uncertainty: str
+    text: str = ""
+    speech: str = ""
+    emotion: str = ""
+    voice: str = ""
+    music: str = ""
+    audio_cues: list[str] = Field(default_factory=list)
+    uncertainty: str = ""
+
+    @field_validator("start", "end", mode="before")
+    @classmethod
+    def normalize_timestamp(cls, value: str) -> str:
+        """将 MM:SS.mmm 补全为 00:MM:SS.mmm。"""
+        if not isinstance(value, str):
+            return value
+        parts = value.split(":")
+        if len(parts) == 2:
+            return f"00:{value}"
+        return value
 
 
 class SegmentsDocument(BaseModel):
@@ -80,7 +91,7 @@ class HighlightEvidence(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     segment_ids: list[int]
-    dialogues: list[str]
+    dialogues: list[str] = Field(default_factory=list)
     signals: list[str]
 
     @field_validator("segment_ids")
@@ -205,6 +216,15 @@ class HighlightsList(RootModel[list[HighlightItem]]):
 class InteractionItem(BaseModel):
     """表示单条互动标注数据。"""
     model_config = ConfigDict(extra="allow")
+
+
+class DramaInfo(BaseModel):
+    """表示单部短剧的参考信息。"""
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    description: str
+    characters: list[str]
 
 
 class InteractionsDocument(BaseModel):

@@ -14,7 +14,10 @@ from tqdm.asyncio import tqdm_asyncio
 from pipline.common.config import get_async_openai_client, get_settings
 from pipline.common.paths import DATA_DIR, map_output_dir, map_output_file
 from pipline.common.runtime import (
+    DRAMA_INFO_PATH,
     EpisodeStatus,
+    load_drama_info,
+    get_drama_name_from_path,
     parse_highlights_document,
     parse_segments_list,
     print_episode_status,
@@ -38,9 +41,18 @@ SYSTEM_PROMPT = """
 
 不要生成前端互动组件、按钮文案、投票选项、展示时长或用户互动方案。
 
+剧集参考信息使用规则：
+
+1. 每次任务会提供当前短剧的 drama_context，包括剧名、简介和角色名。
+2. drama_context 只用于辅助理解剧情背景、人物称呼、专有名词和核心设定，不作为直接高光证据。
+3. 高光判断必须以 segments 中实际出现的台词、人声状态、情绪、语气、音乐、音效和声音线索为依据。
+4. 如果 drama_context 中提到某个设定、人物或事件，但当前 segments 没有体现，不要据此生成 highlight。
+5. summary 和 reason 必须围绕 segments 中实际出现的信息展开，不要把简介内容当作当前片段内容复述。
+6. evidence.dialogues 和 evidence.signals 只能来自 segments，不能来自 drama_context。
+
 判断原则：
 
-1. 只依据输入的 segments 判断，不补写输入中没有的剧情、台词、人物关系或声音事件。
+1. 以 segments 为唯一打标证据，不补写 segments 中没有的剧情、台词、人物关系或声音事件。
 2. 一个 highlight 应围绕一个可以独立触发观众反应的核心刺激点。
 3. 不要把一整段剧情总结成一个 highlight；如果一段剧情里有多个独立刺激点，应拆成多个 highlight。
 4. 普通寒暄、过渡、背景交代、无明显情绪或信息变化的片段，不应标为高光。
@@ -50,12 +62,13 @@ SYSTEM_PROMPT = """
 
 称呼与人物关系原则：
 
-1. 优先使用原始台词中明确出现的称呼，例如“太奶奶”“妈妈”“爷爷”“老三”。
-2. 如果人物关系或身份能被输入 segments 中的台词、上下文和语义标注明确支持，可以使用，例如“季家少爷”“晚辈”“爷爷”。
-3. 不要使用缺乏输入依据的人物身份判断，例如“男主”“女主”“反派”等。
-4. 如果只是根据剧情常识或想象推测出来的身份，不要写入 label、summary、reason 或 evidence.signals。
-5. label 应尽量围绕事件本身表达；当人物关系本身就是高光刺激点时，可以保留人物关系。
-6. 如果人物关系表达会让 label 变得冗长，优先改写成事件化表达，例如“太奶奶身份反差”“我在哪季家就在哪宣言”“穿越身份揭露”“装病不想上学笑点”。
+1. 优先使用 segments 中明确出现的称呼，例如“太奶奶”“妈妈”“爷爷”“老三”。
+2. 如果人物关系或身份能被 segments 中的台词、上下文和语义标注明确支持，可以使用，例如“季家少爷”“晚辈”“爷爷”。
+3. drama_context 可以帮助理解称呼和专名，但不能单独作为人物关系判断依据。
+4. 不要使用缺乏 segments 支撑的人物身份判断，例如“男主”“女主”“反派”等。
+5. 如果只是根据剧情常识、简介或想象推测出来的身份，不要写入 label、summary、reason 或 evidence.signals。
+6. label 应尽量围绕事件本身表达；当人物关系本身就是高光刺激点时，可以保留人物关系。
+7. 如果人物关系表达会让 label 变得冗长，优先改写成事件化表达，例如“太奶奶身份反差”“我在哪季家就在哪宣言”“穿越身份揭露”“装病不想上学笑点”。
 
 level 表示高光强度与后续处理优先级，不是概率，也不是模型置信度：
 
@@ -106,32 +119,38 @@ level 使用原则：
 字段说明：
 
 - id：高光编号，从 1 开始，按时间顺序递增。
-- label：简短自然语言标签，概括当前高光的核心刺激点。优先使用事件、关键台词、反差信息，或输入中有明确依据的人物称呼。建议控制在 8 到 18 个中文字符。
+- label：简短自然语言标签，概括当前高光的核心刺激点。优先使用事件、关键台词、反差信息，或 segments 中有明确依据的人物称呼。建议控制在 8 到 18 个中文字符。
 - level：只能是 1、2、3。
 - summary：简短说明这段发生了什么，不要写成长篇剧情复述。
 - reason：简短说明为什么这段值得作为高光，重点说明戏剧张力、信息冲击、情绪变化或反差点。
 - evidence.segment_ids：支撑该高光的原始 segment id，按升序排列。
 - evidence.dialogues：只摘录支撑当前高光的关键台词；每一句必须来自 evidence.segment_ids 对应的原始 segments；如果高光主要由音乐、音效或沉默构成，可以为空数组。
-- evidence.signals：只写支撑当前高光的短证据点，例如“强势宣言”“身份揭露”“嘲讽挑衅”“多人惊呼”“音乐突然增强”“语气急促”“强身份反差”等等。
+- evidence.signals：只写支撑当前高光的短证据点，例如“强势宣言”“身份揭露”“嘲讽挑衅”“多人惊呼”“音乐突然增强”“语气急促”“强身份反差”等。
 
 一致性要求：
 
 - evidence.dialogues 必须来自 evidence.segment_ids 对应的原始 segments。
 - evidence.signals 必须能从对应 segments 的 text、speech、emotion、voice、music 或 audio_cues 中找到依据。
-- evidence.signals 可以包含由原始台词、上下文和输入语义标注明确支持的短证据点，例如“太奶奶称呼”“季家少爷身份”“晚辈解释”“强身份反差”。
-- 不要在 evidence.signals 中新增输入里没有依据的音效、情绪、人物关系或剧情信息。
+- evidence.signals 可以包含由原始台词、segments 上下文和输入语义标注明确支持的短证据点，例如“太奶奶称呼”“季家少爷身份”“晚辈解释”“强身份反差”。
+- 不要在 evidence.signals 中新增 segments 里没有依据的音效、情绪、人物关系或剧情信息。
 - 每个 highlight 只能包含 schema 中列出的字段，不要新增任何字段。
 - 不要输出 Markdown、解释、代码块或多余文字。
 """
 
 USER_PROMPT = """
-下面是本集的音频语义片段 JSON。它是只读输入，不要修改，不要补全。
+下面是当前短剧的参考信息。它只用于背景理解和专有名词参考，不是直接高光证据。
+
+<drama_context>
+{{DRAMA_CONTEXT_JSON_MINIFIED}}
+</drama_context>
+
+下面是本集音频语义片段 JSON。它是高光打标的主要依据，是只读输入，不要修改，不要补全。
 
 <segments_json>
 {{SEGMENTS_JSON_MINIFIED}}
 </segments_json>
 
-请根据这些 segments 识别剧情高光点，并严格按照 system prompt 指定的 JSON 格式输出。
+请根据 segments 识别剧情高光点，并严格按照 system prompt 指定的 JSON 格式输出。
 """
 
 
@@ -167,16 +186,27 @@ def parse_highlights(result: str, segments: list | None = None) -> list:
         raise
 
 
-def build_user_prompt(segments: list) -> str:
-    """以紧凑 JSON 格式注入 user prompt。"""
+def build_user_prompt(segments: list, text_path: str | Path) -> str:
+    """以紧凑 JSON 格式注入 user prompt，包含短剧参考信息和 segments 数据。"""
+    drama_info = load_drama_info()
+    drama_name = get_drama_name_from_path(text_path)
+    drama = drama_info.get(drama_name)
+    if drama is None:
+        raise ValueError(
+            f"找不到短剧 '{drama_name}' 的参考信息，请检查 {DRAMA_INFO_PATH}"
+        )
+    drama_json = json.dumps(
+        drama.model_dump(mode="json"), ensure_ascii=False, separators=(",", ":")
+    )
     segments_json_minified = json.dumps(
         [segment.model_dump(mode="json") for segment in segments],
         ensure_ascii=False,
         separators=(",", ":"),
     )
     return USER_PROMPT.replace(
-        "{{SEGMENTS_JSON_MINIFIED}}",
-        segments_json_minified,
+        "{{DRAMA_CONTEXT_JSON_MINIFIED}}", drama_json
+    ).replace(
+        "{{SEGMENTS_JSON_MINIFIED}}", segments_json_minified
     )
 
 
@@ -196,10 +226,10 @@ async def text_to_highlight(text_path: str, highlight_path: str):
                 },
                 {
                     "role": "user",
-                    "content": build_user_prompt(segments),
+                    "content": build_user_prompt(segments, text_path),
                 },
             ],
-            temperature=0.1,
+            temperature=0.1
         )
 
         result = completion.choices[0].message.content or "[]"

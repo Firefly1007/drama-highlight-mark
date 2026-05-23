@@ -16,17 +16,20 @@ from pipline.common.runtime import EpisodeStatus, print_episode_status
 async def video_to_audio(video_path: str, audio_path: str):
     """将视频文件转换为音频（异步）"""
     cmd = [
-        'ffmpeg', '-y',
-        '-i', video_path,
-        '-acodec', 'libmp3lame', '-q:a', '0',
-        audio_path
+        "ffmpeg",
+        "-y",
+        "-i",
+        video_path,
+        "-acodec",
+        "libmp3lame",
+        "-q:a",
+        "0",
+        audio_path,
     ]
 
     try:
         proc = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
+            *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
     except FileNotFoundError:
         raise FileNotFoundError("ffmpeg 未安装或不在 PATH 中")
@@ -35,7 +38,6 @@ async def video_to_audio(video_path: str, audio_path: str):
 
     if proc.returncode != 0:
         raise RuntimeError(f"ffmpeg failed with code {proc.returncode}")
-
 
 
 async def batch_convert(video_files: list[str], audio_files: list[str]):
@@ -56,9 +58,10 @@ def batch_convert_dir(video_dir: str | Path, audio_dir: str | Path):
     """批量转换目录下所有视频文件"""
     video_dir = Path(video_dir)
     audio_dir = Path(audio_dir)
-    video_exts = {'.mp4', '.mkv', '.avi', '.mov', '.flv', '.wmv'}
+    video_exts = {".mp4", ".mkv", ".avi", ".mov", ".flv", ".wmv"}
     candidates = [
-        p for p in video_dir.rglob("*")
+        p
+        for p in video_dir.rglob("*")
         if p.is_file() and p.suffix.lower() in video_exts
     ]
     video_files = []
@@ -86,8 +89,12 @@ def get_audio_path(video_path: str | Path) -> Path:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="视频转音频工具（异步批量转换）")
-    parser.add_argument("--video-path", type=str, dest="video_path",
-                        help="视频文件或目录路径。传文件转单个，传目录递归转换，不传则转换 data/video 下所有视频")
+    parser.add_argument(
+        "--video-path",
+        type=str,
+        dest="video_path",
+        help="视频文件或目录路径。传文件转单个，传目录递归转换，不传则转换 data/video 下所有视频",
+    )
     args = parser.parse_args()
 
     if args.video_path:

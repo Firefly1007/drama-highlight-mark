@@ -33,8 +33,7 @@ try:
     response = client.chat.completions.create(
         model=model,
         messages=[
-            {"role": "system", "content": "你是一个有用的助手"},
-            {"role": "user", "content": "你好，请简单介绍一下自己"},
+            {"role": "user", "content": "请介绍一下你自己。"},
         ],
         max_tokens=256,
     )

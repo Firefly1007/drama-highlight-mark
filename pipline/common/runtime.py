@@ -7,7 +7,9 @@ from typing import Any, Callable
 from pydantic import BaseModel, ValidationError
 from tqdm import tqdm
 
+from pipline.common.paths import DATA_DIR
 from pipline.common.schemas import (
+    DramaInfo,
     HighlightOutput,
     HighlightsDocument,
     HighlightsList,
@@ -15,6 +17,22 @@ from pipline.common.schemas import (
     SegmentsDocument,
     SegmentsList,
 )
+
+DRAMA_INFO_PATH = DATA_DIR / "video" / "drama_info.json"
+
+
+def load_drama_info() -> dict[str, DramaInfo]:
+    with open(DRAMA_INFO_PATH, "r", encoding="utf-8") as f:
+        drama_list_raw = json.loads(f.read())
+    drama_map: dict[str, DramaInfo] = {}
+    for item in drama_list_raw:
+        drama = DramaInfo.model_validate(item)
+        drama_map[drama.name] = drama
+    return drama_map
+
+
+def get_drama_name_from_path(path: str | Path) -> str:
+    return Path(path).parent.name
 
 
 class EpisodeStatus(str, Enum):

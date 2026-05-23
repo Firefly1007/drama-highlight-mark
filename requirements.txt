@@ -1,2 +1,6 @@
 openai
 pydantic
+requests
+beautifulsoup4
+aiohttp
+tqdm

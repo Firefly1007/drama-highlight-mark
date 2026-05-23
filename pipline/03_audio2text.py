@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import base64
+import json
 import re
 from pathlib import Path
 import sys
@@ -14,7 +15,10 @@ from tqdm.asyncio import tqdm_asyncio
 from pipline.common.config import get_async_openai_client, get_settings
 from pipline.common.paths import DATA_DIR, map_output_dir, map_output_file
 from pipline.common.runtime import (
+    DRAMA_INFO_PATH,
     EpisodeStatus,
+    load_drama_info,
+    get_drama_name_from_path,
     parse_segments_document,
     print_episode_status,
     with_retry,
@@ -24,10 +28,38 @@ from pipline.common.schemas import SegmentsDocument
 
 SETTINGS = get_settings()
 
+
+def build_user_prompt(audio_path: str | Path) -> str:
+    drama_info = load_drama_info()
+    drama_name = get_drama_name_from_path(audio_path)
+    drama = drama_info.get(drama_name)
+    if drama is None:
+        raise ValueError(
+            f"找不到短剧 '{drama_name}' 的参考信息，请检查 {DRAMA_INFO_PATH}"
+        )
+    char_names_json = json.dumps(
+        drama.characters, ensure_ascii=False, separators=(",", ":")
+    )
+    return USER_PROMPT.replace("{{CHARACTER_NAMES_JSON}}", char_names_json)
+
+
 SYSTEM_PROMPT = """
 你是一名专业的音频转写与结构化标注助手。请根据我上传的音频，生成音频语义 JSON。
 
 你的任务是尽可能客观地记录音频中可以直接听到的信息，包括台词、人声状态、情绪表现、语气、音量、语速、停顿、背景音乐、音效和其他声音线索。
+
+每次任务都会提供当前短剧的角色名单。角色名单只作为”专有名词拼写参考”，用于提高台词转写中人名、称呼等专有表达的准确性。
+
+专名参考上下文使用规则：
+
+1. 参考信息不是音频内容，不要根据参考信息补写音频中没有听到的台词。
+2. 只有当音频中确实听到相近发音时，才可以使用参考信息中的标准写法。
+3. 如果音频发音不清，但疑似对应参考信息中的人名或专有表达，可以使用参考写法，并在 uncertainty 中说明“专名根据参考信息校准”。
+4. 如果完全听不清，不要用参考信息猜出台词，仍然写为「[听不清]」。
+5. 不要因为参考信息中存在某个角色名，就强行把模糊声音识别成该角色名。
+6. 不要识别说话人身份，不要判断“男主”“女主”“反派”等人物身份。
+7. 参考信息只影响 text 中专有名词和专有表达的写法，不影响 emotion、voice、music、audio_cues 的客观标注。
+8. 如果音频听到的内容与参考信息冲突，优先以音频为准；参考信息只用于专名校准，不用于改写剧情。
 
 请严格遵守以下要求：
 
@@ -36,7 +68,7 @@ SYSTEM_PROMPT = """
 3. segments 的值必须是数组。
 4. 不要输出解释、Markdown、代码块或多余文字。
 5. 不要分析剧情，不要判断片段重要性，不要输出总结性剧情标签。
-6. 不要识别真实角色身份，不要猜测“男主”“女主”“反派”等人物身份。
+6. 不要识别说话人身份，不要猜测“男主”“女主”“反派”等人物身份。
 7. 不要强行使用固定选项，请用简短自然语言描述真实听到的音频特征。
 8. 听不清的台词写为「[听不清]」，不要编造。
 9. 没有台词时，text 必须设为空字符串 ""。
@@ -94,7 +126,7 @@ SYSTEM_PROMPT = """
   - 不要在 audio_cues 中写“无”“无明显声音”“没有”“无音效”等占位内容。
   - 不要在 audio_cues 中写主观评价，例如“质问感明显”“情绪很强”“很有压迫感”。
   - audio_cues 可以包含具体音效、沉默、音乐变化、人声重叠、背景噪声等，例如“摔门声”“脚步声”“电话铃声”“哭声明显”“玻璃碎裂声”“多人重叠”“突然安静”“背景音乐压过台词”“环境噪声”。
-- uncertainty：只说明明确的不确定原因，例如“部分台词被音乐盖住”“多人重叠导致个别字不清”“情绪判断不稳定”“音效来源不明确”；如果没有明确不确定原因，写空字符串 ""。
+- uncertainty：只说明明确的不确定原因，例如“部分台词被音乐盖住”“多人重叠导致个别字不清”“情绪判断不稳定”“音效来源不明确”“专名根据参考信息校准”；如果没有明确不确定原因，写空字符串 ""。
 
 额外禁止：
 
@@ -106,6 +138,23 @@ SYSTEM_PROMPT = """
 - 不要输出注释。
 """
 
+USER_PROMPT = """
+下面是本次音频所属短剧的角色名单。该信息只用于专有名词拼写校准，不是音频转写内容。
+
+<character_names>
+{{CHARACTER_NAMES_JSON}}
+</character_names>
+
+请根据我上传的音频，生成音频语义 JSON。
+
+要求：
+- 严格按照 system prompt 的 JSON 结构输出。
+- 角色名单只用于人名、称呼等专有表达的写法校准。
+- 不要根据角色名单补写没有听到的台词。
+- 不要根据角色名单判断说话人身份。
+- 不要输出解释、Markdown、代码块或多余文字。
+"""
+
 
 client = get_async_openai_client()
 
@@ -113,7 +162,7 @@ client = get_async_openai_client()
 def strip_markdown_code_block(text: str) -> str:
     """
     去掉模型可能输出的 Markdown 代码块。
-    正常使用 response_format=json_object 时一般不会出现，但保留容错。
+    正常使用 response_format=json_schema 时一般不会出现，但保留容错。
     """
     s = text.strip()
 
@@ -134,7 +183,7 @@ def parse_audio_segments(result: str) -> SegmentsDocument:
     解析模型输出的音频语义 JSON。
 
     当前标准格式适配：
-    response_format={"type": "json_object"}
+    response_format={"type": "json_schema"}
 
     标准输出：
     {
@@ -180,7 +229,7 @@ async def audio_to_text(audio_path: str, text_path: str):
         with open(audio_path, "rb") as f:
             b64_str = base64.b64encode(f.read()).decode("utf-8")
 
-        data_uri = f"data:audio/mpeg;base64,{b64_str}"
+        user_prompt = build_user_prompt(audio_path)
 
         completion = await client.chat.completions.create(
             model=SETTINGS.llm_model_id,
@@ -195,15 +244,15 @@ async def audio_to_text(audio_path: str, text_path: str):
                         {
                             "type": "input_audio",
                             "input_audio": {
-                                "data": data_uri,
+                                "data": b64_str,
                                 "format": "mp3",
                             },
-                        }
+                        },
+                        {"type": "text", "text": user_prompt},
                     ],
                 },
             ],
-            temperature=0,
-            response_format={"type": "json_object"},
+            temperature=0
         )
 
         result = completion.choices[0].message.content or "{}"
