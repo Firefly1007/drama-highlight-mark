@@ -36,12 +36,26 @@ class Segment(BaseModel):
     @field_validator("start", "end", mode="before")
     @classmethod
     def normalize_timestamp(cls, value: str) -> str:
-        """将 MM:SS.mmm 补全为 00:MM:SS.mmm。"""
+        """将 MM:SS.mmm 补全为 00:MM:SS.mmm，并校验 MM/SS/mmm 数值范围。"""
         if not isinstance(value, str):
             return value
         parts = value.split(":")
         if len(parts) == 2:
-            return f"00:{value}"
+            value = f"00:{value}"
+            parts = value.split(":")
+        if len(parts) == 3:
+            hh, mm, rest = parts
+            if "." in rest:
+                ss, mmm = rest.split(".", 1)
+            else:
+                ss, mmm = rest, "0"
+            mm_val, ss_val, mmm_val = int(mm), int(ss), int(mmm)
+            if not (0 <= mm_val <= 59):
+                raise ValueError(f"分钟值 {mm_val} 超出范围 00-59")
+            if not (0 <= ss_val <= 59):
+                raise ValueError(f"秒值 {ss_val} 超出范围 00-59")
+            if not (0 <= mmm_val <= 999):
+                raise ValueError(f"毫秒值 {mmm_val} 超出范围 000-999")
         return value
 
 
@@ -54,15 +68,13 @@ class SegmentsDocument(BaseModel):
     @field_validator("segments")
     @classmethod
     def validate_segments(cls, value: list[Segment]) -> list[Segment]:
-        """校验 segments 非空且片段 id 连续递增。"""
+        """校验 segments 非空，自动修正不连续的 id。"""
         if not value:
             raise ValueError("segments 不能为空")
 
         for index, segment in enumerate(value, start=1):
             if segment.id != index:
-                raise ValueError(
-                    f"第 {index} 个片段 id 应为 {index}，实际为 {segment.id}"
-                )
+                segment.id = index
 
         return value
 

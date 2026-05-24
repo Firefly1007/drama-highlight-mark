@@ -1,719 +1,251 @@
 [
   {
     "id": 1,
-    "start": "00:00:00.000",
-    "end": "00:00:03.000",
-    "text": "那你怕是来不及了",
+    "start": "00:00:01.000",
+    "end": "00:00:04.000",
+    "text": "那你怕是来不及了。",
     "speech": "单人发言",
-    "emotion": "语气平静中带有一丝调侃",
-    "voice": "音量适中，语速正常",
-    "music": "低沉紧张的背景音乐",
-    "audio_cues": [],
+    "emotion": "语气平静",
+    "voice": "语速平稳",
+    "music": "节奏强劲的电子流行音乐",
+    "audio_cues": [
+      "哭喊声"
+    ],
     "uncertainty": ""
   },
   {
     "id": 2,
-    "start": "00:00:03.000",
-    "end": "00:00:06.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐节奏加快，紧张感增强",
+    "start": "00:00:07.000",
+    "end": "00:00:11.000",
+    "text": "太奶奶，下辈子我还要做你的乖孙。",
+    "speech": "单人发言",
+    "emotion": "哭喊",
+    "voice": "声音颤抖，情绪激动",
+    "music": "节奏强劲的电子流行音乐",
     "audio_cues": [
-      "汽车引擎声"
+      "哭喊声"
     ],
     "uncertainty": ""
   },
   {
     "id": 3,
-    "start": "00:00:06.000",
-    "end": "00:00:08.000",
-    "text": "啊啊啊",
-    "speech": "单人惊呼",
-    "emotion": "极度惊恐",
-    "voice": "声音拔高，语速急促",
-    "music": "音乐达到高潮",
+    "start": "00:00:11.000",
+    "end": "00:01:04.000",
+    "text": "",
+    "speech": "无",
+    "emotion": "",
+    "voice": "",
+    "music": "节奏强劲的电子流行音乐持续播放，包含女声演唱及动感节拍",
     "audio_cues": [
-      "多人重叠的惊呼声"
+      "车辆急速行驶的声音",
+      "漂移声",
+      "撞击声",
+      "风声",
+      "哭喊声"
     ],
     "uncertainty": ""
   },
   {
     "id": 4,
-    "start": "00:00:08.000",
-    "end": "00:00:10.000",
-    "text": "奶奶，太奶奶",
-    "speech": "单人呼喊",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "音乐持续",
-    "audio_cues": [],
+    "start": "00:01:15.600",
+    "end": "00:01:18.000",
+    "text": "这是神仙吗？",
+    "speech": "单人发言",
+    "emotion": "惊叹",
+    "voice": "语速缓慢，语气充满难以置信",
+    "music": "音乐停止",
+    "audio_cues": [
+      "车辆驶过的声音",
+      "环境转为户外的虫鸣声"
+    ],
     "uncertainty": ""
   },
   {
     "id": 5,
-    "start": "00:00:10.000",
-    "end": "00:00:12.000",
-    "text": "那可是我亲太奶奶啊",
-    "speech": "单人发言",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "音乐持续",
-    "audio_cues": [],
+    "start": "00:01:25.000",
+    "end": "00:01:33.000",
+    "text": "太奶奶，太奶奶，太奶奶，九爷，没事吧，妈妈。",
+    "speech": "多人重叠发言",
+    "emotion": "焦急万分",
+    "voice": "语速急促，声音带着哭腔",
+    "music": "",
+    "audio_cues": [
+      "脚步声",
+      "虫鸣声"
+    ],
     "uncertainty": ""
   },
   {
     "id": 6,
-    "start": "00:00:12.000",
-    "end": "00:00:18.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐风格突变，转为动感流行乐",
+    "start": "00:01:33.500",
+    "end": "00:01:42.500",
+    "text": "你没受伤吧？吓死我了，妈妈，你要是有什么事，我也不活了。",
+    "speech": "单人发言",
+    "emotion": "极度后怕，情绪崩溃",
+    "voice": "声音颤抖，伴随明显的哭腔",
+    "music": "",
     "audio_cues": [
-      "汽车漂移摩擦声"
+      "哭泣声",
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 7,
-    "start": "00:00:18.000",
-    "end": "00:00:21.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "动感音乐持续",
+    "start": "00:01:43.500",
+    "end": "00:01:47.500",
+    "text": "好啦，英宝别哭，这点小事难不倒妈妈。",
+    "speech": "单人发言",
+    "emotion": "温柔安抚",
+    "voice": "语调平缓，语气充满关切",
+    "music": "",
     "audio_cues": [
-      "汽车撞击声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 8,
-    "start": "00:00:21.000",
-    "end": "00:00:25.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:01:47.600",
+    "end": "00:01:50.500",
+    "text": "我以为，我要第二次失去你了呢。",
+    "speech": "单人发言",
+    "emotion": "带着哭腔的委屈",
+    "voice": "声音仍在哽咽",
+    "music": "",
     "audio_cues": [
-      "汽车玻璃碎裂声"
+      "哭泣声",
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 9,
-    "start": "00:00:25.000",
-    "end": "00:00:29.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:01:51.200",
+    "end": "00:01:53.000",
+    "text": "不会的，不会的啊。",
+    "speech": "单人发言",
+    "emotion": "温柔安抚",
+    "voice": "语调轻柔",
+    "music": "",
     "audio_cues": [
-      "汽车碰撞后的金属摩擦声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 10,
-    "start": "00:00:29.000",
-    "end": "00:00:33.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:01:53.200",
+    "end": "00:02:07.500",
+    "text": "家人们，我刚刚差点看见我太奶，妈妈，我太奶就在啊，我告诉你，我太奶有神级buff，刚拿了驾照，她她她，她车技超神。",
+    "speech": "单人发言",
+    "emotion": "惊魂未定，语无伦次",
+    "voice": "语速极快，磕磕巴巴",
+    "music": "轻快诙谐的背景音乐起",
     "audio_cues": [
-      "汽车停下后的引擎怠速声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 11,
-    "start": "00:00:33.000",
-    "end": "00:00:37.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:02:07.500",
+    "end": "00:02:19.000",
+    "text": "不是刚拿到驾照，我在太奶奶自传里看过，太奶奶的车技，是在战争年代，为了运送军民机密资料，在敌人的枪林弹雨中练出来的。",
+    "speech": "单人发言",
+    "emotion": "沉稳笃定",
+    "voice": "语速平稳，语气清晰有力",
+    "music": "舒缓的弦乐背景音",
     "audio_cues": [
-      "汽车再次启动加速声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 12,
-    "start": "00:00:37.000",
-    "end": "00:00:41.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:02:26.000",
+    "end": "00:02:29.500",
+    "text": "老四很了解我嘛，是个好乖孙。",
+    "speech": "单人发言",
+    "emotion": "欣慰",
+    "voice": "语调平和",
+    "music": "",
     "audio_cues": [
-      "汽车再次撞击声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 13,
-    "start": "00:00:41.000",
-    "end": "00:00:45.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车连续撞击和刮擦声"
-    ],
+    "start": "00:02:30.500",
+    "end": "00:02:36.000",
+    "text": "太奶，陪你出生入死的季少爷才是你最乖的乖孙。",
+    "speech": "单人发言",
+    "emotion": "急切争宠",
+    "voice": "声音拔高，语气带着撒娇的急切感",
+    "music": "诙谐的管弦乐背景音起",
+    "audio_cues": [],
     "uncertainty": ""
   },
   {
     "id": 14,
-    "start": "00:00:45.000",
-    "end": "00:00:49.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车引擎轰鸣声"
-    ],
+    "start": "00:02:36.500",
+    "end": "00:02:39.000",
+    "text": "好好好，乖孙乖孙，乖啊乖。",
+    "speech": "单人发言",
+    "emotion": "宠溺安抚",
+    "voice": "语速放缓，语气柔和",
+    "music": "诙谐的管弦乐背景音持续",
+    "audio_cues": [],
     "uncertainty": ""
   },
   {
     "id": 15,
-    "start": "00:00:49.000",
-    "end": "00:00:53.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
+    "start": "00:02:43.000",
+    "end": "00:02:47.000",
+    "text": "海员，你是怎么知道我们这边的车出了问题？",
+    "speech": "单人发言",
+    "emotion": "疑惑询问",
+    "voice": "语速平稳",
+    "music": "",
     "audio_cues": [
-      "汽车高速行驶声"
+      "虫鸣声"
     ],
     "uncertainty": ""
   },
   {
     "id": 16,
-    "start": "00:00:53.000",
-    "end": "00:00:57.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车急刹车声"
-    ],
+    "start": "00:02:52.500",
+    "end": "00:02:54.000",
+    "text": "是三弟告诉我们的。",
+    "speech": "单人发言",
+    "emotion": "沉稳回应",
+    "voice": "语气平静",
+    "music": "紧张悬疑的电子背景音乐起",
+    "audio_cues": [],
     "uncertainty": ""
   },
   {
     "id": 17,
-    "start": "00:00:57.000",
-    "end": "00:01:01.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车撞击声和金属变形声"
-    ],
+    "start": "00:03:06.500",
+    "end": "00:03:08.500",
+    "text": "三少爷，你醒了？",
+    "speech": "单人发言",
+    "emotion": "惊喜",
+    "voice": "语气带着关切",
+    "music": "紧张悬疑的电子背景音乐持续",
+    "audio_cues": [],
     "uncertainty": ""
   },
   {
     "id": 18,
-    "start": "00:01:01.000",
-    "end": "00:01:05.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车翻滚声和玻璃碎裂声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 19,
-    "start": "00:01:05.000",
-    "end": "00:01:09.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车落地后的沉闷撞击声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 20,
-    "start": "00:01:09.000",
-    "end": "00:01:13.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "音乐持续",
-    "audio_cues": [
-      "汽车停下后的寂静"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 21,
-    "start": "00:01:13.000",
-    "end": "00:01:17.000",
-    "text": "别浪费时间，别浪费演技啊",
-    "speech": "单人歌唱",
-    "emotion": "充满活力和自信",
-    "voice": "歌声有力，节奏感强",
-    "music": "动感音乐持续",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 22,
-    "start": "00:01:17.000",
-    "end": "00:01:21.000",
-    "text": "我的时间比你们想象的贵",
-    "speech": "单人歌唱",
-    "emotion": "充满活力和自信",
-    "voice": "歌声有力，节奏感强",
-    "music": "动感音乐持续",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 23,
-    "start": "00:01:21.000",
-    "end": "00:01:24.000",
-    "text": "这是神仙吗",
+    "start": "00:03:10.000",
+    "end": "00:03:13.500",
+    "text": "这一觉，我好像睡了很久。",
     "speech": "单人发言",
-    "emotion": "惊讶",
-    "voice": "语速缓慢，带有疑惑",
+    "emotion": "刚苏醒的恍惚感",
+    "voice": "语速缓慢，声音略带沙哑",
     "music": "音乐停止",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 24,
-    "start": "00:01:24.000",
-    "end": "00:01:28.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "环境鸟鸣声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 25,
-    "start": "00:01:28.000",
-    "end": "00:01:32.000",
-    "text": "太奶奶",
-    "speech": "单人呼喊",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 26,
-    "start": "00:01:32.000",
-    "end": "00:01:36.000",
-    "text": "太奶奶",
-    "speech": "单人呼喊",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 27,
-    "start": "00:01:36.000",
-    "end": "00:01:40.000",
-    "text": "太奶奶",
-    "speech": "单人呼喊",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 28,
-    "start": "00:01:40.000",
-    "end": "00:01:44.000",
-    "text": "你没事吧",
-    "speech": "单人发言",
-    "emotion": "关心",
-    "voice": "语气担忧",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 29,
-    "start": "00:01:44.000",
-    "end": "00:01:48.000",
-    "text": "妈妈，你没受伤吧",
-    "speech": "单人发言",
-    "emotion": "焦急",
-    "voice": "声音急促",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 30,
-    "start": "00:01:48.000",
-    "end": "00:01:52.000",
-    "text": "吓死我了",
-    "speech": "单人发言",
-    "emotion": "后怕",
-    "voice": "声音发抖",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 31,
-    "start": "00:01:52.000",
-    "end": "00:01:56.000",
-    "text": "妈妈，你要是有什么事，我也不活了",
-    "speech": "单人发言",
-    "emotion": "激动，带着哭腔",
-    "voice": "声音哽咽",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 32,
-    "start": "00:01:56.000",
-    "end": "00:02:00.000",
-    "text": "好了，英宝别哭，这点小事难不倒妈妈",
-    "speech": "单人发言",
-    "emotion": "平静，安抚",
-    "voice": "语气温柔",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 33,
-    "start": "00:02:00.000",
-    "end": "00:02:04.000",
-    "text": "我又第二次失去你了呢",
-    "speech": "单人发言",
-    "emotion": "委屈，后怕",
-    "voice": "声音带着哭腔",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 34,
-    "start": "00:02:04.000",
-    "end": "00:02:08.000",
-    "text": "不会的，不会的",
-    "speech": "单人发言",
-    "emotion": "平静，安抚",
-    "voice": "语气温柔",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 35,
-    "start": "00:02:08.000",
-    "end": "00:02:12.000",
-    "text": "家人们，我刚刚差点看见我太奶奶",
-    "speech": "单人发言",
-    "emotion": "劫后余生，略带调侃",
-    "voice": "语气轻松",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 36,
-    "start": "00:02:12.000",
-    "end": "00:02:16.000",
-    "text": "我太奶奶就在那",
-    "speech": "单人发言",
-    "emotion": "惊讶",
-    "voice": "语速加快",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 37,
-    "start": "00:02:16.000",
-    "end": "00:02:20.000",
-    "text": "我告诉你们，我太奶奶有神奇buff",
-    "speech": "单人发言",
-    "emotion": "兴奋",
-    "voice": "语速快，音量提高",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 38,
-    "start": "00:02:20.000",
-    "end": "00:02:24.000",
-    "text": "她刚拿了驾照，她车技超神",
-    "speech": "单人发言",
-    "emotion": "兴奋",
-    "voice": "语速快，音量提高",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 39,
-    "start": "00:02:24.000",
-    "end": "00:02:28.000",
-    "text": "太奶奶不是刚拿到驾照啊",
-    "speech": "单人发言",
-    "emotion": "疑惑",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 40,
-    "start": "00:02:28.000",
-    "end": "00:02:32.000",
-    "text": "我在太奶奶自传里看过",
-    "speech": "单人发言",
-    "emotion": "平静，陈述",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 41,
-    "start": "00:02:32.000",
-    "end": "00:02:36.000",
-    "text": "太奶奶的车技是在战争年代",
-    "speech": "单人发言",
-    "emotion": "平静，陈述",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 42,
-    "start": "00:02:36.000",
-    "end": "00:02:40.000",
-    "text": "为了运送军民经济资料",
-    "speech": "单人发言",
-    "emotion": "平静，陈述",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 43,
-    "start": "00:02:40.000",
-    "end": "00:02:44.000",
-    "text": "在敌人的枪林弹雨中练出来的",
-    "speech": "单人发言",
-    "emotion": "平静，陈述",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 44,
-    "start": "00:02:44.000",
-    "end": "00:02:48.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "环境鸟鸣声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 45,
-    "start": "00:02:48.000",
-    "end": "00:02:52.000",
-    "text": "老四很了解我们，是个好乖孙",
-    "speech": "单人发言",
-    "emotion": "欣慰，温和",
-    "voice": "语气温柔",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 46,
-    "start": "00:02:52.000",
-    "end": "00:02:56.000",
-    "text": "太奶奶",
-    "speech": "单人呼喊",
-    "emotion": "激动",
-    "voice": "声音响亮",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 47,
-    "start": "00:02:56.000",
-    "end": "00:03:00.000",
-    "text": "陪你出生入死的金手指才是你最乖的乖孙",
-    "speech": "单人发言",
-    "emotion": "调侃",
-    "voice": "语速正常，语气轻松",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 48,
-    "start": "00:03:00.000",
-    "end": "00:03:04.000",
-    "text": "好好好，乖孙乖孙，乖，啊，乖",
-    "speech": "单人发言",
-    "emotion": "敷衍，安抚",
-    "voice": "语气轻柔",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 49,
-    "start": "00:03:04.000",
-    "end": "00:03:08.000",
-    "text": "韩元，你是怎么知道我们这边的车出了问题",
-    "speech": "单人发言",
-    "emotion": "平静，询问",
-    "voice": "语气认真",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 50,
-    "start": "00:03:08.000",
-    "end": "00:03:12.000",
-    "text": "是三弟告诉我们的",
-    "speech": "单人发言",
-    "emotion": "平静，陈述",
-    "voice": "语速正常",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 51,
-    "start": "00:03:12.000",
-    "end": "00:03:16.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "汽车引擎启动声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 52,
-    "start": "00:03:16.000",
-    "end": "00:03:20.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "汽车行驶声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 53,
-    "start": "00:03:20.000",
-    "end": "00:03:24.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "汽车减速刹车声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 54,
-    "start": "00:03:24.000",
-    "end": "00:03:28.000",
-    "text": "",
-    "speech": "",
-    "emotion": "",
-    "voice": "",
-    "music": "",
-    "audio_cues": [
-      "汽车停下后的引擎怠速声"
-    ],
-    "uncertainty": ""
-  },
-  {
-    "id": 55,
-    "start": "00:03:28.000",
-    "end": "00:03:32.000",
-    "text": "三少爷，你醒了",
-    "speech": "单人发言",
-    "emotion": "惊喜",
-    "voice": "语调上扬",
-    "music": "",
-    "audio_cues": [],
-    "uncertainty": ""
-  },
-  {
-    "id": 56,
-    "start": "00:03:32.000",
-    "end": "00:03:36.000",
-    "text": "这一觉，我好像睡了很久",
-    "speech": "单人发言",
-    "emotion": "平静，略带疲惫",
-    "voice": "语速缓慢，声音低沉",
-    "music": "",
     "audio_cues": [],
     "uncertainty": ""
   }

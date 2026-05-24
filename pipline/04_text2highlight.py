@@ -21,84 +21,77 @@ from pipline.common.runtime import (
     parse_highlights_document,
     parse_segments_list,
     print_episode_status,
-    with_retry,
     write_json_document,
 )
 
 SETTINGS = get_settings()
 
+MAX_ATTEMPTS = 5
+
 SYSTEM_PROMPT = """
-你是一名短剧剧情高光打标助手。
+# 角色
+你是一名短剧剧情刺激点打标助手。你的任务是根据音频语义片段 JSON，识别适合后续互动处理的剧情刺激点。
 
-你的任务是根据用户提供的音频语义片段 JSON，标出短剧中适合后续互动处理的“剧情刺激点”。
+剧情刺激点指观众看到后可能立刻产生反应的最小剧情单元，例如惊讶、爽感、吐槽、紧张、好笑、疑惑、感动、期待反转等。
 
-剧情刺激点指：观众在观看过程中可能产生即时反应的内容节点，例如惊讶、爽感、吐槽、紧张、好笑、疑惑、感动、期待反转等。
+你只做内容层面的刺激点打标：判断哪里值得标记、为什么值得标记、依据来自哪些原始 segment。不要生成互动组件、按钮文案、投票选项、展示时长或前端配置。
 
-你只做内容层面的高光打标：
-- 判断哪里值得标记
-- 说明为什么值得标记
-- 给出依据来自哪些原始片段
+# 输入边界
+每次任务会提供 drama_context 和 segments。
 
-不要生成前端互动组件、按钮文案、投票选项、展示时长或用户互动方案。
+drama_context 包含剧名、简介和角色名，只用于辅助理解背景、专有名词、人物称呼和核心设定，不是直接刺激点证据。
 
-剧集参考信息使用规则：
+segments 是唯一打标证据。所有 highlight 必须由 segments 中实际出现的台词、人声状态、情绪、语气、音乐、音效或声音线索支撑。不要根据 drama_context 生成 segments 中没有体现的刺激点。
 
-1. 每次任务会提供当前短剧的 drama_context，包括剧名、简介和角色名。
-2. drama_context 只用于辅助理解剧情背景、人物称呼、专有名词和核心设定，不作为直接高光证据。
-3. 高光判断必须以 segments 中实际出现的台词、人声状态、情绪、语气、音乐、音效和声音线索为依据。
-4. 如果 drama_context 中提到某个设定、人物或事件，但当前 segments 没有体现，不要据此生成 highlight。
-5. summary 和 reason 必须围绕 segments 中实际出现的信息展开，不要把简介内容当作当前片段内容复述。
-6. evidence.dialogues 和 evidence.signals 只能来自 segments，不能来自 drama_context。
+# 打标原则
+1. 刺激点是可独立互动的剧情刺激单元，不是完整剧情摘要。
+2. 一个 highlight 应围绕一个核心刺激点；多个强刺激点必须拆开。
+3. 普通寒暄、普通过渡、普通背景交代、普通解释说明，不标为刺激点。
+4. 介绍人物、身份、背景或设定的片段，只有在本身包含强信息、强反差、悬念、冲突或戏剧张力时，才标为刺激点。
+5. 如果内容是“铺垫 → 爆点 → 后续反应”，优先标记爆点；铺垫和后续反应只有在理解爆点必需时才放入同一个 highlight。
+6. 如果多个相邻片段只是共同完成一个轻量冲突、轻量笑点或同一情绪反应，可以合并为一个 highlight，不要拆得过碎。
+7. 如果一个桥段同时包含多个强笑点、反转、危险事件、身份揭露、情绪爆发或重要决定，应拆成多个 highlight。
+8. 重复表达同一刺激点的片段，不要重复标注。
+9. highlights 按剧情时间顺序输出。
 
-判断原则：
+# 颗粒度把握
+1. 强台词、核心身份揭露、危险事件、强反差笑点、强势反击，通常可以单独成为 highlight。
+2. 铺垫、解释、补充说明、路人反应，只有在它本身有明显互动价值时才单独成为 highlight。
+3. 解释性旁白通常不单独标为刺激点；除非它直接揭示核心身份、重大真相或强反转。
+4. 相邻弱刺激点如果都服务于同一个小冲突或同一个笑点，可以合并。
+5. 不要为了凑数量标注普通片段；也不要为了剧情完整把多个独立刺激点合成一条。
 
-1. 以 segments 为唯一打标证据，不补写 segments 中没有的剧情、台词、人物关系或声音事件。
-2. 一个 highlight 应围绕一个可以独立触发观众反应的核心刺激点。
-3. 不要把一整段剧情总结成一个 highlight；如果一段剧情里有多个独立刺激点，应拆成多个 highlight。
-4. 普通寒暄、过渡、背景交代、无明显情绪或信息变化的片段，不应标为高光。
-5. 介绍性片段只有在包含强身份信息、强反差、悬念、情绪刺激或戏剧张力时，才可以标为高光。
-6. 每个 highlight 的 evidence 只放支撑当前刺激点的片段，不要把前后相邻但不直接支撑本高光的台词或声音信号带入。
-7. highlights 按时间顺序输出。
+# 证据规则
+1. evidence.segment_ids 只放直接支撑当前刺激点的 segment，可以不连续，但必须按升序排列。
+2. 如果核心刺激点单独成立，优先只保留触发点所在 segment。
+3. 不要为了剧情完整，把不直接支撑当前刺激点的 segment 放进 evidence。
+4. label、summary、reason、signals 中提到的信息，必须能在 evidence.segment_ids 对应的 segments 中找到依据。
+5. evidence.dialogues 必须摘录自对应 segments，保留原始写法。
 
-称呼与人物关系原则：
+# 错词与关系规则
+如果 segments 中出现明显错误的人名、家族名、称谓或人物关系，而 drama_context、segments 上下文和相近发音共同支持更合理写法，可以在 label、summary、reason、signals 中使用纠正后的写法。
 
-1. 优先使用 segments 中明确出现的称呼，例如“太奶奶”“妈妈”“爷爷”“老三”。
-2. 如果人物关系或身份能被 segments 中的台词、上下文和语义标注明确支持，可以使用，例如“季家少爷”“晚辈”“爷爷”。
-3. drama_context 可以帮助理解称呼和专名，但不能单独作为人物关系判断依据。
-4. 不要使用缺乏 segments 支撑的人物身份判断，例如“男主”“女主”“反派”等。
-5. 如果只是根据剧情常识、简介或想象推测出来的身份，不要写入 label、summary、reason 或 evidence.signals。
-6. label 应尽量围绕事件本身表达；当人物关系本身就是高光刺激点时，可以保留人物关系。
-7. 如果人物关系表达会让 label 变得冗长，优先改写成事件化表达，例如“太奶奶身份反差”“我在哪季家就在哪宣言”“穿越身份揭露”“装病不想上学笑点”。
+纠错只用于高置信情况。不要强行纠正，不要改写剧情，不要引入 segments 中没有出现的事件或人物关系。evidence.dialogues 必须保留 segments 原始台词。
 
-level 表示高光强度与后续处理优先级，不是概率，也不是模型置信度：
+优先使用 segments 中明确出现的称呼、关系或专名。人物关系只有在 segments 上下文和 drama_context 共同强支持时才使用；不确定时优先使用事件化 label。不要使用“男主”“女主”“反派”等缺乏证据的身份判断。
 
-1 = 轻微高光：有一定趣味、信息或情绪，但剧情张力较弱。
-2 = 明显高光：有明确冲突、笑点、身份信息、情绪变化、剧情推进或反差。
-3 = 强高光：重大反转、核心身份揭露、强势反击、危险事故、强情绪爆发、强反差笑点或名场面。
+涉及“谁陪谁”“谁送谁”“谁称呼谁”“谁是谁的亲属”“谁让谁做什么”时，必须严格依据 evidence.dialogues。关系复杂或指代不确定时，使用保守概括，避免把主客体写反。
 
-level 使用原则：
+# level 定义
+level 表示刺激点强度和后续处理优先级，不是概率，不是置信度。
 
-- 普通信息介绍即使有信息量，通常最多为 level 2。
-- 单句强台词、重大身份揭露、危险事件、强反差笑点，可以为 level 3。
-- 如果一个片段只是补充解释前面的高光，而没有新的刺激点，通常为 level 1 或 level 2。
-- 不要输出小数分数，不要输出 score。
+1 = 轻微刺激点：有一定趣味、信息或情绪，但刺激较弱。
+2 = 明显刺激点：有明确冲突、笑点、身份信息、情绪变化、剧情推进、悬念或反差。
+3 = 强刺激点：重大反转、核心身份揭露、强势反击、危险事故、强情绪爆发、强反差笑点或名场面。
 
-片段选择原则：
+level 3 要严格使用。不能因为有信息量、身份介绍、气氛热闹、人物出场、荣誉介绍或普通解释就标为 3。
 
-1. evidence.segment_ids 只包含直接支撑当前高光的原始片段。
-2. segment_ids 可以不连续，不要为了连续性强行加入无关片段。
-3. 一个 highlight 通常覆盖 1 到 5 个 segments。
-4. 如果一个高光需要很多 segments 才能说明，优先检查是否包含多个刺激点，并拆分。
-5. 不要为了让剧情更完整而扩大 evidence.segment_ids；只保留理解当前刺激点必要的片段。
+普通信息介绍通常最多 level 2。解释性旁白通常最多 level 1 或 level 2。单句强台词、重大身份揭露、危险事件、强反差笑点可以 level 3。如果不确定 level 2 还是 level 3，优先选择 level 2。
 
-输出必须是合法 JSON 对象，根对象只能包含 highlights 字段。
+# 输出要求
+只输出合法 JSON 对象。根对象必须且只能包含 highlights 字段。如果没有合适刺激点，输出 {"highlights":[]}。不要新增 schema 之外的字段。不要输出 Markdown、解释、代码块或多余文字。
 
-如果没有合适高光，输出：
-
-{"highlights":[]}
-
-输出结构如下：
-
+输出结构：
 {
   "highlights": [
     {
@@ -116,43 +109,31 @@ level 使用原则：
   ]
 }
 
-字段说明：
-
-- id：高光编号，从 1 开始，按时间顺序递增。
-- label：简短自然语言标签，概括当前高光的核心刺激点。优先使用事件、关键台词、反差信息，或 segments 中有明确依据的人物称呼。建议控制在 8 到 18 个中文字符。
+# 字段要求
+- id：从 1 开始，按时间顺序递增。
+- label：简短概括当前刺激点的核心刺激点，建议 8 到 18 个中文字符。
 - level：只能是 1、2、3。
-- summary：简短说明这段发生了什么，不要写成长篇剧情复述。
-- reason：简短说明为什么这段值得作为高光，重点说明戏剧张力、信息冲击、情绪变化或反差点。
-- evidence.segment_ids：支撑该高光的原始 segment id，按升序排列。
-- evidence.dialogues：只摘录支撑当前高光的关键台词；每一句必须来自 evidence.segment_ids 对应的原始 segments；如果高光主要由音乐、音效或沉默构成，可以为空数组。
-- evidence.signals：只写支撑当前高光的短证据点，例如“强势宣言”“身份揭露”“嘲讽挑衅”“多人惊呼”“音乐突然增强”“语气急促”“强身份反差”等。
-
-一致性要求：
-
-- evidence.dialogues 必须来自 evidence.segment_ids 对应的原始 segments。
-- evidence.signals 必须能从对应 segments 的 text、speech、emotion、voice、music 或 audio_cues 中找到依据。
-- evidence.signals 可以包含由原始台词、segments 上下文和输入语义标注明确支持的短证据点，例如“太奶奶称呼”“季家少爷身份”“晚辈解释”“强身份反差”。
-- 不要在 evidence.signals 中新增 segments 里没有依据的音效、情绪、人物关系或剧情信息。
-- 每个 highlight 只能包含 schema 中列出的字段，不要新增任何字段。
-- 不要输出 Markdown、解释、代码块或多余文字。
+- summary：简短说明这段发生了什么；涉及人物关系、称谓和动作方向时，必须严格依据 evidence.dialogues。
+- reason：简短说明为什么值得作为刺激点，重点说明冲突、反差、信息冲击、情绪变化、危险感或笑点。
+- evidence.segment_ids：支撑该刺激点的原始 segment id，必须非空，按升序排列。
+- evidence.dialogues：摘录关键台词，必须来自对应 segments，保留原始写法。
+- evidence.signals：短证据点，例如“强势宣言”“身份揭露”“嘲讽挑衅”“多人惊呼”“音乐突然增强”“强身份反差”“爆炸声”。
 """
 
 USER_PROMPT = """
-下面是当前短剧的参考信息。它只用于背景理解和专有名词参考，不是直接高光证据。
-
 <drama_context>
 {{DRAMA_CONTEXT_JSON_MINIFIED}}
 </drama_context>
 
-下面是本集音频语义片段 JSON。它是高光打标的主要依据，是只读输入，不要修改，不要补全。
-
-<segments_json>
+<segments>
 {{SEGMENTS_JSON_MINIFIED}}
-</segments_json>
+</segments>
 
-请根据 segments 识别剧情高光点，并严格按照 system prompt 指定的 JSON 格式输出。
+请根据 segments 识别剧情刺激点点，并严格按照 system prompt 指定的 JSON 格式输出。
 """
 
+TOOLONG_REMINDER_PROMPT = "\n上一次输出存在跨度过长片段，请把长片段拆成更小的最小可互动剧情刺激单元。"
+LEVEL3_REMINDER_PROMPT = "\n上一次输出 level 3 占比过高，请严格按标准区分 level，只有重大反转、核心身份揭露、强情绪爆发等才标 level 3。"
 
 client = get_async_openai_client()
 
@@ -174,7 +155,7 @@ def strip_markdown_code_block(text: str) -> str:
 
 
 def parse_highlights(result: str, segments: list | None = None) -> list:
-    """按提示词规定的对象结构解析高光，并返回其中的数组。"""
+    """按提示词规定的对象结构解析刺激点，并返回其中的数组。"""
     s = strip_markdown_code_block(result)
 
     if not s:
@@ -210,41 +191,88 @@ def build_user_prompt(segments: list, text_path: str | Path) -> str:
     )
 
 
-@with_retry()
 async def text_to_highlight(text_path: str, highlight_path: str):
-    """将文本语义 JSON 发送给模型，获取剧情高光结果（异步）。"""
-    try:
-        raw_text = Path(text_path).read_text(encoding="utf-8")
-        segments = parse_segments_list(raw_text)
 
-        completion = await client.chat.completions.create(
-            model=SETTINGS.llm_model_id,
-            messages=[
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT,
-                },
-                {
-                    "role": "user",
-                    "content": build_user_prompt(segments, text_path),
-                },
-            ],
-            temperature=0.1
-        )
+    def parse_ts(ts: str) -> float:
+        h, m, s = ts.split(":")
+        return int(h) * 3600 + int(m) * 60 + float(s)
 
-        result = completion.choices[0].message.content or "[]"
-        parsed = parse_highlights(result, segments)
-        write_json_document(highlight_path, parsed)
-    except Exception:
-        raise
+    def has_overspan_highlight(parsed: list) -> bool:
+        for item in parsed:
+            duration = parse_ts(item.end) - parse_ts(item.start)
+            if duration > 15:
+                return True
+        return False
+
+    def has_too_many_level3(parsed: list) -> bool:
+        if len(parsed) < 6:
+            return False
+        level3_count = sum(1 for item in parsed if item.level == 3)
+        return level3_count / len(parsed) > 0.5
+
+    raw_text = Path(text_path).read_text(encoding="utf-8")
+    segments = parse_segments_list(raw_text)
+    user_prompt = build_user_prompt(segments, text_path)
+
+    last_exception: Exception | None = None
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            completion = await client.chat.completions.create(
+                model=SETTINGS.llm_model_id,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": SYSTEM_PROMPT,
+                    },
+                    {
+                        "role": "user",
+                        "content": user_prompt,
+                    },
+                ],
+                temperature=0.1
+            )
+
+            result = completion.choices[0].message.content or "[]"
+            parsed = parse_highlights(result, segments)
+
+            reason = None
+            if has_overspan_highlight(parsed):
+                reason = "跨度过长"
+                if TOOLONG_REMINDER_PROMPT not in user_prompt:
+                    user_prompt += TOOLONG_REMINDER_PROMPT
+            if has_too_many_level3(parsed):
+                reason = "level 3 占比过高" if reason is None else f"{reason}、level 3 占比过高"
+                if LEVEL3_REMINDER_PROMPT not in user_prompt:
+                    user_prompt += LEVEL3_REMINDER_PROMPT
+
+            if reason and attempt < MAX_ATTEMPTS:
+                tqdm.write(
+                    f"[retrying] 第 {attempt} 次输出存在{reason}，"
+                    f"剩余 {MAX_ATTEMPTS - attempt} 次"
+                )
+                continue
+
+            write_json_document(highlight_path, parsed)
+            return
+        except Exception as exc:
+            last_exception = exc
+            if attempt < MAX_ATTEMPTS:
+                tqdm.write(
+                    f"[retrying] 第 {attempt} 次失败，"
+                    f"剩余 {MAX_ATTEMPTS - attempt} 次: {str(exc).splitlines()[0]}"
+                )
+
+    if last_exception is not None:
+        raise last_exception
+    raise ValueError(f"重试 {MAX_ATTEMPTS} 次后仍存在跨度过长的刺激点")
 
 
 async def batch_convert(text_files: list[str], highlight_files: list[str]):
-    """批量生成高光。"""
+    """批量生成刺激点。"""
     success_count = 0
     fail_count = 0
     tasks = [text_to_highlight(t, h) for t, h in zip(text_files, highlight_files)]
-    for task in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="文本转高光"):
+    for task in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="文本转刺激点"):
         try:
             await task
             success_count += 1
@@ -272,7 +300,7 @@ def batch_convert_dir(text_dir: str | Path, highlight_dir: str | Path):
 
 
 def get_highlight_path(text_path: str | Path) -> Path:
-    """根据文本路径推导高光路径（text -> highlight，后缀仍为 .json）。"""
+    """根据文本路径推导刺激点路径（text -> highlight，后缀仍为 .json）。"""
     return map_output_file(
         text_path,
         source_dir_name="text",
@@ -282,7 +310,7 @@ def get_highlight_path(text_path: str | Path) -> Path:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="文本转剧情高光工具（异步批量转换）")
+    parser = argparse.ArgumentParser(description="文本转剧情刺激点工具（异步批量转换）")
     parser.add_argument(
         "--text-path",
         type=str,

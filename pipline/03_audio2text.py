@@ -29,69 +29,67 @@ from pipline.common.schemas import SegmentsDocument
 SETTINGS = get_settings()
 
 
-def build_user_prompt(audio_path: str | Path) -> str:
-    drama_info = load_drama_info()
-    drama_name = get_drama_name_from_path(audio_path)
-    drama = drama_info.get(drama_name)
-    if drama is None:
-        raise ValueError(
-            f"找不到短剧 '{drama_name}' 的参考信息，请检查 {DRAMA_INFO_PATH}"
-        )
-    char_names_json = json.dumps(
-        drama.characters, ensure_ascii=False, separators=(",", ":")
-    )
-    return USER_PROMPT.replace("{{CHARACTER_NAMES_JSON}}", char_names_json)
-
-
 SYSTEM_PROMPT = """
-你是一名专业的音频转写与结构化标注助手。请根据我上传的音频，生成音频语义 JSON。
+你是一名音频转写与结构化标注助手。
 
-你的任务是尽可能客观地记录音频中可以直接听到的信息，包括台词、人声状态、情绪表现、语气、音量、语速、停顿、背景音乐、音效和其他声音线索。
+你的任务是根据上传音频生成音频语义 JSON，客观记录音频中直接听到的信息，包括台词、人声状态、情绪表现、语气、音量、语速、停顿、背景音乐、音效和其他声音线索。
 
-每次任务都会提供当前短剧的角色名单。角色名单只作为”专有名词拼写参考”，用于提高台词转写中人名、称呼等专有表达的准确性。
+核心原则：
+1. 只记录音频中直接听到的信息。
+2. 不分析剧情。
+3. 不总结高光。
+4. 不生成互动建议。
+5. 不识别说话人身份。
+6. 不根据剧情常识补写台词。
+7. 不确定就保守记录，不要猜。
 
-专名参考上下文使用规则：
+# 参考词表使用规则
 
-1. 参考信息不是音频内容，不要根据参考信息补写音频中没有听到的台词。
-2. 只有当音频中确实听到相近发音时，才可以使用参考信息中的标准写法。
-3. 如果音频发音不清，但疑似对应参考信息中的人名或专有表达，可以使用参考写法，并在 uncertainty 中说明“专名根据参考信息校准”。
-4. 如果完全听不清，不要用参考信息猜出台词，仍然写为「[听不清]」。
-5. 不要因为参考信息中存在某个角色名，就强行把模糊声音识别成该角色名。
-6. 不要识别说话人身份，不要判断“男主”“女主”“反派”等人物身份。
-7. 参考信息只影响 text 中专有名词和专有表达的写法，不影响 emotion、voice、music、audio_cues 的客观标注。
-8. 如果音频听到的内容与参考信息冲突，优先以音频为准；参考信息只用于专名校准，不用于改写剧情。
+每次任务会提供 character_names，作为专有名词拼写参考。
 
-请严格遵守以下要求：
+character_names 不是音频内容，只能用于校准人名、姓氏、家族名、亲属称谓、职位称谓、组织名、公司名等专有表达。
 
-1. 只输出一个 JSON 对象，不要输出 JSON 数组作为根节点。
-2. 根对象必须且只能包含一个字段：segments。
-3. segments 的值必须是数组。
-4. 不要输出解释、Markdown、代码块或多余文字。
-5. 不要分析剧情，不要判断片段重要性，不要输出总结性剧情标签。
-6. 不要识别说话人身份，不要猜测“男主”“女主”“反派”等人物身份。
-7. 不要强行使用固定选项，请用简短自然语言描述真实听到的音频特征。
-8. 听不清的台词写为「[听不清]」，不要编造。
-9. 没有台词时，text 必须设为空字符串 ""。
-10. 如果某项信息不存在、没有明显特征、无法判断或不确定，不要写“无”“没有”“无法判断”“无明显”等文字，必须输出空字符串 ""。
-11. audio_cues 如果没有真实存在且有用的声音线索，必须输出空数组 []。
-12. 不要输出 confidence 分数。
-13. uncertainty 只在存在明确不确定原因时填写；如果没有明确不确定原因，必须输出空字符串 ""。
-14. 输出必须是可以被 JSON.parse 直接解析的合法 JSON。
-15. 不要输出多个 JSON 对象。
-16. 不要在 JSON 前后添加任何文本。
+只有满足以下条件之一时，才可以使用 character_names 校准 text：
+1. 音频中确实听到相近发音。
+2. 同一音频上下文已经明确出现对应专名或称谓，当前片段发音相近且语义一致。
 
-切分规则：
+不要根据 character_names 补写台词。
+不要根据 character_names 推断剧情。
+不要根据 character_names 判断谁在说话。
+完全听不清时写「[听不清]」。
 
-1. 将音频切分为多个片段。
-2. 每个片段对应一段台词、一次明显声音事件，或一段有意义的沉默、音乐变化。
-3. 每个片段建议控制在 1 到 5 秒。
-4. 如果台词很短，可以短于 1 秒。
-5. 如果情绪、语气、音量、语速、音乐、音效或沉默状态发生明显变化，应拆分为新片段。
-6. 没有人声但有明显音乐、音效或沉默变化时，也要单独生成片段。
-7. 时间戳精确到毫秒，格式为 HH:MM:SS.mmm。
-8. id 从 1 开始连续递增，不要跳号。
+如果台词中直接说出身份、职位、称谓、关系或人名，应照实写入 text。
 
-输出 JSON 必须严格符合以下结构：
+# 输出要求
+
+1. 只输出一个合法 JSON 对象。
+2. 根对象必须且只能包含 segments 字段。
+3. segments 必须是非空数组。
+4. 输出必须能被 JSON.parse 直接解析。
+5. 不要输出 Markdown、解释、注释、代码块或多余文字。
+6. 不要输出 confidence。
+7. 不要编造音频中没有的内容。
+8. 每个 segment 只能包含指定字段，不要新增字段。
+9. 不要在任何字段中写“无”“没有”“无明显”“无法判断”“无台词”“无背景音乐”“无音效”等占位词。
+10. 字段信息不存在、不明显或无法确定时：text 写 "" 或「[听不清]」，audio_cues 写 []，其他字段写 ""。
+11. uncertainty 只写明确不确定原因；没有则写 ""。
+12. 时间戳必须使用 HH:MM:SS.mmm 格式；即使音频不足 1 小时，也必须补齐小时位，例如 00:01:03.700。
+13. id 从 1 开始连续递增，不要跳号。
+
+# 切分规则
+
+1. 每个 segment 应对应一个连续台词单元、一次明显声音事件，或一段有意义的音乐/沉默变化。
+2. 不要机械按秒切断完整台词；一句连续完整的台词中间没有明显变化时，可以保持为一个 segment。
+3. 有台词的 segment 通常控制在 1 到 6 秒。
+4. 连续完整长句可以放宽到 10 秒。
+5. 旁白、独白、连续叙述或连续叮嘱最多不超过 12 秒。
+6. 超过 12 秒且包含台词的 segment，除非确实无法再按语义或声音事件拆分，否则视为切分过粗，必须继续拆分。
+7. 出现说话人轮次变化、问答转换、命令、惊呼、惨叫、打闹动作、情绪变化、语气变化、音乐变化或音效事件时，应切分为新 segment。
+8. 多人重叠不等于可以合并成长段；如果能分辨出关键台词或事件变化，应按台词轮次或声音事件拆分。
+9. 只有完全无法分辨多人重叠中的具体台词时，才合并为短段，并在 uncertainty 中说明。
+10. 没有人声但有明显音乐、音效或沉默变化时，也要单独成段。
+
+# 输出结构
 
 {
   "segments": [
@@ -110,53 +108,50 @@ SYSTEM_PROMPT = """
   ]
 }
 
-字段填写要求：
+# 字段规则
 
-- segments：音频片段数组，不能为空。
 - id：片段编号，从 1 开始连续递增。
-- start：片段开始时间，格式为 HH:MM:SS.mmm。
-- end：片段结束时间，格式为 HH:MM:SS.mmm。
-- text：只写听到的台词，不写情绪、语气或解释；没有台词时写空字符串 ""。
-- speech：描述人声状态和对话状态，例如“单人发言”“回应上一句”“疑似打断”“多人重叠”；如果没有人声、无法判断或没有必要描述，写空字符串 ""。
-- emotion：只描述声音表现出的情绪和变化，例如“压抑中带怒气”“声音发抖像要哭”“情绪逐渐升高”“突然沉默”；如果没有明显情绪或无法判断，写空字符串 ""。
-- voice：描述语气、语调、音量、语速、停顿等声音特征，例如“语速偏快”“声音突然拔高”“低声压抑”“尾音上扬”“长时间停顿”；如果没有明显声音特征或无法判断，写空字符串 ""。
-- music：描述背景音乐是否存在，以及音乐氛围和变化，例如“低沉紧张的背景音乐”“悲伤钢琴声”“音乐突然增强”“音乐突然停止”；如果没有背景音乐、音乐不明显或无法判断，写空字符串 ""。
-- audio_cues：只记录真实存在、可以直接听到、且对理解声音场景有用的声音线索。
-  - 如果没有明显声音线索，必须输出空数组 []。
-  - 不要在 audio_cues 中写“无”“无明显声音”“没有”“无音效”等占位内容。
-  - 不要在 audio_cues 中写主观评价，例如“质问感明显”“情绪很强”“很有压迫感”。
-  - audio_cues 可以包含具体音效、沉默、音乐变化、人声重叠、背景噪声等，例如“摔门声”“脚步声”“电话铃声”“哭声明显”“玻璃碎裂声”“多人重叠”“突然安静”“背景音乐压过台词”“环境噪声”。
-- uncertainty：只说明明确的不确定原因，例如“部分台词被音乐盖住”“多人重叠导致个别字不清”“情绪判断不稳定”“音效来源不明确”“专名根据参考信息校准”；如果没有明确不确定原因，写空字符串 ""。
-
-额外禁止：
-
-- 不要把“无法判断”写进任何字段。
-- 不要把“无”“没有”“无明显”“无台词”“无背景音乐”“无音效”写进任何字段。
-- 不要把字段说明文字原样填入 JSON。
-- 不要输出示例。
-- 不要输出省略号。
-- 不要输出注释。
+- start：片段开始时间，格式必须为 HH:MM:SS.mmm。
+- end：片段结束时间，格式必须为 HH:MM:SS.mmm。
+- text：只写听到的台词。没有台词写 ""。听不清写「[听不清]」。保留符合语气的标点，如逗号、句号、问号、感叹号、省略号、破折号等。台词中的人名、身份、职位、称谓、关系、家族名、公司名可以按 character_names 和上下文校准写法。
+- speech：只描述人声结构和对话状态，例如“单人发言”“多人重叠”“多人轮流发言”“疑似打断”“回应上一句”“旁白式发言”“播报式发言”。不要写说话人身份。不要写“一本正经”“搞笑”“阴阳怪气”“装傻”“吐槽感”“解释得很认真”等内容风格判断。
+- emotion：只描述声音中能直接听出的情绪表现，例如“压抑中带怒气”“声音发抖像要哭”“情绪升高”“惊慌喊叫”“兴奋欢呼”。不要根据剧情内容推断复杂心理。多人混杂时，可以写“多人情绪激烈”“以争吵和惊叫为主”等客观概括。
+- voice：只描述可听见的语气、语调、音量、语速、停顿、哭腔、喊叫、颤抖、重叠等声音特征，例如“语速偏快”“声音拔高”“低声压抑”“停顿较长”“多人声音重叠”。不要写对台词内容的理解。
+- music：描述背景音乐及变化，例如“低沉紧张的背景音乐”“音乐突然增强”“音乐停止”“轻快诙谐的背景音乐”。如果没有明显背景音乐或不确定，写 ""。
+- audio_cues：记录真实可听且有用的声音线索，例如“脚步声”“摔门声”“电话铃声”“哭声明显”“多人重叠”“突然安静”“爆炸声”“惨叫声”“拍打声”。不要写主观评价。如果没有明显声音线索，写 []。
+- uncertainty：只写明确不确定原因，例如“部分台词被音乐盖住”“多人重叠导致个别字不清”“音效来源不明确”“专名发音不清”。没有则写 ""。
 """
 
 USER_PROMPT = """
-下面是本次音频所属短剧的角色名单。该信息只用于专有名词拼写校准，不是音频转写内容。
-
 <character_names>
-{{CHARACTER_NAMES_JSON}}
+{{CHARACTER_NAMES_JSON_MINIFIED}}
 </character_names>
 
-请根据我上传的音频，生成音频语义 JSON。
+请根据上传音频生成音频语义 JSON。
 
 要求：
-- 严格按照 system prompt 的 JSON 结构输出。
-- 角色名单只用于人名、称呼等专有表达的写法校准。
-- 不要根据角色名单补写没有听到的台词。
-- 不要根据角色名单判断说话人身份。
-- 不要输出解释、Markdown、代码块或多余文字。
+1. character_names 只用于专有名词拼写校准。
+2. 不要根据 character_names 补写台词。
+3. 不要根据 character_names 推断剧情。
+4. 严格按照 system prompt 指定的 JSON 结构输出，且只输出 JSON 对象本身。
 """
 
 
 client = get_async_openai_client()
+
+
+def build_user_prompt(audio_path: str | Path) -> str:
+    drama_info = load_drama_info()
+    drama_name = get_drama_name_from_path(audio_path)
+    drama = drama_info.get(drama_name)
+    if drama is None:
+        raise ValueError(
+            f"找不到短剧 '{drama_name}' 的参考信息，请检查 {DRAMA_INFO_PATH}"
+        )
+    char_names_json = json.dumps(
+        drama.characters, ensure_ascii=False, separators=(",", ":")
+    )
+    return USER_PROMPT.replace("{{CHARACTER_NAMES_JSON}}", char_names_json)
 
 
 def strip_markdown_code_block(text: str) -> str:
@@ -219,6 +214,13 @@ def parse_audio_segments(result: str) -> SegmentsDocument:
     try:
         return parse_segments_document(s)
     except ValueError:
+        repaired = re.sub(
+            r'("(?:start|end)"\s*:\s*)(\d{2}:\d{2}:\d{2}\.\d{3})',
+            r'\1"\2"',
+            s,
+        )
+        if repaired != s:
+            return parse_segments_document(repaired)
         raise
 
 
@@ -228,8 +230,6 @@ async def audio_to_text(audio_path: str, text_path: str):
     try:
         with open(audio_path, "rb") as f:
             b64_str = base64.b64encode(f.read()).decode("utf-8")
-
-        user_prompt = build_user_prompt(audio_path)
 
         completion = await client.chat.completions.create(
             model=SETTINGS.llm_model_id,
@@ -248,15 +248,20 @@ async def audio_to_text(audio_path: str, text_path: str):
                                 "format": "mp3",
                             },
                         },
-                        {"type": "text", "text": user_prompt},
+                        {
+                            "type": "text",
+                            "text": build_user_prompt(audio_path),
+                        },
                     ],
                 },
             ],
-            temperature=0
+            temperature=0,
+            max_tokens=131072,
+            extra_body={"thinking": {"type": "disabled"}},
         )
 
         result = completion.choices[0].message.content or "{}"
-        parsed = parse_audio_segments(result)
+        parsed = parse_audio_segments(result).segments
         write_json_document(text_path, parsed)
     except Exception:
         raise
