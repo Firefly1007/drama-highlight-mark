@@ -10,7 +10,7 @@ from tqdm import tqdm
 from pipline.common.paths import DATA_DIR
 from pipline.common.schemas import (
     DramaInfo,
-    HighlightOutput,
+    FinalHighlightItem,
     HighlightsDocument,
     HighlightsList,
     InteractionsDocument,
@@ -59,30 +59,23 @@ def parse_segments_list(raw_text: str) -> list:
         raise ValueError(f"segments.json 校验失败: {exc}") from exc
 
 
-def parse_highlights_document(raw_text: str, segments: list | None = None) -> list[HighlightOutput]:
-    """校验并解析 highlights 文档 JSON，返回含 start/end 的输出列表。"""
+def parse_highlights_document(
+    raw_text: str, segments: list | None = None
+) -> list[FinalHighlightItem]:
+    """校验并解析模型输出的 highlights 文档。"""
     try:
         doc = HighlightsDocument.model_validate_json(raw_text)
     except ValidationError as exc:
         raise ValueError(f"highlights.json 校验失败: {exc}") from exc
 
-    if segments is not None:
-        return doc.validate_against_segments(segments)
+    if segments is None:
+        raise ValueError("highlights.json 校验失败: 缺少原始 segments，无法补全最终结果")
 
-    return [HighlightOutput(
-        id=h.id,
-        start="00:00:00.000",
-        end="00:00:00.000",
-        label=h.label,
-        level=h.level,
-        summary=h.summary,
-        reason=h.reason,
-        evidence=h.evidence,
-    ) for h in doc.highlights]
+    return doc.validate_against_segments(segments)
 
 
 def parse_highlights_list(raw_text: str) -> list:
-    """校验并解析以数组为根节点的 highlights JSON。"""
+    """校验并解析以数组为根节点的最终 highlights JSON。"""
     try:
         return HighlightsList.model_validate_json(raw_text).root
     except ValidationError as exc:
