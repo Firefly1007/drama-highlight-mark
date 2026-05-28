@@ -1,0 +1,129 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 131850,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这怨念也太强了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 131850,
+    "duration_ms": 4220,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "败类我也想当",
+        "恨自己不够帅",
+        "笑死，颜值要求",
+        "方圆百里都痴迷"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 131850,
+    "duration_ms": 4220,
+    "payload": {
+      "text": "我恨，为什么我不能做他这样的败类"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 203130,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "flag立得飞起"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 203130,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "打脸了吧",
+      "danmaku": [
+        "刚说不信这就破了",
+        "打脸来得太快",
+        "沾花惹草的代价",
+        "让他浪，头破了吧"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 203130,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "什么法治社会，怎么可能"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 254380,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这反差也太大了吧"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 254380,
+    "duration_ms": 4450,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "绝绝子笑死",
+        "蛋仔派对约会",
+        "兔子捏捏乐",
+        "花花公子变傻啦"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 254380,
+    "duration_ms": 4450,
+    "payload": {
+      "text": "这位小姐姐长得绝绝子"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 258500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "真成傻子了",
+        "笑死，绝绝子",
+        "这反差太猛",
+        "情债惹不起"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 258500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "被打破了头成傻子了"
+    }
+  }
+]

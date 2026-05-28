@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 0,
+    "duration_ms": 3400,
+    "payload": {
+      "button_id": 0,
+      "text": "没我动不了的人",
+      "danmaku": [
+        "霸气侧漏",
+        "姐姐好飒",
+        "就喜欢这个调调",
+        "这也太狂了"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 0,
+    "duration_ms": 3400,
+    "payload": {
+      "text": "在纪家还没有人是我动不了的。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 12800,
+    "duration_ms": 2033,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "两人竟然同时",
+        "离谱哈哈哈",
+        "意料之外",
+        "笑不活了",
+        "直接当然是吧",
+        "这反转绝了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 12800,
+    "duration_ms": 2033,
+    "payload": {
+      "text": "这俩是来拆台的吧"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 24900,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这舔得我没话说"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 24900,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "护短名场面",
+      "danmaku": [
+        "你才是自取其辱",
+        "被捧着是荣幸",
+        "听听这说的啥",
+        "打脸来得飞快",
+        "爽翻了哈哈"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 24900,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "荣小姐允许我们捧着，是我们的荣幸。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 72700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "炫耀不到三秒"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 72700,
+    "duration_ms": 3733,
+    "payload": {
+      "button_id": 0,
+      "text": "当场收回",
+      "danmaku": [
+        "嘚瑟，这才叫反转",
+        "黑卡说没就没",
+        "这脸打得疼吗",
+        "笑死，刚才还炫耀",
+        "爽感直接拉满"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 72700,
+    "duration_ms": 3733,
+    "payload": {
+      "text": "之前的卡我给错了，现在收回。"
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 82233,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "说曹操曹操到"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 82233,
+    "duration_ms": 3567,
+    "payload": {
+      "button_id": 0,
+      "text": "老爷子亲临",
+      "danmaku": [
+        "不用找了，本人来了",
+        "当场打脸+1",
+        "告状告到正主面前",
+        "这位更是重量级",
+        "这下死心了"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 82233,
+    "duration_ms": 3567,
+    "payload": {
+      "text": "不用找，我来了。"
+    }
+  },
+  {
+    "id": 14,
+    "type": 5,
+    "show_at": 126000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "金孙也不管用了"
+    }
+  },
+  {
+    "id": 15,
+    "type": 1,
+    "show_at": 126000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "谁都比不过你",
+      "danmaku": [
+        "金孙银孙全被否",
+        "老爷子霸气赶人",
+        "永不录用太绝了",
+        "看谁还拿身份压人",
+        "太解气了"
+      ]
+    }
+  },
+  {
+    "id": 16,
+    "type": 2,
+    "show_at": 126000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "什么金孙银孙，都比不过荣小姐"
+    }
+  }
+]

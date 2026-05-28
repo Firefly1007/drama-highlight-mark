@@ -1,0 +1,261 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 7301,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死，叫不了姐姐了",
+        "太皮了这小子",
+        "花送得还挺认真",
+        "反差萌拉满"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 7301,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "只是可惜，叫不了姐姐了。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 36393,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 36393,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "最萌年龄差笑死",
+        "给太奶奶介绍对象？",
+        "小奶狗小狼狗都来了",
+        "这也太敢说了",
+        "离谱但好笑"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 36393,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "正是最萌年纪差"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 61441,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "该来的还是会来的"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 61441,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "忤逆不孝",
+      "danmaku": [
+        "终于要算账了",
+        "家法伺候！",
+        "敢撩太奶奶？",
+        "揍他揍他"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 61441,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "忤逆不孝，家法伺候。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 3,
+    "show_at": 61441,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该家法伺候吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 76533,
+    "duration_ms": 4203,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "幸灾乐祸第一名",
+        "看热闹不嫌事大",
+        "终于有人陪我了",
+        "笑死我了"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 76533,
+    "duration_ms": 4203,
+    "payload": {
+      "text": "这个家终于不是只有我挨揍了"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 139033,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "哈哈哈啥玩意啊",
+        "惊喜变惊吓",
+        "蜂蜜养胃但搞笑",
+        "大哥表情管理失败"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 139033,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "啥玩意啊"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 172443,
+    "duration_ms": 4903,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "三哥好会送",
+        "这也太会了吧",
+        "最帅的男人！",
+        "这崇拜的眼神",
+        "磕到了磕到了"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "show_at": 172443,
+    "duration_ms": 4903,
+    "payload": {
+      "text": "三哥，真是我见过最帅的男人"
+    }
+  },
+  {
+    "id": 16,
+    "type": 5,
+    "show_at": 194124,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这就被拿捏了？"
+    }
+  },
+  {
+    "id": 17,
+    "type": 1,
+    "show_at": 194124,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "快揍快揍等不及了",
+        "煽风点火最强王者",
+        "就你话多",
+        "笑死，一个比一个急"
+      ]
+    }
+  },
+  {
+    "id": 18,
+    "type": 4,
+    "show_at": 194124,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "会揍他吗？",
+      "options": [
+        "不会",
+        "会"
+      ],
+      "reveal_time": 214936,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 19,
+    "type": 5,
+    "show_at": 214936,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "全员倒戈现场"
+    }
+  },
+  {
+    "id": 20,
+    "type": 1,
+    "show_at": 214936,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "集体反水笑死",
+        "说好的家法呢",
+        "老三的苦肉计成功了",
+        "你还是不是人",
+        "川剧变脸都没这么快"
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "type": 2,
+    "show_at": 214936,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你还是不是人"
+    }
+  }
+]

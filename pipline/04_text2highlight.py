@@ -360,8 +360,7 @@ async def text_to_highlight(text_path: str, highlight_path: str):
             last_exception = exc
             if attempt < MAX_ATTEMPTS:
                 tqdm.write(
-                    f"[retrying] 第 {attempt} 次失败，"
-                    f"剩余 {MAX_ATTEMPTS - attempt} 次: {str(exc).splitlines()[0]}"
+                    f"[retrying] 第 {attempt} 次失败，剩余 {MAX_ATTEMPTS - attempt} 次: {exc}"
                 )
 
     if last_exception is not None:

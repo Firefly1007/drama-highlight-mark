@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 24614,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "合着扎针全顾着看漂亮姐姐了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 24614,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "这也太会撩了吧",
+        "完全不按套路出牌",
+        "直接给我整笑了",
+        "眼里只有漂亮姐姐"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 44530,
+    "duration_ms": 2777,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "什么神仙称呼啊",
+        "也太会起名了吧",
+        "笑到直拍大腿",
+        "这称呼好可爱"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 44530,
+    "duration_ms": 2777,
+    "payload": {
+      "text": "好的，太奶奶姐姐。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 44530,
+    "duration_ms": 2777,
+    "payload": {
+      "text": "这称呼也太会混搭了吧"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 97667,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这占有欲也太可爱了吧"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 97667,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "占有欲好强啊",
+        "谁都不许抢是吧",
+        "也太可爱了吧",
+        "笑不活了家人们"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 97667,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "太奶奶姐姐是我的，谁也别想抢。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 118583,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "反派这下彻底慌神了"
+    }
+  },
+  {
+    "id": 10,
+    "type": 4,
+    "show_at": 118583,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "他们的阴谋会败露吗？",
+      "options": [
+        "会败露",
+        "能瞒住"
+      ],
+      "reveal_time": 130006,
+      "reveal_delay": 4773,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 130006,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "当场抓包也太解气了"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 130006,
+    "duration_ms": 4773,
+    "payload": {
+      "button_id": 0,
+      "text": "当场打脸",
+      "danmaku": [
+        "太解气了吧",
+        "藏不住了吧",
+        "干得漂亮",
+        "直接锤死了"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 130006,
+    "duration_ms": 4773,
+    "payload": {
+      "text": "我丢的那块百达翡丽是你偷的吧。"
+    }
+  },
+  {
+    "id": 14,
+    "type": 3,
+    "show_at": 130006,
+    "duration_ms": 4773,
+    "payload": {
+      "question": "他偷表了吗？",
+      "options": [
+        "偷了",
+        "没偷"
+      ]
+    }
+  }
+]

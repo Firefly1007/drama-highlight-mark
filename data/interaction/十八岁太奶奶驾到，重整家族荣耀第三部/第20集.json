@@ -1,0 +1,158 @@
+[
+  {
+    "id": 1,
+    "type": 2,
+    "show_at": 1160,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "全都是她在欺骗，杜撰"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 20140,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "被当枪使了！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 29750,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这司机是假的吧"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 29750,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "司机说谎",
+      "danmaku": [
+        "司机也是个骗子",
+        "同伙实锤了吧",
+        "太不要脸了",
+        "这也敢撒谎",
+        "还作伪证啊"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 29750,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "司机说的是真的吗？",
+      "options": [
+        "真的",
+        "假的"
+      ],
+      "reveal_time": 115030,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 39710,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "编不下去了吧"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 39710,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "编不下去了吧",
+        "笑死我了",
+        "好尴尬啊",
+        "这谎话绝了",
+        "露馅了哈哈哈哈"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 91250,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这名单绝了！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 91250,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "记忆碾压",
+      "danmaku": [
+        "记性也太好了吧",
+        "李二丫都记得",
+        "人形通讯录",
+        "打脸现场",
+        "笑死个人了"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 91250,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "深深的烙进我的记忆"
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 115030,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这下装不下去了"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 115030,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "从未见过",
+      "danmaku": [
+        "张丽丽是谁？",
+        "根本不存在",
+        "当场拆穿",
+        "谎话精现形",
+        "这脸打得响"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 115030,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "从未见过"
+    }
+  }
+]

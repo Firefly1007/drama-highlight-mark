@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 78700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这比喻绝了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 78700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "葫芦娃大战白雪公主",
+        "这什么离谱比喻",
+        "真笑死我了",
+        "这也太能扯了",
+        "已经幻视了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 78700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "七个小矮人变身葫芦娃，大战白雪公主"
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 90733,
+    "duration_ms": 4300,
+    "payload": {
+      "text": "有人要倒大霉喽。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 90733,
+    "duration_ms": 4300,
+    "payload": {
+      "question": "谁要倒大霉？",
+      "options": [
+        "害他的人",
+        "他自己"
+      ],
+      "reveal_time": 119000,
+      "reveal_delay": 4500,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 119000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "问的就是你！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 157800,
+    "duration_ms": 1700,
+    "payload": {
+      "button_id": 0,
+      "text": "想起来了",
+      "danmaku": [
+        "他醒了！",
+        "终于想起来了",
+        "有救了！",
+        "这一针绝了",
+        "有效了！"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 157800,
+    "duration_ms": 1700,
+    "payload": {
+      "text": "我想起来了。"
+    }
+  }
+]

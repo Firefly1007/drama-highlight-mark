@@ -1,0 +1,200 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 44020,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "全是自拍可还行"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 44020,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死，全是自拍",
+        "这波自恋满分",
+        "泡妹秘籍就这？",
+        "我学会了",
+        "这也太离谱了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 44020,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "没错，泡妹秘籍最关键的。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 44020,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "三哥是真心的吗？",
+      "options": [
+        "是真的",
+        "在搞笑"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 62360,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "多大仇多大怨"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 62360,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "打起来了？",
+        "急眼了急眼了",
+        "笑死我了",
+        "群殴现场了"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 101030,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "怎么还夸上了"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 101030,
+    "duration_ms": 4760,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "怎么还夸上了",
+        "这波鼓励笑死",
+        "打还是不打",
+        "反转了哈哈"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 127070,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这崩溃过于真实"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 127070,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "英宝崩溃了",
+        "上学太痛苦了",
+        "哈哈哈哈笑死",
+        "这个反应绝了"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 127070,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "命运啊，为什么折磨我"
+    }
+  },
+  {
+    "id": 12,
+    "type": 4,
+    "show_at": 127070,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "英宝会上学吗？",
+      "options": [
+        "会",
+        "不会"
+      ],
+      "reveal_time": 198330,
+      "reveal_delay": 4100,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 157210,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "一听就是装的"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 157210,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "装病第一名",
+        "强行发烧",
+        "笑死，戏精",
+        "英宝别装了"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 198330,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "变脸比翻书快"
+    }
+  },
+  {
+    "id": 16,
+    "type": 1,
+    "show_at": 198330,
+    "duration_ms": 4100,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "数到二就怂了",
+        "哈哈哈哈变脸",
+        "英宝秒变乖",
+        "不敢装了"
+      ]
+    }
+  }
+]

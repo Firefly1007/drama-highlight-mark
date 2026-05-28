@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "type": 2,
+    "show_at": 0,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我肚子里的孩子就是他的！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 15000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "这波操作我笑死",
+        "这也行？",
+        "毒誓还能这样发",
+        "逻辑鬼才"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 15000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "如果这孩子是我的，我全家死光。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 15000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "谁在说谎？",
+      "options": [
+        "她",
+        "他"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 15000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "孩子是他的吗？",
+      "options": [
+        "是",
+        "不是"
+      ],
+      "reveal_time": 55700,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 30700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "不走肾可还行"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 30700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "走心不走肾绝了",
+        "这波解释满分",
+        "逻辑清晰",
+        "笑不活了"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 30700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我向来是走心，不走肾。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 55700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "实锤了哈哈",
+        "纯阳之体可还行",
+        "大夫是来搞笑的",
+        "有科学依据我喜欢"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 55700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "确实是纯阳之体，未经阴阳调和。"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 62300,
+    "duration_ms": 4400,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "公开处刑",
+        "哈哈哈哈处男",
+        "全世界都知道了",
+        "社死现场"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 62300,
+    "duration_ms": 4400,
+    "payload": {
+      "text": "三哥，你是处男啊！"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 68700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "一门三节笑不活了",
+        "纪家祖传节操",
+        "双节变三节",
+        "笑到打鸣"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 68700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我们季家是一门三节啊。"
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 91700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这下傻眼了"
+    }
+  },
+  {
+    "id": 16,
+    "type": 1,
+    "show_at": 91700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "自食其果",
+      "danmaku": [
+        "舒服了呀",
+        "报应来了",
+        "让你作妖",
+        "碰瓷失败"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "type": 2,
+    "show_at": 91700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你害死我了！"
+    }
+  },
+  {
+    "id": 18,
+    "type": 5,
+    "show_at": 100200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "你俩锁死吧"
+    }
+  },
+  {
+    "id": 19,
+    "type": 1,
+    "show_at": 100200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "恶人配对",
+      "danmaku": [
+        "俩恶人锁死",
+        "狗咬狗一嘴毛",
+        "这反转绝了",
+        "大快人心"
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "type": 2,
+    "show_at": 100200,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你们俩才是一对。"
+    }
+  }
+]

@@ -1,0 +1,180 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 29260,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "刚拿驾照就开F1了？"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 29260,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "刚拿驾照就飙车",
+        "F1比赛？",
+        "这也太离谱了",
+        "笑死我了",
+        "新手直接上赛道"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 62720,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这车不该上啊"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 62720,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "车速二百五了",
+        "我后悔了",
+        "早知道不上了",
+        "要哭了哈哈哈",
+        "灵魂在飘"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 81410,
+    "duration_ms": 2000,
+    "payload": {
+      "button_id": 0,
+      "text": "闭嘴接电话",
+      "danmaku": [
+        "超飒的！",
+        "给我闭嘴！",
+        "酷毙了！",
+        "稳得很！",
+        "女王发言"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 81410,
+    "duration_ms": 2000,
+    "payload": {
+      "text": "闭嘴，接电话。"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 81410,
+    "duration_ms": 2000,
+    "payload": {
+      "text": "太飒了吧！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 96320,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "安排减速路障",
+      "danmaku": [
+        "稳的一批",
+        "减速路障安排",
+        "临危不乱",
+        "太稳了吧",
+        "绝了绝了"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 132510,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这朋友圈必须发"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 132510,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "遗照发朋友圈",
+        "笑不活了",
+        "要撞大货车了",
+        "灵魂拷问",
+        "三百码了"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 165000,
+    "duration_ms": 2330,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "来不及了！",
+        "这回答绝了",
+        "扎心了老铁",
+        "冷静得可怕",
+        "神补刀啊"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 165000,
+    "duration_ms": 2330,
+    "payload": {
+      "text": "那你怕是来不及了。"
+    }
+  },
+  {
+    "id": 13,
+    "type": 3,
+    "show_at": 165000,
+    "duration_ms": 2330,
+    "payload": {
+      "question": "谭奶奶是认真的吗？",
+      "options": [
+        "调侃",
+        "认真"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 5,
+    "show_at": 165000,
+    "duration_ms": 2330,
+    "payload": {
+      "text": "真来不及了"
+    }
+  }
+]
