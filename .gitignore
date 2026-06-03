@@ -1,9 +1,9 @@
 .env
 data/video/
 data/audio/
-data/*.zip
 docs/
 .vscode/
 __pycache__/
 */__pycache__/
 .learnings/
+data/branch/image
