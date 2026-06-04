@@ -20,6 +20,7 @@ branch_video = importlib.import_module("pipline.07_branch_video")
 
 class BranchVideoRuntimeTest(unittest.TestCase):
     def setUp(self) -> None:
+        self.original_option_text = "模型给出的原剧情文案"
         self.current_segments = [
             Segment(
                 id=1,
@@ -58,6 +59,10 @@ class BranchVideoRuntimeTest(unittest.TestCase):
                 },
                 "question": "要不要继续追问？",
                 "options": [
+                    {
+                        "text": self.original_option_text,
+                        "prompt": "",
+                    },
                     {
                         "text": "继续追问",
                         "prompt": "延续压迫感，短暂偏离后回到主线。",
@@ -125,6 +130,7 @@ class BranchVideoRuntimeTest(unittest.TestCase):
         self.assertIn("<branches>", prompt)
         self.assertIn('"text":"先别动。"', prompt)
         self.assertIn('"question":"要不要继续追问？"', prompt)
+        self.assertIn(f'"text":"{self.original_option_text}"', prompt)
         self.assertIn('"text":"继续追问"', prompt)
         self.assertNotIn('"branches":[', prompt)
 
@@ -175,6 +181,10 @@ class BranchVideoRuntimeTest(unittest.TestCase):
             "question": "要不要继续追问？",
             "options": [
               {
+                "text": "__ORIGINAL_TEXT__",
+                "prompt": ""
+              },
+              {
                 "text": "继续追问",
                 "prompt": "延续压迫感，短暂偏离后回到主线。"
               },
@@ -190,13 +200,13 @@ class BranchVideoRuntimeTest(unittest.TestCase):
             }
           }
         ]
-        """
+        """.replace("__ORIGINAL_TEXT__", self.original_option_text)
 
         document = branch_video.parse_branches_document(raw)
 
         self.assertEqual(len(document.branches), 1)
         self.assertEqual(document.branches[0].id, 1)
-        self.assertEqual(document.branches[0].options[0].text, "继续追问")
+        self.assertEqual(document.branches[0].options[0].text, self.original_option_text)
 
     def test_parse_branches_document_rejects_root_object(self) -> None:
         raw = """
@@ -209,13 +219,17 @@ class BranchVideoRuntimeTest(unittest.TestCase):
                 "segment_id": 1,
                 "time": "00:00:01.000"
               },
-              "question": "要不要继续追问？",
-              "options": [
-                {
-                  "text": "继续追问",
-                  "prompt": "延续压迫感，短暂偏离后回到主线。"
-                },
-                {
+            "question": "要不要继续追问？",
+            "options": [
+              {
+                "text": "__ORIGINAL_TEXT__",
+                "prompt": ""
+              },
+              {
+                "text": "继续追问",
+                "prompt": "延续压迫感，短暂偏离后回到主线。"
+              },
+              {
                   "text": "先稳住",
                   "prompt": "暂时缓和情绪，最后回到主线。"
                 }
@@ -228,7 +242,7 @@ class BranchVideoRuntimeTest(unittest.TestCase):
             }
           ]
         }
-        """
+        """.replace("__ORIGINAL_TEXT__", self.original_option_text)
 
         with self.assertRaises(ValueError):
             branch_video.parse_branches_document(raw)
@@ -246,6 +260,10 @@ class BranchVideoRuntimeTest(unittest.TestCase):
             "question": "要不要继续追问？",
             "options": [
               {
+                "text": "__ORIGINAL_TEXT__",
+                "prompt": ""
+              },
+              {
                 "text": "继续追问",
                 "prompt": "延续压迫感，短暂偏离后回到主线。"
               }
@@ -257,7 +275,7 @@ class BranchVideoRuntimeTest(unittest.TestCase):
             }
           }
         ]
-        """
+        """.replace("__ORIGINAL_TEXT__", self.original_option_text)
 
         with self.assertRaisesRegex(ValueError, r"branch\.json 校验失败:"):
             branch_video.parse_branches_document(raw)
@@ -287,6 +305,104 @@ class BranchVideoRuntimeTest(unittest.TestCase):
                 )
 
         self.assertEqual(result, [])
+
+    def test_branch_to_video_prompts_skips_original_option_index_zero(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            branch_path = root / "data" / "branch" / "json" / "某短剧" / "第1集.json"
+            branch_path.parent.mkdir(parents=True, exist_ok=True)
+            branch_path.write_text(
+                """
+                [
+                  {
+                    "id": 1,
+                    "trigger": {
+                      "episode": 1,
+                      "segment_id": 1,
+                      "time": "00:00:01.000"
+                    },
+                    "question": "要不要继续追问？",
+                    "options": [
+                      {
+                        "text": "__ORIGINAL_TEXT__",
+                        "prompt": ""
+                      },
+                      {
+                        "text": "继续追问",
+                        "prompt": "延续压迫感，短暂偏离后回到主线。"
+                      },
+                      {
+                        "text": "先稳住",
+                        "prompt": "暂时缓和情绪，最后回到主线。"
+                      }
+                    ],
+                    "resume": {
+                      "episode": 2,
+                      "segment_id": 1,
+                      "time": "00:00:03.000"
+                    }
+                  }
+                ]
+                """.replace("__ORIGINAL_TEXT__", self.original_option_text),
+                encoding="utf-8",
+            )
+            current_text_path = root / "data" / "text" / "某短剧" / "第1集.json"
+            next_text_path = root / "data" / "text" / "某短剧" / "第2集.json"
+            current_text_path.parent.mkdir(parents=True, exist_ok=True)
+            current_text_path.write_text("[]", encoding="utf-8")
+            next_text_path.write_text("[]", encoding="utf-8")
+            generated = branch_video.VideoPromptsDocument.model_validate(
+                {
+                    "video_prompts": [
+                        {
+                            "branch_index": 0,
+                            "option_index": 0,
+                            "prompt": "不应保留的原剧情提示词",
+                        },
+                        {
+                            "branch_index": 0,
+                            "option_index": 1,
+                            "prompt": "保留的提示词1",
+                        },
+                        {
+                            "branch_index": 0,
+                            "option_index": 2,
+                            "prompt": "保留的提示词2",
+                        },
+                    ]
+                }
+            )
+
+            with patch.object(
+                branch_video,
+                "parse_segments_list",
+                side_effect=[self.current_segments, self.next_segments],
+            ), patch.object(
+                branch_video,
+                "build_user_prompt",
+                return_value="prompt",
+            ), patch.object(
+                branch_video,
+                "generate_video_prompts",
+                new=AsyncMock(return_value=generated),
+            ):
+                result = asyncio.run(branch_video.branch_to_video_prompts(str(branch_path)))
+
+        self.assertEqual(
+            result,
+            [
+                {
+                    "branch_index": 0,
+                    "option_index": 1,
+                    "prompt": "保留的提示词1",
+                },
+                {
+                    "branch_index": 0,
+                    "option_index": 2,
+                    "prompt": "保留的提示词2",
+                },
+            ],
+        )
 
     def test_run_single_branch_file_logs_status_and_writes_json(self) -> None:
         branch_path = ROOT / "data" / "branch" / "json" / "某短剧" / "第1集.json"

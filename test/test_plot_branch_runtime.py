@@ -17,6 +17,7 @@ plot_branch = importlib.import_module("pipline.06_plot_branch")
 
 class PlotBranchRuntimeTest(unittest.TestCase):
     def setUp(self) -> None:
+        self.original_option_text = "模型给出的原剧情文案"
         self.current_segments = [
             Segment(
                 id=1,
@@ -70,6 +71,10 @@ class PlotBranchRuntimeTest(unittest.TestCase):
               "question": "要不要逼问？",
               "options": [
                 {
+                  "text": "__ORIGINAL_TEXT__",
+                  "prompt": ""
+                },
+                {
                   "text": "继续追问",
                   "prompt": "保持压迫感，局部强化冲突，最终回到 resume。"
                 },
@@ -85,7 +90,7 @@ class PlotBranchRuntimeTest(unittest.TestCase):
             }
           ]
         }
-        """
+        """.replace("__ORIGINAL_TEXT__", self.original_option_text)
 
         final_document = plot_branch.finalize_branches_document(
             raw,
@@ -107,6 +112,10 @@ class PlotBranchRuntimeTest(unittest.TestCase):
                     },
                     "question": "要不要逼问？",
                     "options": [
+                        {
+                            "text": self.original_option_text,
+                            "prompt": "",
+                        },
                         {
                             "text": "继续追问",
                             "prompt": "保持压迫感，局部强化冲突，最终回到 resume。",
@@ -137,6 +146,10 @@ class PlotBranchRuntimeTest(unittest.TestCase):
               "question": "先忍还是回怼？",
               "options": [
                 {
+                  "text": "__ORIGINAL_TEXT__",
+                  "prompt": ""
+                },
+                {
                   "text": "先忍住",
                   "prompt": "压住情绪，短暂偏离后回到 resume。"
                 },
@@ -152,7 +165,7 @@ class PlotBranchRuntimeTest(unittest.TestCase):
             }
           ]
         }
-        """
+        """.replace("__ORIGINAL_TEXT__", self.original_option_text)
 
         final_document = plot_branch.finalize_branches_document(
             raw,

@@ -18,15 +18,16 @@ SYSTEM_PROMPT = """
 - resume_frame_image：分支结束后要回归的原剧首帧图
 
 任务：
-为 branches 中每个 option 生成一条视频生成提示词。
+为 branches 中每个非“原剧情” option 生成一条视频生成提示词。
 
 处理方法：
 1. 根据 branch.trigger 找到分支开始位置。
 2. 根据 branch.resume 找到分支结束后要接回的位置。
-3. 根据 option.text 和 option.prompt 生成一段短视频内容。
-4. 视频开头必须承接 start_frame_image。
-5. 视频结尾必须贴近 resume_frame_image，方便无缝接回原剧。
-6. 保持原剧主线事实不变，包括人物身份、亲属关系、穿越设定、重要揭晓结果、生死状态和主线矛盾。
+3. branches 里的 options[0] 表示继续原剧情；它的 text 是正常按钮文案，prompt 为空字符串。不要为它生成 video_prompt。
+4. 只根据非原剧情 option 的 option.text 和 option.prompt 生成一段短视频内容。
+5. 视频开头必须承接 start_frame_image。
+6. 视频结尾必须贴近 resume_frame_image，方便无缝接回原剧。
+7. 保持原剧主线事实不变，包括人物身份、亲属关系、穿越设定、重要揭晓结果、生死状态和主线矛盾。
 
 每条视频生成提示词必须按下面结构写：
 
@@ -75,14 +76,15 @@ SYSTEM_PROMPT = """
   "video_prompts": [
     {
       "branch_index": 0,
-      "option_index": 0,
+      "option_index": 1,
       "prompt": "视频生成提示词"
     }
   ]
 }
 
 要求：
-- 每个 option 输出一条 video_prompt。
+- 每个非原剧情 option 输出一条 video_prompt。
+- 不要为 options[0] 的“原剧情”项输出 video_prompt。
 - branch_index 和 option_index 使用数组下标，从 0 开始。
 - prompt 使用中文。
 - prompt 写成可直接交给视频生成模型的画面指令。
@@ -155,12 +157,12 @@ class BranchOptionInput(BaseModel):
     text: str
     prompt: str
 
-    @field_validator("text", "prompt")
+    @field_validator("text")
     @classmethod
     def validate_text_fields(cls, value: str) -> str:
         text = value.strip()
         if not text:
-            raise ValueError("branch option 字段不能为空字符串")
+            raise ValueError("branch option text 不能为空字符串")
         return text
 
 
@@ -180,6 +182,21 @@ class BranchInput(BaseModel):
         if not text:
             raise ValueError("branch question 不能为空字符串")
         return text
+
+    @field_validator("options")
+    @classmethod
+    def validate_options(cls, value: list[BranchOptionInput]) -> list[BranchOptionInput]:
+        if not 2 <= len(value) <= 3:
+            raise ValueError("branch options 必须包含 2 到 3 个选项")
+
+        if not is_original_branch_option(value[0]):
+            raise ValueError("branch options[0] 必须是非空 text + 空 prompt 的原剧情项")
+
+        for option in value[1:]:
+            if not option.prompt.strip():
+                raise ValueError("非原剧情 branch option 的 prompt 不能为空字符串")
+
+        return value
 
 
 class BranchesInputDocument(BaseModel):
@@ -315,6 +332,24 @@ def build_user_prompt(
     )
 
 
+def is_original_branch_option(option: BranchOptionInput) -> bool:
+    """判断是否为“继续原剧情”的空 prompt 选项。"""
+    return bool(option.text.strip()) and not option.prompt.strip()
+
+
+def collect_prompt_target_pairs(
+    branches_document: BranchesInputDocument,
+) -> set[tuple[int, int]]:
+    """收集实际需要生成视频提示词的分支选项下标。"""
+    targets: set[tuple[int, int]] = set()
+    for branch_index, branch in enumerate(branches_document.branches):
+        for option_index, option in enumerate(branch.options):
+            if is_original_branch_option(option):
+                continue
+            targets.add((branch_index, option_index))
+    return targets
+
+
 def replace_path_part_sequence(
     path: str | Path, source_parts: tuple[str, ...], target_parts: tuple[str, ...]
 ) -> Path:
@@ -417,6 +452,10 @@ async def branch_to_video_prompts(branch_path: str) -> list[dict[str, Any]]:
     if not branches_document.branches:
         return []
 
+    prompt_target_pairs = collect_prompt_target_pairs(branches_document)
+    if not prompt_target_pairs:
+        return []
+
     current_text_path = get_text_path_from_branch_path(branch_file)
     if not current_text_path.is_file():
         raise FileNotFoundError(f"当前集字幕文件不存在: {current_text_path}")
@@ -434,7 +473,11 @@ async def branch_to_video_prompts(branch_path: str) -> list[dict[str, Any]]:
         text_path=current_text_path,
     )
     final_document = await generate_video_prompts(user_prompt)
-    return final_document.model_dump(mode="json")["video_prompts"]
+    return [
+        item.model_dump(mode="json")
+        for item in final_document.video_prompts
+        if (item.branch_index, item.option_index) in prompt_target_pairs
+    ]
 
 
 async def branch_file_to_prompt_file(branch_path: str, prompt_path: str) -> None:

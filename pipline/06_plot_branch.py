@@ -43,6 +43,10 @@ SYSTEM_PROMPT = """
       "options": [
         {
           "text": "选项文案",
+          "prompt": ""
+        },
+        {
+          "text": "选项文案",
           "prompt": "用于生成该选项分支内容的提示词"
         }
       ],
@@ -58,12 +62,14 @@ SYSTEM_PROMPT = """
 1. 只输出 JSON。
 2. branches 是数组。
 3. 每个 branch 只包含 trigger、question、options、resume。
-4. options 生成 2-3 个。
-5. options.text 要短，适合按钮展示。
-6. options.prompt 要能直接交给内容生成模型使用。
-7. options.prompt 必须写清人物、场景、分支方向、情绪氛围、不能改变的主线事实、如何衔接到 resume。
-8. segment_id 必须来自对应输入中的真实 segment id。
-9. episode 只能是 "current" 或 "next"。
+4. options[0] 必须表示继续原剧情；它的 text 也要正常生成，适合按钮展示，但 prompt 必须是空字符串。
+5. options[1:] 再生成 1-2 个真正的分支选项。
+6. options.text 要短，适合按钮展示。
+7. 除 options[0] 外，其他 options.prompt 要能直接交给内容生成模型使用。
+8. 除 options[0] 外，其他 options.prompt 必须写清人物、场景、分支方向、情绪氛围、不能改变的主线事实、如何衔接到 resume。
+9. 不要把 options[0].text 固定写成“原剧情”四个字，要根据当前剧情生成更自然的按钮文案。
+10. segment_id 必须来自对应输入中的真实 segment id。
+11. episode 只能是 "current" 或 "next"。
 """
 
 
@@ -148,6 +154,18 @@ class BranchDraft(BaseModel):
     def validate_options(cls, value: list[BranchOptionDraft]) -> list[BranchOptionDraft]:
         if not 2 <= len(value) <= 3:
             raise ValueError("options 必须包含 2 到 3 个选项")
+
+        first_option = value[0]
+        if not first_option.text.strip():
+            raise ValueError("options[0].text 不能为空字符串")
+        if first_option.prompt.strip():
+            raise ValueError('options[0].prompt 必须是空字符串')
+
+        for option in value[1:]:
+            if not option.text.strip():
+                raise ValueError("非原剧情 option text 不能为空字符串")
+            if not option.prompt.strip():
+                raise ValueError("非原剧情 option prompt 不能为空字符串")
         return value
 
 

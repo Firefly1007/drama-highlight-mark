@@ -20,7 +20,7 @@ class ParsePromptItemsTest(unittest.TestCase):
     def test_valid_root_array(self) -> None:
         raw = json.dumps(
             [
-                {"branch_index": 0, "option_index": 0, "prompt": "提示词A"},
+                {"branch_index": 0, "option_index": 0, "prompt": ""},
                 {"branch_index": 0, "option_index": 1, "prompt": "提示词B"},
             ]
         )
@@ -41,8 +41,8 @@ class ParsePromptItemsTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             branch_image.parse_prompt_items('{"video_prompts": []}')
 
-    def test_rejects_empty_prompt(self) -> None:
-        raw = json.dumps([{"branch_index": 0, "option_index": 0, "prompt": ""}])
+    def test_rejects_empty_non_original_prompt(self) -> None:
+        raw = json.dumps([{"branch_index": 0, "option_index": 1, "prompt": ""}])
 
         with self.assertRaises(ValueError):
             branch_image.parse_prompt_items(raw)
@@ -127,6 +127,30 @@ class PathMappingTest(unittest.TestCase):
 
 
 class CompletionDetectionTest(unittest.TestCase):
+    def test_empty_prompt_file_is_incomplete_without_output_dir(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            prompt_path = root / "data" / "branch" / "prompt" / "某剧" / "第1集.json"
+            prompt_path.parent.mkdir(parents=True, exist_ok=True)
+            prompt_path.write_text("[]", encoding="utf-8")
+
+            result = branch_image.is_prompt_file_complete(prompt_path)
+
+        self.assertFalse(result)
+
+    def test_empty_prompt_file_is_complete_when_output_dir_exists(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            prompt_path = root / "data" / "branch" / "prompt" / "某剧" / "第1集.json"
+            prompt_path.parent.mkdir(parents=True, exist_ok=True)
+            prompt_path.write_text("[]", encoding="utf-8")
+            image_dir = root / "data" / "branch" / "image" / "某剧" / "第1集"
+            image_dir.mkdir(parents=True, exist_ok=True)
+
+            result = branch_image.is_prompt_file_complete(prompt_path)
+
+        self.assertTrue(result)
+
     def test_prompt_file_is_complete_when_all_expected_images_exist(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
@@ -135,7 +159,7 @@ class CompletionDetectionTest(unittest.TestCase):
             prompt_path.write_text(
                 json.dumps(
                     [
-                        {"branch_index": 0, "option_index": 0, "prompt": "A"},
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
                         {"branch_index": 1, "option_index": 2, "prompt": "B"},
                     ]
                 ),
@@ -143,7 +167,6 @@ class CompletionDetectionTest(unittest.TestCase):
             )
             image_dir = root / "data" / "branch" / "image" / "某剧" / "第1集"
             image_dir.mkdir(parents=True, exist_ok=True)
-            (image_dir / "0_0.jpeg").write_bytes(b"a")
             (image_dir / "1_2.jpeg").write_bytes(b"b")
 
             result = branch_image.is_prompt_file_complete(prompt_path)
@@ -158,7 +181,7 @@ class CompletionDetectionTest(unittest.TestCase):
             prompt_path.write_text(
                 json.dumps(
                     [
-                        {"branch_index": 0, "option_index": 0, "prompt": "A"},
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
                         {"branch_index": 1, "option_index": 2, "prompt": "B"},
                     ]
                 ),
@@ -166,7 +189,6 @@ class CompletionDetectionTest(unittest.TestCase):
             )
             image_dir = root / "data" / "branch" / "image" / "某剧" / "第1集"
             image_dir.mkdir(parents=True, exist_ok=True)
-            (image_dir / "0_0.jpeg").write_bytes(b"a")
 
             result = branch_image.is_prompt_file_complete(prompt_path)
 
@@ -276,7 +298,9 @@ class ProcessPromptFileTest(unittest.TestCase):
             ), patch.object(branch_image, "log_episode_status") as log_mock:
                 asyncio.run(branch_image.process_prompt_file(prompt_path))
 
+            image_dir = root / "data" / "branch" / "image" / "某剧" / "第1集"
             output_path = str(root / "data" / "branch" / "image" / "某剧" / "第1集")
+            self.assertTrue(image_dir.is_dir())
             self.assertEqual(
                 log_mock.call_args_list,
                 [
@@ -323,7 +347,7 @@ class ProcessPromptFileTest(unittest.TestCase):
             prompt_path.write_text(
                 json.dumps(
                     [
-                        {"branch_index": 0, "option_index": 0, "prompt": "提示词A"},
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
                         {"branch_index": 0, "option_index": 1, "prompt": "提示词B"},
                     ]
                 ),
@@ -361,12 +385,11 @@ class ProcessPromptFileTest(unittest.TestCase):
             ) as gen_mock:
                 asyncio.run(branch_image.process_prompt_file(prompt_path))
 
-            self.assertEqual(gen_mock.call_count, 2)
+            self.assertEqual(gen_mock.call_count, 1)
             img_a = image_dir / "0_0.jpeg"
             img_b = image_dir / "0_1.jpeg"
-            self.assertTrue(img_a.exists())
+            self.assertFalse(img_a.exists())
             self.assertTrue(img_b.exists())
-            self.assertEqual(img_a.read_bytes(), fake_jpeg)
             self.assertEqual(img_b.read_bytes(), fake_jpeg)
 
     def test_same_branch_index_shares_frame_extraction(self) -> None:
@@ -377,7 +400,7 @@ class ProcessPromptFileTest(unittest.TestCase):
             prompt_path.write_text(
                 json.dumps(
                     [
-                        {"branch_index": 0, "option_index": 0, "prompt": "A"},
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
                         {"branch_index": 0, "option_index": 1, "prompt": "B"},
                     ]
                 ),
@@ -465,16 +488,26 @@ class BatchProcessPromptFilesTest(unittest.TestCase):
 
             prompt_complete = prompt_dir / "第1集.json"
             prompt_complete.write_text(
-                json.dumps([{"branch_index": 0, "option_index": 0, "prompt": "A"}]),
+                json.dumps(
+                    [
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
+                        {"branch_index": 0, "option_index": 1, "prompt": "A"},
+                    ]
+                ),
                 encoding="utf-8",
             )
             complete_image_dir = root / "data" / "branch" / "image" / "某剧" / "第1集"
             complete_image_dir.mkdir(parents=True, exist_ok=True)
-            (complete_image_dir / "0_0.jpeg").write_bytes(b"a")
+            (complete_image_dir / "0_1.jpeg").write_bytes(b"a")
 
             prompt_incomplete = prompt_dir / "第2集.json"
             prompt_incomplete.write_text(
-                json.dumps([{"branch_index": 0, "option_index": 0, "prompt": "B"}]),
+                json.dumps(
+                    [
+                        {"branch_index": 0, "option_index": 0, "prompt": ""},
+                        {"branch_index": 0, "option_index": 1, "prompt": "B"},
+                    ]
+                ),
                 encoding="utf-8",
             )
 

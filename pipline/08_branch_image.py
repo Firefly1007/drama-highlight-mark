@@ -11,7 +11,7 @@ from pathlib import Path
 import sys
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 
@@ -35,13 +35,14 @@ class PromptItem(BaseModel):
     option_index: int = Field(ge=0)
     prompt: str
 
-    @field_validator("prompt")
-    @classmethod
-    def validate_prompt(cls, value: str) -> str:
-        text = value.strip()
+    @model_validator(mode="after")
+    def validate_prompt(self) -> "PromptItem":
+        text = self.prompt.strip()
+        if self.option_index == 0 and not text:
+            return self
         if not text:
-            raise ValueError("prompt 不能为空字符串")
-        return text
+            raise ValueError("非原剧情 prompt 不能为空字符串")
+        return self
 
 
 class BranchEndpointInput(BaseModel):
@@ -144,6 +145,11 @@ def sort_prompt_files_by_episode(prompt_files: list[Path]) -> list[Path]:
     )
 
 
+def should_skip_prompt_item(item: PromptItem) -> bool:
+    """原剧情选项不需要生成分支图片。"""
+    return item.option_index == 0 and not item.prompt.strip()
+
+
 def get_expected_image_paths(prompt_path: Path) -> list[Path]:
     """根据 prompt 文件计算期望输出的图片路径列表。"""
     prompt_items = parse_prompt_items(prompt_path.read_text(encoding="utf-8"))
@@ -151,6 +157,7 @@ def get_expected_image_paths(prompt_path: Path) -> list[Path]:
     return [
         image_dir / f"{item.branch_index}_{item.option_index}.jpeg"
         for item in prompt_items
+        if not should_skip_prompt_item(item)
     ]
 
 
@@ -158,8 +165,12 @@ def is_prompt_file_complete(prompt_path: Path) -> bool:
     """判断某个 prompt 文件对应的图片是否已经全部生成完成。"""
     try:
         expected_image_paths = get_expected_image_paths(prompt_path)
+        image_dir = get_image_dir_from_prompt_path(prompt_path)
     except Exception:
         return False
+
+    if not expected_image_paths:
+        return image_dir.is_dir()
 
     return all(path.is_file() for path in expected_image_paths)
 
@@ -225,7 +236,8 @@ async def process_prompt_file(
 ) -> None:
     """处理单个 prompt JSON 文件：截帧、生图、保存。"""
     source_path = str(prompt_path)
-    output_path = str(get_image_dir_from_prompt_path(prompt_path))
+    image_dir = get_image_dir_from_prompt_path(prompt_path)
+    output_path = str(image_dir)
     if emit_status_logs:
         log_episode_status(
             status=EpisodeStatus.PENDING,
@@ -240,6 +252,11 @@ async def process_prompt_file(
 
     try:
         prompt_items = parse_prompt_items(prompt_path.read_text(encoding="utf-8"))
+        prompt_items = [
+            item for item in prompt_items
+            if not should_skip_prompt_item(item)
+        ]
+        image_dir.mkdir(parents=True, exist_ok=True)
         if not prompt_items:
             if emit_status_logs:
                 log_episode_status(
@@ -252,8 +269,6 @@ async def process_prompt_file(
         branch_path = get_branch_path_from_prompt_path(prompt_path)
         branch_items = parse_branch_items(branch_path.read_text(encoding="utf-8"))
         drama_name = extract_drama_name_from_path(prompt_path)
-        image_dir = get_image_dir_from_prompt_path(prompt_path)
-        image_dir.mkdir(parents=True, exist_ok=True)
 
         # 按 branch_index 分组，同一 branch 只截帧一次
         grouped: dict[int, list[PromptItem]] = {}

@@ -7,3 +7,4 @@ __pycache__/
 */__pycache__/
 .learnings/
 data/branch/image
+.pytest_cache/
