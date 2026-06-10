@@ -274,6 +274,7 @@ USER_PROMPT = """
 """
 
 client = get_async_openai_client()
+API_SEMAPHORE = asyncio.Semaphore(20)
 
 
 def strip_markdown_code_block(text: str) -> str:
@@ -372,7 +373,12 @@ async def batch_convert(text_files: list[str], highlight_files: list[str]):
     """批量生成刺激点。"""
     success_count = 0
     fail_count = 0
-    tasks = [text_to_highlight(t, h) for t, h in zip(text_files, highlight_files)]
+
+    async def _run(t, h):
+        async with API_SEMAPHORE:
+            return await text_to_highlight(t, h)
+
+    tasks = [_run(t, h) for t, h in zip(text_files, highlight_files)]
     for task in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="文本转刺激点"):
         try:
             await task

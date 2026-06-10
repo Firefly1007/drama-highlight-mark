@@ -351,14 +351,13 @@ class EmotionButtonModelPayload(BaseModel):
 
         normalized: list[str] = []
         for index, item in enumerate(value, start=1):
-            normalized.append(
-                validate_emotion_button_copy_text(
-                    item,
-                    field_name=f"payload.danmaku 第 {index} 项",
-                    min_chars=EMOTION_BUTTON_DANMAKU_MIN_CHARS,
-                    max_chars=EMOTION_BUTTON_DANMAKU_MAX_CHARS,
-                )
-            )
+            text = item.strip()
+            if not text:
+                raise ValueError(f"payload.danmaku 第 {index} 项不能为空字符串")
+            for term in EMOTION_BUTTON_FORBIDDEN_TERMS:
+                if term in text:
+                    raise ValueError('payload.danmaku 第 %d 项不允许包含禁用词"%s"' % (index, term))
+            normalized.append(text)
 
         return normalized
 
@@ -701,14 +700,13 @@ class EmotionButtonPayload(BaseModel):
 
         normalized: list[str] = []
         for index, item in enumerate(value, start=1):
-            normalized.append(
-                validate_emotion_button_copy_text(
-                    item,
-                    field_name=f"payload.danmaku 第 {index} 项",
-                    min_chars=EMOTION_BUTTON_DANMAKU_MIN_CHARS,
-                    max_chars=EMOTION_BUTTON_DANMAKU_MAX_CHARS,
-                )
-            )
+            text = item.strip()
+            if not text:
+                raise ValueError(f"payload.danmaku 第 {index} 项不能为空字符串")
+            for term in EMOTION_BUTTON_FORBIDDEN_TERMS:
+                if term in text:
+                    raise ValueError('payload.danmaku 第 %d 项不允许包含禁用词"%s"' % (index, term))
+            normalized.append(text)
 
         return normalized
 

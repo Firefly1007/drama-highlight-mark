@@ -1,0 +1,132 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 12800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这比喻绝了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 12800,
+    "duration_ms": 4070,
+    "payload": {
+      "text": "现在这样，更像偷情了。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 25330,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "混蛋回应太逗了"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 25330,
+    "duration_ms": 4510,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "这也行？",
+        "太离谱了",
+        "哈哈还挺有理",
+        "混蛋逻辑"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 25330,
+    "duration_ms": 4510,
+    "payload": {
+      "text": "那我不是白挨骂了"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 25330,
+    "duration_ms": 4510,
+    "payload": {
+      "question": "该干混蛋事吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 93640,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "安全感拉满"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 93640,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 93640,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "哥给你出头"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 104780,
+    "duration_ms": 2780,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑不活了",
+        "妹子好敢说",
+        "这调侃绝了",
+        "哈哈太逗了",
+        "确实不像"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 104780,
+    "duration_ms": 2780,
+    "payload": {
+      "text": "你看起来就不像是什么好人"
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 104780,
+    "duration_ms": 2780,
+    "payload": {
+      "text": "被嫌弃了"
+    }
+  }
+]

@@ -1,0 +1,248 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 26320,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这嘲讽也太狠了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 26320,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "废物？",
+      "danmaku": [
+        "太嚣张了",
+        "欠揍玩意",
+        "气得想砸",
+        "闭嘴行吗"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 26320,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "只会花天酒地的废物"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 37580,
+    "duration_ms": 2300,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "投降吗哈哈",
+        "笑死我了",
+        "少爷真逗",
+        "太随意了吧"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 37580,
+    "duration_ms": 2300,
+    "payload": {
+      "text": "可以投降吗？"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 37580,
+    "duration_ms": 2300,
+    "payload": {
+      "text": "真敢说啊"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 39440,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "老爸气炸了"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 39440,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 39440,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "逆子，给我闭嘴！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 75310,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "敢拿性命担保"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 75310,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "这个担保可信吗？",
+      "options": [
+        "可信",
+        "不可信"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 114360,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这语气太欠了"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 114360,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "公子真敢说",
+        "轻佻小子",
+        "胆子不小",
+        "这语气绝了"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 114360,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "的确有几分姿色。"
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 151140,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "她不屑一顾"
+    }
+  },
+  {
+    "id": 16,
+    "type": 1,
+    "show_at": 151140,
+    "duration_ms": 4730,
+    "payload": {
+      "button_id": 2,
+      "text": "配不上？",
+      "danmaku": [
+        "气死我了",
+        "瞧不起谁呢",
+        "欠揍玩意",
+        "太嚣张了"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "type": 2,
+    "show_at": 151140,
+    "duration_ms": 4730,
+    "payload": {
+      "text": "反正他也撑不过一轮"
+    }
+  },
+  {
+    "id": 18,
+    "type": 5,
+    "show_at": 168260,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "火药味来了"
+    }
+  },
+  {
+    "id": 19,
+    "type": 1,
+    "show_at": 168260,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "挑衅？",
+      "danmaku": [
+        "太嚣张了",
+        "想打架吗",
+        "狂妄自大",
+        "挑衅找打"
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "type": 2,
+    "show_at": 168260,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这第一名我拿定了"
+    }
+  },
+  {
+    "id": 21,
+    "type": 5,
+    "show_at": 185580,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "纨绔子弟该醒醒了"
+    }
+  },
+  {
+    "id": 22,
+    "type": 1,
+    "show_at": 185580,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "纨绔？",
+      "danmaku": [
+        "太挑剔了",
+        "瞧不起人",
+        "欠揍发言",
+        "傲娇什么"
+      ]
+    }
+  }
+]

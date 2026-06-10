@@ -1,0 +1,193 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 20830,
+    "duration_ms": 1210,
+    "payload": {
+      "button_id": 0,
+      "text": "缺！",
+      "danmaku": [
+        "就一个字绝",
+        "缺字诀太牛",
+        "怼得漂亮",
+        "气场拉满"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 20830,
+    "duration_ms": 1210,
+    "payload": {
+      "text": "缺。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 20830,
+    "duration_ms": 1210,
+    "payload": {
+      "question": "该让步吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 20830,
+    "duration_ms": 1210,
+    "payload": {
+      "text": "一个字，狠！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 37520,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "叶俊良这就废了？"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 37520,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "冷血无情",
+      "danmaku": [
+        "冷血无情",
+        "这太狠了吧",
+        "气得想骂",
+        "太气人了"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 37520,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "叶俊良现在就是个废人"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 37520,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该救叶俊良吗？",
+      "options": [
+        "该救",
+        "不该救"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 88820,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这计划太野了！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 88820,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "蛊惑人心",
+      "danmaku": [
+        "太无耻了",
+        "这也行啊",
+        "真够无耻",
+        "想得美呢"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 88820,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "那都是咱们说了算呀"
+    }
+  },
+  {
+    "id": 12,
+    "type": 4,
+    "show_at": 88820,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "她会答应吗？",
+      "options": [
+        "答应",
+        "拒绝"
+      ],
+      "reveal_time": 127530,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 127530,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "夺回来？有胆量！"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 127530,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "自不量力",
+      "danmaku": [
+        "自不量力",
+        "这也敢想",
+        "笑死我了",
+        "夺回？好笑"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "show_at": 127530,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我一定会把楚晨安夺回来的"
+    }
+  },
+  {
+    "id": 16,
+    "type": 3,
+    "show_at": 127530,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该夺回楚辰安吗？",
+      "options": [
+        "该夺回",
+        "不该夺回"
+      ]
+    }
+  }
+]

@@ -25,6 +25,9 @@ from pipline.steps_05.repeat_keyline import generate_repeat_keyline_interactions
 from pipline.steps_05.side_comment import generate_side_comment_interactions
 
 
+API_SEMAPHORE = asyncio.Semaphore(20)
+
+
 SUPPORTED_INTERACTION_TYPES = {
     1: "emotion_button",
     2: "repeat_keyline",
@@ -59,27 +62,33 @@ async def generate_interactions_by_type(highpoints: list, highlight_path: str, i
     raise ValueError(f"暂不支持的互动类型: {interaction_type}")
 
 
+async def _guarded(coro):
+    """用信号量限制并发 API 请求数。"""
+    async with API_SEMAPHORE:
+        return await coro
+
+
 async def highlight_to_interaction(highlight_path: str, interaction_path: str) -> None:
     """将单个 highpoints 文件转换为最终 interaction 文件。"""
     raw_text = Path(highlight_path).read_text(encoding="utf-8")
     highpoints = parse_highlights_list(raw_text)
 
     prepared_groups = await asyncio.gather(
-        generate_emotion_button_interactions(
+        _guarded(generate_emotion_button_interactions(
             highpoints, highlight_path=highlight_path, tqdm=tqdm
-        ),
-        generate_repeat_keyline_interactions(
+        )),
+        _guarded(generate_repeat_keyline_interactions(
             highpoints, highlight_path=highlight_path, tqdm=tqdm
-        ),
-        generate_instant_vote_interactions(
+        )),
+        _guarded(generate_instant_vote_interactions(
             highpoints, highlight_path=highlight_path, tqdm=tqdm
-        ),
-        generate_deferred_vote_interactions(
+        )),
+        _guarded(generate_deferred_vote_interactions(
             highpoints, highlight_path=highlight_path, tqdm=tqdm
-        ),
-        generate_side_comment_interactions(
+        )),
+        _guarded(generate_side_comment_interactions(
             highpoints, highlight_path=highlight_path, tqdm=tqdm
-        ),
+        )),
     )
 
     prepared_items = [

@@ -1,0 +1,49 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 69107,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "娘这也太敢了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 69107,
+    "duration_ms": 3439,
+    "payload": {
+      "button_id": 0,
+      "text": "霸气讨债",
+      "danmaku": [
+        "这气场绝了",
+        "娘亲好飒",
+        "该出手了",
+        "太解气了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 69107,
+    "duration_ms": 3439,
+    "payload": {
+      "text": "大山，拿上刀，跟我去趟程家，走！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 69107,
+    "duration_ms": 3439,
+    "payload": {
+      "question": "程弯弯该拿刀去程家？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

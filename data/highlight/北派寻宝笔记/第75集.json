@@ -1,0 +1,168 @@
+[
+  {
+    "id": 1,
+    "summary": "一个人哭着说完自己已经吃完了东西，请求放过元方。",
+    "level": 2,
+    "reason": "情绪崩溃，有保护他人的冲突张力和哀求，情绪强度高。",
+    "segment_ids": [
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:08.000",
+    "end": "00:00:12.800",
+    "trigger_time": "00:00:08.000",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:00:08.000",
+        "end": "00:00:12.800",
+        "text": "我吃完了，放过，放过元方。",
+        "speech": "单人发言",
+        "emotion": "带着哭腔",
+        "voice": "声音颤抖",
+        "music": "",
+        "audio_cues": [
+          "哭泣声"
+        ],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "一人解释父亲生意失败欠了五万块钱，另一人听到后震惊于钱数之大。",
+    "level": 1,
+    "reason": "揭示家庭债务困境，提供剧情背景信息。",
+    "segment_ids": [
+      7,
+      8
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:00:54.500",
+    "end": "00:01:03.500",
+    "trigger_time": "00:00:54.500",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:00:54.500",
+        "end": "00:00:58.500",
+        "text": "我爸这几年做生意失败了，欠了他们五万块钱。",
+        "speech": "单人发言",
+        "emotion": "无奈",
+        "voice": "语气低沉",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 8,
+        "start": "00:00:59.500",
+        "end": "00:01:03.500",
+        "text": "这么多钱，不吃不喝，两三年也还不上啊。",
+        "speech": "单人发言",
+        "emotion": "震惊",
+        "voice": "声音提高",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "一人真诚地将奖学金作为医药费给另一人，并轻松询问对方年级。",
+    "level": 1,
+    "reason": "展现温暖帮助和轻松互动，有情绪价值。",
+    "segment_ids": [
+      11,
+      12,
+      13
+    ],
+    "trigger_segment_id": 11,
+    "start": "00:01:30.500",
+    "end": "00:01:46.000",
+    "trigger_time": "00:01:30.500",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:01:30.500",
+        "end": "00:01:38.000",
+        "text": "元芳，这些给你，医药费。",
+        "speech": "单人发言",
+        "emotion": "真诚",
+        "voice": "语气轻快",
+        "music": "温暖的背景音乐",
+        "audio_cues": [
+          "鸟鸣声"
+        ],
+        "uncertainty": ""
+      },
+      {
+        "id": 12,
+        "start": "00:01:38.200",
+        "end": "00:01:40.500",
+        "text": "不用了，你家里也困难。",
+        "speech": "单人发言",
+        "emotion": "推辞",
+        "voice": "语气诚恳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 13,
+        "start": "00:01:41.800",
+        "end": "00:01:46.000",
+        "text": "没事，这是我奖学金。对了，你大几啊？",
+        "speech": "单人发言",
+        "emotion": "轻松",
+        "voice": "语气活泼",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "一人调侃另一人铲土时掉坑，另一人委屈抱怨被人打了。",
+    "level": 1,
+    "reason": "轻松调侃与委屈抱怨形成反差，有趣味性。",
+    "segment_ids": [
+      16,
+      17
+    ],
+    "trigger_segment_id": 16,
+    "start": "00:02:00.000",
+    "end": "00:02:15.000",
+    "trigger_time": "00:02:00.000",
+    "evidence_segments": [
+      {
+        "id": 16,
+        "start": "00:02:00.000",
+        "end": "00:02:11.000",
+        "text": "怎么了元芳，铲土的时候掉坑里了？",
+        "speech": "单人发言",
+        "emotion": "调侃",
+        "voice": "语气轻松",
+        "music": "诙谐的背景音乐",
+        "audio_cues": [
+          "笑声"
+        ],
+        "uncertainty": ""
+      },
+      {
+        "id": 17,
+        "start": "00:02:13.000",
+        "end": "00:02:15.000",
+        "text": "把头，我让人给打了。",
+        "speech": "单人发言",
+        "emotion": "委屈",
+        "voice": "语气带着怨气",
+        "music": "背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

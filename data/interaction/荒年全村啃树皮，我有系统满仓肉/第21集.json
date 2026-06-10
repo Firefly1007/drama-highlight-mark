@@ -1,0 +1,209 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 11710,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这波我只认钱"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 11710,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "就要银子",
+      "danmaku": [
+        "太霸气了",
+        "就要钱怎么了",
+        "硬气姐上线",
+        "爽翻了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 11710,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我只在乎，我那十八两银子什么时候还回来。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 11710,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该上公堂要钱吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 17320,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太毒了这嘴"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 17320,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太气人了",
+      "danmaku": [
+        "太欠揍了",
+        "退退退退",
+        "气死人了",
+        "过分过分"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 17320,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "谁给你的脸？"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 27120,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "真要打人？"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 27120,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 39130,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "硬气！告官去！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 39130,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "告官去",
+      "danmaku": [
+        "支持告官",
+        "真果断啊",
+        "霸气侧漏",
+        "硬气娘亲"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 39130,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我们去镇上告官。"
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 49230,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "算盘打得响"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 49230,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "好算计",
+      "danmaku": [
+        "太假了吧",
+        "算计什么呢",
+        "气死人了",
+        "虚伪透顶"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 3,
+    "show_at": 49230,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该答应给钱吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 16,
+    "type": 5,
+    "show_at": 74920,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "官还没当就飘了"
+    }
+  },
+  {
+    "id": 17,
+    "type": 1,
+    "show_at": 74920,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太嚣张了",
+      "danmaku": [
+        "太狂了吧",
+        "欠揍欠揍",
+        "等着挨打",
+        "嚣张什么"
+      ]
+    }
+  },
+  {
+    "id": 18,
+    "type": 2,
+    "show_at": 74920,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "休想让她占一点便宜。"
+    }
+  }
+]

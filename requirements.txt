@@ -1,6 +1,7 @@
 openai
 pydantic
-requests
+python-dotenv
 beautifulsoup4
 aiohttp
 tqdm
+httpx

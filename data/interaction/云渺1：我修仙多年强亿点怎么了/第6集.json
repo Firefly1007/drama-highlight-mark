@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 0,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "何必这么执着"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 0,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 129836,
+    "duration_ms": 2242,
+    "payload": {
+      "button_id": 0,
+      "text": "不必！",
+      "danmaku": [
+        "霸气外露",
+        "镇定自若",
+        "气场十足",
+        "爽到飞起"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 129836,
+    "duration_ms": 2242,
+    "payload": {
+      "text": "我说了不必。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 3,
+    "show_at": 129836,
+    "duration_ms": 2242,
+    "payload": {
+      "question": "该听云渺的吗？",
+      "options": [
+        "听她的",
+        "叫医生"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 129836,
+    "duration_ms": 2242,
+    "payload": {
+      "text": "云渺稳住了"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 132201,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "动不了，急死人"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 132201,
+    "duration_ms": 4885,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

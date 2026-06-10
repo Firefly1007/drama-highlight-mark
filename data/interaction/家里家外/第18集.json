@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 65520,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话真不能忍"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 65520,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太不懂事",
+      "danmaku": [
+        "气死我了",
+        "惯坏了吧",
+        "破洞咋了",
+        "不懂珍惜",
+        "真想骂他"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 65520,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这是你姐姐最宝贵的东西。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 65520,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该穿破毛衣吗？",
+      "options": [
+        "该穿",
+        "不该穿"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 65520,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "孩子会穿毛衣吗？",
+      "options": [
+        "不会穿",
+        "会穿"
+      ],
+      "reveal_time": 134040,
+      "reveal_delay": 1700,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 134040,
+    "duration_ms": 1700,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死人了",
+        "反应太绝",
+        "可爱宝宝",
+        "别扭小鬼",
+        "温情搞笑"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 134040,
+    "duration_ms": 1700,
+    "payload": {
+      "text": "丑死了。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 134040,
+    "duration_ms": 1700,
+    "payload": {
+      "text": "哈哈口是心非"
+    }
+  }
+]

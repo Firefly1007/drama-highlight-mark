@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 360,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "突然好恐怖"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 120090,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "谁这么毒？"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 120090,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "谁在作恶",
+      "danmaku": [
+        "气死了！",
+        "谁这么狠！",
+        "太恶毒了！",
+        "退退退！",
+        "害人不浅！"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 120090,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "如此下去，不仅他会死，这个宅子的所有人都在劫难逃"
+    }
+  }
+]

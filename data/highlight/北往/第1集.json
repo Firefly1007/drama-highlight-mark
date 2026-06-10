@@ -1,0 +1,229 @@
+[
+  {
+    "id": 1,
+    "summary": "女子发现并读出“安乐死预约函”。",
+    "level": 2,
+    "reason": "揭示男子计划安乐死，有剧情信息增量和悬念价值。",
+    "segment_ids": [
+      4
+    ],
+    "trigger_segment_id": 4,
+    "start": "00:00:21.600",
+    "end": "00:00:27.700",
+    "trigger_time": "00:00:21.600",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:21.600",
+        "end": "00:00:27.700",
+        "text": "哦，好，安乐死预约函。",
+        "speech": "单人发言",
+        "emotion": "略带疑惑",
+        "voice": "语速稍缓",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "女子要求与男子尽快生孩子。",
+    "level": 2,
+    "reason": "直接提出生孩子要求，与安乐死计划形成冲突，有反差感。",
+    "segment_ids": [
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:00:59.800",
+    "end": "00:01:01.200",
+    "trigger_time": "00:00:59.800",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:59.800",
+        "end": "00:01:01.200",
+        "text": "我们抓紧时间要个孩子。",
+        "speech": "单人发言",
+        "emotion": "语气直接",
+        "voice": "语速较快",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "男子情绪激动地强调自己一年后会死。",
+    "level": 2,
+    "reason": "情绪爆发，与女子的计划冲突，有冲突张力。",
+    "segment_ids": [
+      9
+    ],
+    "trigger_segment_id": 9,
+    "start": "00:01:17.200",
+    "end": "00:01:19.700",
+    "trigger_time": "00:01:17.200",
+    "evidence_segments": [
+      {
+        "id": 9,
+        "start": "00:01:17.200",
+        "end": "00:01:19.700",
+        "text": "那又如何，一年之后我就死了。",
+        "speech": "单人发言",
+        "emotion": "情绪激动",
+        "voice": "声音拔高",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "女子坦然表示想要孩子，因为男子基因好且免费。",
+    "level": 2,
+    "reason": "坦然理由有反差感和台词记忆点。",
+    "segment_ids": [
+      10
+    ],
+    "trigger_segment_id": 10,
+    "start": "00:01:21.400",
+    "end": "00:01:44.000",
+    "trigger_time": "00:01:21.400",
+    "evidence_segments": [
+      {
+        "id": 10,
+        "start": "00:01:21.400",
+        "end": "00:01:44.000",
+        "text": "说完了，啊？婚姻对我来说，本来就不是必需品，可是我想要个我自己的孩子。那国外精子库你挑选一个优秀的精子要花很多钱的，你长得这么帅，又这么好的基因还是免费的，不要白不要哦。",
+        "speech": "单人发言",
+        "emotion": "语气坦然",
+        "voice": "语速平稳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "summary": "女子给男子两个选择：早点生孩子他可能见上孩子，或培养感情五个月后备孕六个月，剩一个月安排后事。",
+    "level": 3,
+    "reason": "选择点有强冲突、悬念和反差，如“安排后事”台词有传播性，涉及生死选择。",
+    "segment_ids": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "trigger_segment_id": 15,
+    "start": "00:01:47.800",
+    "end": "00:02:16.000",
+    "trigger_time": "00:02:01.800",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:01:47.800",
+        "end": "00:01:51.500",
+        "text": "京硕，现在你有两个选择。",
+        "speech": "单人发言",
+        "emotion": "语气认真",
+        "voice": "语速适中",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 12,
+        "start": "00:01:52.400",
+        "end": "00:01:52.800",
+        "text": "你说。",
+        "speech": "单人发言",
+        "emotion": "语气无奈",
+        "voice": "语速平缓",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 13,
+        "start": "00:01:53.300",
+        "end": "00:01:58.700",
+        "text": "一，我们早点做，顺利的话，你还能见上孩子。",
+        "speech": "单人发言",
+        "emotion": "语气直白",
+        "voice": "语速平稳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 14,
+        "start": "00:02:00.000",
+        "end": "00:02:01.000",
+        "text": "那你可真乐观。",
+        "speech": "单人发言",
+        "emotion": "语气哭笑不得",
+        "voice": "语速稍缓",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 15,
+        "start": "00:02:01.800",
+        "end": "00:02:16.000",
+        "text": "别妄自菲薄嘛，或者我们可以先培养感情，五个月吧，五个月培养感情，六个月备孕，这样我还能剩一个月给你安排后事，我可真体贴。",
+        "speech": "单人发言",
+        "emotion": "语气轻松",
+        "voice": "语速平缓",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "summary": "女子断定男子选一，但男子慌乱选择第二个选项培养感情。",
+    "level": 2,
+    "reason": "男子被迫选择，情绪慌乱，有冲突张力。",
+    "segment_ids": [
+      17,
+      18
+    ],
+    "trigger_segment_id": 18,
+    "start": "00:02:24.500",
+    "end": "00:02:32.500",
+    "trigger_time": "00:02:27.000",
+    "evidence_segments": [
+      {
+        "id": 17,
+        "start": "00:02:24.500",
+        "end": "00:02:25.300",
+        "text": "看来你选一。",
+        "speech": "单人发言",
+        "emotion": "语气笃定",
+        "voice": "语速较快",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 18,
+        "start": "00:02:27.000",
+        "end": "00:02:32.500",
+        "text": "我选二，我选二，培养感情，行了吧。",
+        "speech": "单人发言",
+        "emotion": "情绪慌乱",
+        "voice": "语速急促",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

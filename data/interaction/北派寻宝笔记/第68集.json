@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 35440,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这太吓人了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 35440,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 35440,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "是蛇咬的吗？",
+      "options": [
+        "是蛇",
+        "不是蛇"
+      ],
+      "reveal_time": 188040,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 115200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这猜测太离谱了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 115200,
+    "duration_ms": 3540,
+    "payload": {
+      "text": "谁家正主能睡在一口缸底下？"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 115200,
+    "duration_ms": 3540,
+    "payload": {
+      "question": "正主老窝在缸底？",
+      "options": [
+        "在缸底",
+        "不在缸底"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 142000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这操作有点猛！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 142000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "火克蛇",
+      "danmaku": [
+        "火攻退敌",
+        "这波操作牛",
+        "蛇直接吓跑",
+        "解气解气"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 142000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我一把火把它送回老家。"
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 188040,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "名场面预警！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 188040,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "不是蛇，这是石角仙。"
+    }
+  }
+]

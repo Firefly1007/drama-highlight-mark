@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 33220,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这拒绝有点狠"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 33220,
+    "duration_ms": 3060,
+    "payload": {
+      "button_id": 2,
+      "text": "退回去",
+      "danmaku": [
+        "态度好差",
+        "拒得彻底",
+        "茶都不要，绝了",
+        "冷淡到底",
+        "这也太无语了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 33220,
+    "duration_ms": 3060,
+    "payload": {
+      "text": "茶我不要了"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 33220,
+    "duration_ms": 3060,
+    "payload": {
+      "question": "该拒绝这杯茶吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

@@ -1,0 +1,149 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 39430,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太偏心了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 39430,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "偏心至此",
+      "danmaku": [
+        "太气人了吧",
+        "这妈过分了",
+        "忍不了一点",
+        "无语死了",
+        "欠骂得很"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 39430,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "不想给你弟弟交学费吗？"
+    }
+  },
+  {
+    "id": 4,
+    "type": 4,
+    "show_at": 39430,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "南昭宁在找借口吗？",
+      "options": [
+        "是的，她在找借口",
+        "不是，钱有急用"
+      ],
+      "reveal_time": 54720,
+      "reveal_delay": 4360,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 54720,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "心疼到哭"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 54720,
+    "duration_ms": 4360,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 54720,
+    "duration_ms": 4360,
+    "payload": {
+      "text": "没有这些钱，我连学都上不了。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 58410,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "别上学了？！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 58410,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太霸道了",
+      "danmaku": [
+        "不让她上学啊",
+        "这妈太霸道",
+        "忍不了一点",
+        "无语死了"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 58410,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "那别上了呀"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 58410,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该听妈的吗？",
+      "options": [
+        "听妈的",
+        "不听"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 71500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 126120,
+    "duration_ms": 4890,
+    "payload": {
+      "text": "别让今天这场雪，掩盖了你明天的路。"
+    }
+  }
+]

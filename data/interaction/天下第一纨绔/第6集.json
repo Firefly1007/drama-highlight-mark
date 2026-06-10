@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 8300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 8300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "霸气宣言",
+      "danmaku": [
+        "好霸气！",
+        "太狂了",
+        "自己来拿",
+        "无人敢惹"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 8300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "想要玉佩，自己来拿。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 8300,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该强势回应威胁吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 26700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这威胁真狠！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 26700,
+    "duration_ms": 4100,
+    "payload": {
+      "button_id": 0,
+      "text": "生死选择",
+      "danmaku": [
+        "太狠了！",
+        "留下或死",
+        "好霸气",
+        "快逃吧"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 26700,
+    "duration_ms": 4100,
+    "payload": {
+      "text": "留下，走，要么死。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 45400,
+    "duration_ms": 1900,
+    "payload": {
+      "text": "原来是你。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 45400,
+    "duration_ms": 1900,
+    "payload": {
+      "text": "认出来了！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 66100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这嘴脸真欠！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 66100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "傲慢嘲讽",
+      "danmaku": [
+        "好拽！",
+        "无名小卒",
+        "偷玉佩？",
+        "本少的玉佩"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 66100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "哪来的无名小卒，本少的玉佩，也敢偷？"
+    }
+  }
+]

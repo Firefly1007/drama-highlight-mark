@@ -1,0 +1,136 @@
+[
+  {
+    "id": 1,
+    "summary": "女子指责男子的行为构成骚扰。",
+    "level": 2,
+    "reason": "直接表达不满，有冲突张力。",
+    "segment_ids": [
+      2
+    ],
+    "trigger_segment_id": 2,
+    "start": "00:01:15.070",
+    "end": "00:01:16.060",
+    "trigger_time": "00:01:15.070",
+    "evidence_segments": [
+      {
+        "id": 2,
+        "start": "00:01:15.070",
+        "end": "00:01:16.060",
+        "text": "你这算骚扰。",
+        "speech": "单人发言",
+        "emotion": "带有不满情绪",
+        "voice": "语气直接",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "男子同意签订合同并指定女子为项目负责人。",
+    "level": 1,
+    "reason": "剧情信息增量，商业交易确定。",
+    "segment_ids": [
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:01:22.360",
+    "end": "00:01:30.220",
+    "trigger_time": "00:01:22.360",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:01:22.360",
+        "end": "00:01:30.220",
+        "text": "合同我会签，一会送到你的公司。项目负责人必须得是你，你不亏。",
+        "speech": "单人发言",
+        "emotion": "语气平和",
+        "voice": "语速平缓",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "女子询问男子的做派，男子淡然回应后，女子严肃警告之前的行为不得再有下次。",
+    "level": 2,
+    "reason": "冲突张力，严肃警告表达立场。",
+    "segment_ids": [
+      4,
+      5,
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:01:32.130",
+    "end": "00:01:42.100",
+    "trigger_time": "00:01:39.400",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:01:32.130",
+        "end": "00:01:33.890",
+        "text": "江先生一直是这种做派吗？",
+        "speech": "单人发言",
+        "emotion": "略带疑惑",
+        "voice": "语调上扬",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 5,
+        "start": "00:01:36.010",
+        "end": "00:01:36.620",
+        "text": "分人。",
+        "speech": "单人发言",
+        "emotion": "语气淡然",
+        "voice": "语速简短",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 6,
+        "start": "00:01:39.400",
+        "end": "00:01:42.100",
+        "text": "刚才那种行为，我希望没有下次了。",
+        "speech": "单人发言",
+        "emotion": "态度严肃",
+        "voice": "语气坚定",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "男子提议结婚并承诺帮助女子讨回被欺负的公道。",
+    "level": 2,
+    "reason": "反差感，从被欺辱到有人相助；剧情推进，婚姻和复仇承诺。",
+    "segment_ids": [
+      7
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:01:44.030",
+    "end": "00:01:48.070",
+    "trigger_time": "00:01:44.030",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:01:44.030",
+        "end": "00:01:48.070",
+        "text": "陆立那小子那么欺负你，嫁我，帮你讨回来。",
+        "speech": "单人发言",
+        "emotion": "语气带着维护感",
+        "voice": "音量适中",
+        "music": "带有鼓点和电吉他的抒情流行背景音乐，伴随男声演唱",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

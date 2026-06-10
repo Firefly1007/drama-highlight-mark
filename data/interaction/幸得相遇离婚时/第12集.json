@@ -1,0 +1,296 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 13080,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "居然挽着别人老公？"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 13080,
+    "duration_ms": 4450,
+    "payload": {
+      "text": "你是谁？为什么挽着我老公？"
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 13080,
+    "duration_ms": 4450,
+    "payload": {
+      "question": "她是谁？",
+      "options": [
+        "第三者",
+        "普通关系"
+      ],
+      "reveal_time": 120070,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 25330,
+    "duration_ms": 1240,
+    "payload": {
+      "text": "她居然认了？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 39800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "丈夫太狠心了！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 39800,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 39800,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "不要，不止是孩子。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 39800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该送医院吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 54320,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "原来是这样！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 54320,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 54320,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "所以我肚子疼，不是偶然。"
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 67770,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "骂得真解气！"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 67770,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "简直下贱",
+      "danmaku": [
+        "太气人了",
+        "骂得真好",
+        "下贱透顶",
+        "欠揍死了"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 67770,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你们，简直下贱！"
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 77640,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话太伤人了！"
+    }
+  },
+  {
+    "id": 16,
+    "type": 1,
+    "show_at": 77640,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "昏了头",
+      "danmaku": [
+        "渣男发言",
+        "真恶心啊",
+        "气死人了",
+        "傲慢什么"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "type": 2,
+    "show_at": 77640,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你已经配不上如今的我了。"
+    }
+  },
+  {
+    "id": 18,
+    "type": 5,
+    "show_at": 90330,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "她付出了好多！"
+    }
+  },
+  {
+    "id": 19,
+    "type": 1,
+    "show_at": 90330,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 20,
+    "type": 5,
+    "show_at": 102840,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "小三太嚣张了！"
+    }
+  },
+  {
+    "id": 21,
+    "type": 1,
+    "show_at": 102840,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "嚣张什么",
+      "danmaku": [
+        "太欠揍了",
+        "真嚣张啊",
+        "退退退退",
+        "气人玩意"
+      ]
+    }
+  },
+  {
+    "id": 22,
+    "type": 2,
+    "show_at": 102840,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我比你漂亮比你有钱"
+    }
+  },
+  {
+    "id": 23,
+    "type": 5,
+    "show_at": 120070,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "居然说爱别人！"
+    }
+  },
+  {
+    "id": 24,
+    "type": 1,
+    "show_at": 120070,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 25,
+    "type": 2,
+    "show_at": 120070,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我爱晓艺。"
+    }
+  },
+  {
+    "id": 26,
+    "type": 5,
+    "show_at": 133560,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "哭得好心疼。"
+    }
+  },
+  {
+    "id": 27,
+    "type": 1,
+    "show_at": 133560,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 28,
+    "type": 2,
+    "show_at": 133560,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你爱你外面的小三"
+    }
+  }
+]

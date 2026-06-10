@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 55720,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这追问到位了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 55720,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我是问你，他对你好吗？"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 55720,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "他算好丈夫吗？",
+      "options": [
+        "算",
+        "不算"
+      ]
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 25717,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "四蛋怕娘变回从前？"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 25717,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 25717,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "娘会不会变成从前的样子"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 25717,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "娘该听四蛋的吗？",
+      "options": [
+        "该听",
+        "不该听"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 41433,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "被动物欺负，真惨！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 41433,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "那群畜生竟然在他头上撒尿"
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 42633,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "活埋亲母？真的假的！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 42633,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "恶行必惩",
+      "danmaku": [
+        "太狂了！",
+        "正义执行",
+        "爽到了！",
+        "气场全开",
+        "终于等到",
+        "该有此报"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 42633,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你们孙家，罔顾人伦，活埋亲母，是也不是？"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 123933,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "她到底在等啥？"
+    }
+  }
+]

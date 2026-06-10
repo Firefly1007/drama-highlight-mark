@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 104800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这官瘾真不小！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 104800,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "一家之主？",
+      "danmaku": [
+        "这也行？",
+        "太狂了吧",
+        "凭什么啊",
+        "气死人了",
+        "规则真多"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 104800,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "厨房只有我能下，哪个都不许进"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 146300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "老公得治治了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 146300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "给一耳屎",
+      "danmaku": [
+        "太气人了",
+        "欠揍得很",
+        "快学学吧",
+        "丈夫欠骂",
+        "吼得真响"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 146300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "老子真的想给你一耳屎"
+    }
+  }
+]

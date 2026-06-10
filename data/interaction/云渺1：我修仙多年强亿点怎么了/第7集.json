@@ -1,0 +1,84 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 8740,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话真不能忍"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 8740,
+    "duration_ms": 3230,
+    "payload": {
+      "button_id": 2,
+      "text": "嚣张什么",
+      "danmaku": [
+        "气死我了",
+        "太狂了吧",
+        "闭嘴吧你",
+        "这谁忍得了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 8740,
+    "duration_ms": 3230,
+    "payload": {
+      "text": "把嘴闭上"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 8740,
+    "duration_ms": 3230,
+    "payload": {
+      "question": "该闭嘴吗？",
+      "options": [
+        "闭嘴",
+        "不闭嘴"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 48320,
+    "duration_ms": 1570,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "豆芽？哈哈",
+        "反差也太大了",
+        "这谁想得到",
+        "太搞笑了"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 48320,
+    "duration_ms": 1570,
+    "payload": {
+      "text": "豆芽"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 48320,
+    "duration_ms": 1570,
+    "payload": {
+      "text": "豆芽？反差萌"
+    }
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 6710,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "身份揭秘，厉害！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 15540,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这质问，够直接。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 15540,
+    "duration_ms": 4920,
+    "payload": {
+      "button_id": 0,
+      "text": "狂言？",
+      "danmaku": [
+        "气场拉满",
+        "质问太帅",
+        "威武霸气",
+        "这范儿绝了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 29670,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "霸气反击，绝了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 29670,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "来啊！",
+      "danmaku": [
+        "太霸气了",
+        "爽到飞起",
+        "威严尽显",
+        "谁敢来砍"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 29670,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "来啊！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 29670,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "皇帝该挑衅吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 44040,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "态度转变，快！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 44040,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "朕说要罩着你"
+    }
+  }
+]

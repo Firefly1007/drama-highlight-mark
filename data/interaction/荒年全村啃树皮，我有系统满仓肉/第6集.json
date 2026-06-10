@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 88440,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 88440,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "煮白米",
+      "danmaku": [
+        "娘好果断",
+        "听娘的准没错",
+        "这命令爽",
+        "终于硬气一回"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 88440,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "让你们煮就煮，哪那么多废话。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 116370,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这谁敢反驳？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 116370,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "你在教我做事啊",
+      "danmaku": [
+        "霸气反击",
+        "这气场绝了",
+        "太解气了",
+        "终于说了算"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 116370,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你在教我做事啊。"
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 116370,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该质疑浪费粮食吗？",
+      "options": [
+        "该质疑",
+        "不该质疑"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 159400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "心疼丫头一秒钟！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 159400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 159400,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "心疼丫头吗？",
+      "options": [
+        "心疼",
+        "不心疼"
+      ]
+    }
+  }
+]

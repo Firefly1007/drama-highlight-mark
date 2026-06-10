@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 29080,
+    "duration_ms": 2380,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "随便哈哈",
+        "太离谱了",
+        "这也行？"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 29080,
+    "duration_ms": 2380,
+    "payload": {
+      "text": "随便？太敷衍了！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 35020,
+    "duration_ms": 1660,
+    "payload": {
+      "button_id": 2,
+      "text": "真冷漠",
+      "danmaku": [
+        "态度真差",
+        "啥玩意啊",
+        "气死个人",
+        "太过分了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 35020,
+    "duration_ms": 1660,
+    "payload": {
+      "text": "我不出门。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 3,
+    "show_at": 35020,
+    "duration_ms": 1660,
+    "payload": {
+      "question": "京烁该出门接她吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 35020,
+    "duration_ms": 1660,
+    "payload": {
+      "text": "京烁好冷漠！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 80280,
+    "duration_ms": 2830,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

@@ -1,0 +1,203 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 14800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这巴掌声真解气！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 14800,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "渣男气死",
+      "danmaku": [
+        "太气人了！",
+        "渣男滚蛋！",
+        "欠揍行为！",
+        "打得好啊！"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 14800,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我不喜欢你"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 14800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "江清芷在欲擒故纵？",
+      "options": [
+        "是",
+        "否"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 14800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "她是否在欲擒故纵？",
+      "options": [
+        "否",
+        "是"
+      ],
+      "reveal_time": 27200,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 27200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "终于选对人了！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 27200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "好甜呀！",
+        "磕到了！",
+        "在一起吧！",
+        "真心祝福！"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 27200,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我要跟他结婚"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 51100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "紧张到窒息！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 51100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 74500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这告白太深情了！"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 74500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "好感动了！",
+        "真爱无敌！",
+        "深情表白！",
+        "永远爱你！"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 84500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "重生复仇启动！"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 84500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "复仇开启",
+      "danmaku": [
+        "太爽了吧！",
+        "复仇开始！",
+        "气场拉满！",
+        "主角威武！"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "show_at": 84500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我一定要亲手刀了他"
+    }
+  },
+  {
+    "id": 16,
+    "type": 5,
+    "show_at": 97000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这氛围太甜了！"
+    }
+  },
+  {
+    "id": 17,
+    "type": 1,
+    "show_at": 97000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "亲一个呀！",
+        "暧昧死了！",
+        "快亲快亲！",
+        "好甜啊！"
+      ]
+    }
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "summary": "一人向另一人表达结婚意愿，并解释离开会导致自己死亡，且对方也不会独活。",
+    "level": 2,
+    "reason": "具有强烈的情感依赖和生死相依的宣言，情绪强度高，构成剧情情感爆点。",
+    "segment_ids": [
+      3,
+      4,
+      5
+    ],
+    "trigger_segment_id": 5,
+    "start": "00:00:12.760",
+    "end": "00:00:39.300",
+    "trigger_time": "00:00:29.610",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:00:12.760",
+        "end": "00:00:17.390",
+        "text": "如果可以，我想跟你结婚。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 4,
+        "start": "00:00:24.110",
+        "end": "00:00:24.780",
+        "text": "为什么？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 5,
+        "start": "00:00:29.610",
+        "end": "00:00:39.300",
+        "text": "因为我离开你，我就会死。如果我死了，你也不会独活。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "一人质疑对方凭什么认为会一起死，经追问后，对方确认会。",
+    "level": 2,
+    "reason": "展现冲突和质疑后的确认，有反差感和情绪张力。",
+    "segment_ids": [
+      6,
+      7,
+      8
+    ],
+    "trigger_segment_id": 8,
+    "start": "00:00:44.550",
+    "end": "00:00:55.300",
+    "trigger_time": "00:00:54.700",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:44.550",
+        "end": "00:00:46.840",
+        "text": "你凭什么觉得我会跟你一起死？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 7,
+        "start": "00:00:49.810",
+        "end": "00:00:50.670",
+        "text": "你会吗？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 8,
+        "start": "00:00:54.700",
+        "end": "00:00:55.300",
+        "text": "我会。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "一人向楚承安宣言，将其作为射向敌人的利剑，提及成功则今生同活，失败则死同穴。",
+    "level": 2,
+    "reason": "强情绪爆发和誓言，具有传播性和记忆点，提及生死合作。",
+    "segment_ids": [
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:01:52.700",
+    "end": "00:02:09.270",
+    "trigger_time": "00:01:52.700",
+    "evidence_segments": [
+      {
+        "id": 12,
+        "start": "00:01:52.700",
+        "end": "00:02:09.270",
+        "text": "楚承安，从现在起，你就是我射向敌人的利剑，成了，我们今生同活，不成，那就只能委屈你再和我死同穴一次。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "一人向阿芷回应承诺，支持其行动，但禁止其离开。",
+    "level": 2,
+    "reason": "表达保护和限制的冲突，有剧情推进价值和情绪张力。",
+    "segment_ids": [
+      13
+    ],
+    "trigger_segment_id": 13,
+    "start": "00:02:10.110",
+    "end": "00:02:17.170",
+    "trigger_time": "00:02:10.110",
+    "evidence_segments": [
+      {
+        "id": 13,
+        "start": "00:02:10.110",
+        "end": "00:02:17.170",
+        "text": "阿芷，无论你要做什么，我都顺着你，除了你要离开这件事，我不许。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

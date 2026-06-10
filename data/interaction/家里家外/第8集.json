@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 20740,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "孩子这波，刚！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 20740,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "护妈反击",
+      "danmaku": [
+        "太霸气了",
+        "护妈满分",
+        "这波操作绝",
+        "气场拉满",
+        "怼得解气"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 20740,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你只敢对我妈妈歪"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 20740,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该这样回应吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 74200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "老太婆真敢啊！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 74200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太气人了",
+      "danmaku": [
+        "奶奶太过分了",
+        "气死我了",
+        "粪坑头游泳",
+        "不怕死真绝",
+        "老太婆坏得很"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 74200,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "粪坑头游泳，不怕死"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 74200,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该这样骂她吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

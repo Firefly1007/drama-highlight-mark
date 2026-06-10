@@ -1,0 +1,132 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 11476,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这手段也太狠了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 11476,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "害人流产",
+      "danmaku": [
+        "气死我了",
+        "太毒了！",
+        "退退退！",
+        "真欠揍！",
+        "无语了！"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 11476,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "丈夫会同意吗？",
+      "options": [
+        "反对",
+        "同意"
+      ],
+      "reveal_time": 25966,
+      "reveal_delay": 4552,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 25966,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "总算说了句人话"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 25966,
+    "duration_ms": 4552,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 25966,
+    "duration_ms": 4552,
+    "payload": {
+      "text": "你疯了"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 31419,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话真不能忍"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 31419,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "逼人选择",
+      "danmaku": [
+        "真不要脸",
+        "快滚蛋！",
+        "气笑了！",
+        "哪来的自信",
+        "太离谱了"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 31419,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我和她，你只能选一个"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 31419,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "丈夫该选谁？",
+      "options": [
+        "妻子",
+        "第三者"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 87773,
+    "duration_ms": 1711,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

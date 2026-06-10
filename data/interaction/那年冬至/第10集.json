@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 60000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "亏？爱情不是买卖。"
+    }
+  },
+  {
+    "id": 2,
+    "type": 3,
+    "show_at": 60000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "放弃工作回来值吗？",
+      "options": [
+        "值",
+        "不值"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 60000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "放弃工作亏不亏？",
+      "options": [
+        "值得",
+        "不值得"
+      ],
+      "reveal_time": 66000,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 66000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "要孩子？这波操作绝了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 66000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "这也行？",
+        "基因不能浪费",
+        "太离谱了",
+        "笑死我了"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 66000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这么好的基因，不能浪费了"
+    }
+  }
+]

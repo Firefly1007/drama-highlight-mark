@@ -1,178 +1,333 @@
 # Drama Highlight Mark
 
-基于 LLM 的短剧高光点识别与互动方案自动生成流水线。
+一个面向短剧内容理解与互动素材生产的 LLM 流水线项目。
 
-从原始短剧视频出发，自动完成 **音频提取 → 语义转写 → 高光识别 → 互动方案生成** 的端到端处理，输出可直接用于播放器互动层的结构化 JSON 数据。
+这个仓库从原始剧集视频出发，生成两类结构化产物：
 
-## 核心能力
+- 主链路产物：`语义转写 -> 高光识别 -> 互动配置 JSON`
+- 扩展链路产物：`剧情分支 JSON -> 分支提示词 -> 分支图片素材`
 
-- **音频语义转写**：基于多模态 LLM，将音频转为带时间戳、情绪、语气、音效等多维标注的结构化片段（Segment）
-- **高光点识别**：基于 LLM 提示工程，从语义片段中识别剧情高光时刻，输出摘要、强度等级、触发片段和证据链
-- **互动方案生成**：针对每个高光点，自动生成 5 种互动类型的配置数据（情绪按钮、台词复述、即时投票、延迟揭晓投票、侧边吐槽）
-- **全链路 Pydantic 校验**：每个步骤的输入输出均有严格的数据模型定义，支持自动修复、交叉校验和重试机制
+如果你只需要“短剧高光 + 播放器互动层配置”，跑到 `05_highlight2interaction.py` 即可。
+如果你还需要“可回流主线的剧情分支素材”，再继续执行 `06~08`。
 
-## 技术架构
+> 注意：仓库中的脚本目录名当前实际就是 `pipline/`，下面所有命令都按这个真实路径编写。
 
+## 项目定位
+
+这个项目解决的不是通用字幕提取，而是更偏内容生产侧的结构化理解：
+
+- 把短剧音频转成带时间戳、情绪、语气、音乐、音效线索的语义片段
+- 从片段中识别具有互动价值的剧情高光点
+- 为高光点生成播放器可直接消费的互动层 JSON
+- 基于相邻剧集文本生成“可回流主线”的剧情分支配置
+- 为分支内容生成后续素材生产所需的提示词和参考图片
+
+## 当前能力概览
+
+### 主链路
+
+1. `01_video2audio.py`
+   批量把 `data/video/` 下的视频转成 `data/audio/` 下的 mp3。
+
+2. `02_extract_desc_char.py`
+   从外部页面抓取短剧简介和角色信息，生成 `data/video/drama_info.json`。
+
+3. `03_audio2text.py`
+   调用多模态 LLM，把音频转成结构化 `segments` JSON。
+
+4. `04_text2highlight.py`
+   基于 `segments` 识别剧情高光点，输出 `highlights` JSON。
+
+5. `05_highlight2interaction.py`
+   基于高光点生成 5 类互动配置，输出最终 `interaction` JSON。
+
+### 扩展链路
+
+6. `06_plot_branch.py`
+   结合当前集文本、当前集高光和下一集文本，生成“可回流主线”的分支配置。
+
+7. `07_branch_video.py`
+   为每个非原剧情分支生成视频级提示词，输出到 `data/branch/prompt/`。
+
+8. `08_branch_image.py`
+   从原视频截取触发帧与回流帧，结合步骤 7 的提示词生成分支图片，输出到 `data/branch/image/`。
+
+## 为什么当前是“分支图片”而不是“分支视频”
+
+分支视频原本是这条链路的目标形态，但实际落地时，视频生成成本过高，当前版本只能先退一步，使用“分支提示词 + 参考截帧 + 分支图片”的方案完成验证。
+
+这意味着：
+
+- `06` 和 `07` 仍然保留了面向分支视频的结构设计
+- `08` 当前承担的是一个成本可控的替代实现
+- 如果后续视频生成成本下降，这条链路有机会从“分支图片”再升级回“分支视频”
+
+## 流程总览
+
+```text
+主链路
+data/video/*.mp4
+  -> 01_video2audio
+data/audio/*.mp3
+  -> 03_audio2text
+data/text/*.json
+  -> 04_text2highlight
+data/highlight/*.json
+  -> 05_highlight2interaction
+data/interaction/*.json
+
+扩展链路
+data/text/*.json + data/highlight/*.json + 下一集 text
+  -> 06_plot_branch
+data/branch/json/*.json
+  -> 07_branch_video
+data/branch/prompt/*.json
+  -> 08_branch_image
+data/branch/image/*/*.jpeg
 ```
-video/
-  ├── 01_video2audio.py        # ffmpeg 异步批量提取音频
-  ├── 02_extract_desc_char.py  # 爬取短剧简介与角色信息
-  ├── 03_audio2text.py         # 多模态 LLM 音频语义转写
-  ├── 04_text2highlight.py     # LLM 高光点识别与打标
-  └── 05_highlight2interaction.py  # LLM 互动方案生成（5 种类型并行）
-      └── steps_05/
-          ├── emotion_button.py    # 情绪按钮
-          ├── repeat_keyline.py    # 台词复述
-          ├── instant_vote.py      # 即时投票
-          ├── deferred_vote.py     # 延迟揭晓投票
-          └── side_comment.py      # 侧边吐槽
-```
 
-### 数据流
+## 输出物一览
 
-```
-视频文件 ──ffmpeg──→ 音频文件 ──LLM──→ 语义片段(Segments) ──LLLM──→ 高光点(Highlights) ──LLM──→ 互动方案(Interactions)
-```
+| 步骤 | 输入 | 输出 | 说明 |
+|------|------|------|------|
+| `01_video2audio.py` | `data/video/<剧名>/第N集.*` | `data/audio/<剧名>/第N集.mp3` | ffmpeg 异步抽音 |
+| `02_extract_desc_char.py` | `data/video/name2id.json` | `data/video/drama_info.json` | 聚合剧名、简介、角色信息 |
+| `03_audio2text.py` | `data/audio/<剧名>/第N集.mp3` | `data/text/<剧名>/第N集.json` | 结构化 `segments` |
+| `04_text2highlight.py` | `data/text/<剧名>/第N集.json` | `data/highlight/<剧名>/第N集.json` | 高光点识别结果 |
+| `05_highlight2interaction.py` | `data/highlight/<剧名>/第N集.json` | `data/interaction/<剧名>/第N集.json` | 最终互动层 JSON |
+| `06_plot_branch.py` | 当前集 `text` + 当前集 `highlight` + 下一集 `text` | `data/branch/json/<剧名>/第N集.json` | 可回流分支配置 |
+| `07_branch_video.py` | `data/branch/json/<剧名>/第N集.json` | `data/branch/prompt/<剧名>/第N集.json` | 非原剧情分支提示词 |
+| `08_branch_image.py` | `data/branch/prompt/<剧名>/第N集.json` + 原视频截帧 | `data/branch/image/<剧名>/第N集/*.jpeg` | 当前分支素材产物 |
 
-每一步的输出均为结构化 JSON，存储在 `data/` 目录下对应的子文件夹中。
+## 互动类型
 
-## 技术栈
+`05_highlight2interaction.py` 当前会并行生成 5 类互动项：
 
-| 组件 | 技术选型 | 说明 |
-|------|---------|------|
-| LLM 调用 | OpenAI API (AsyncOpenAI) | 兼容任意 OpenAI 兼容接口 |
-| 数据校验 | Pydantic v2 | 全链路模型定义，含字段校验、交叉校验、自动修复 |
-| 音频提取 | ffmpeg + asyncio | 异步子进程批量转换 |
-| 信息爬取 | aiohttp + BeautifulSoup | 异步批量抓取短剧元数据 |
-| 进度展示 | tqdm | 同步/异步进度条 |
-| 配置管理 | dotenv | 环境变量隔离 |
+| 类型 | 含义 | 典型输出 |
+|------|------|----------|
+| `emotion_button` | 情绪按钮 | `button_id`、短文案、预制弹幕 |
+| `repeat_keyline` | 台词复述 | 一句可直接复读的名台词 |
+| `instant_vote` | 即时投票 | 问题 + 2 个选项 |
+| `deferred_vote` | 延迟揭晓投票 | 问题 + 选项 + 揭晓时间 + 答案 |
+| `side_comment` | 侧边吐槽 | 一句短吐槽 |
 
-## 工程设计亮点
+调试时可以用 `--type` 单独生成某一类互动：
 
-### 1. 提示工程驱动的结构化输出
+- `1` = `emotion_button`
+- `2` = `repeat_keyline`
+- `3` = `instant_vote`
+- `4` = `deferred_vote`
+- `5` = `side_comment`
 
-每个 LLM 步骤都通过精心设计的 System Prompt 约束模型输出格式，配合 Pydantic 模型做严格校验：
-
-- 高光识别提示词包含 **判断标准、筛选偏好、输出结构、自检规则** 等多层约束
-- 音频转写提示词定义了 **切分规则、字段语义、不确定性标注** 等规范
-- 互动方案每种类型都有独立的 **生成条件、文案规则、类型匹配策略**
-
-### 2. 多层数据校验与容错
-
-```
-模型输出 → Markdown 去除 → JSON 解析 → Pydantic 模型校验 → 交叉校验 → 重试
-```
-
-- 时间戳格式自动补全（`MM:SS.mmm` → `00:MM:SS.mmm`）
-- segment id 连续性自动修正
-- highlight 与 segment 交叉校验证据链完整性
-- 互动方案中台词复述校验原文存在性
-- 延迟投票选项随机打乱并重算答案下标
-- 全链路最多 3~5 次自动重试
-
-### 3. 异步并发处理
-
-所有 I/O 密集型操作均采用 `asyncio` 实现：
-
-- 音频提取：`asyncio.create_subprocess_exec` 并行调用 ffmpeg
-- 信息爬取：`aiohttp` 共享 Session 并发请求
-- LLM 调用：`tqdm_asyncio.as_completed` 并发处理多文件
-- 互动方案：5 种类型通过 `asyncio.gather` 并行生成
-
-### 4. 严格的数据模型设计
-
-使用 Pydantic v2 定义了完整的类型体系：
-
-- `Segment` / `SegmentsDocument`：音频语义片段
-- `SemanticHighlightItem` / `FinalHighlightItem` / `HighlightsDocument`：高光点（模型输出 → 最终落盘）
-- 5 种互动类型的 Model 输出 / Prepared 中间态 / Final 最终态三层模型
-- `Discriminated Union` 实现多态互动项的类型安全分发
-
-### 5. 模块化 Pipeline 设计
-
-每个步骤独立可运行（CLI 单文件执行），支持：
-
-- 单文件处理（传入具体路径）
-- 目录批量处理（递归扫描，跳过已完成文件）
-- 默认处理 `data/` 下全部文件
-- 路径自动推导（`video → audio → text → highlight → interaction`）
-
-## 互动方案类型
-
-| 类型 | 说明 | 输出内容 |
-|------|------|---------|
-| 情绪按钮 (emotion_button) | 爽/笑/丢番茄/护住TA/心疼TA/磕到了 | 按钮类型 + 短文案 + 预制弹幕 |
-| 台词复述 (repeat_keyline) | 高光时刻的名台词复述 | 复述文案 |
-| 即时投票 (instant_vote) | 二选一即时站队 | 问题 + 两个选项 |
-| 延迟揭晓投票 (deferred_vote) | 先投票，后续剧情揭晓时结算 | 问题 + 选项 + 揭晓时间 + 答案 |
-| 侧边吐槽 (side_comment) | 旁白式吐槽短句 | 吐槽文案 |
-
-## 快速开始
-
-### 环境要求
+## 环境要求
 
 - Python 3.10+
-- ffmpeg（需在 PATH 中）
+- `ffmpeg`，并且已经加入系统 `PATH`
+- 一个兼容 OpenAI API 的文本 / 多模态模型接口
+- 一个兼容 OpenAI Images 接口的图片模型接口（只在 `08_branch_image.py` 需要）
 
-### 安装
+## 安装
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 配置
+## 环境变量
 
 在项目根目录创建 `.env` 文件：
 
 ```env
-LLM_MODEL_ID=your-model-id
-LLM_API_KEY=your-api-key
-LLM_BASE_URL=https://your-api-endpoint/v1
+LLM_MODEL_ID=your-llm-model-id
+LLM_API_KEY=your-llm-api-key
+LLM_BASE_URL=https://your-llm-endpoint/v1
+
+VIDEO_MODEL_ID=your-image-model-id
+VIDEO_API_KEY=your-image-api-key
+VIDEO_BASE_URL=https://your-image-endpoint/v1
 ```
 
-### 运行
+变量用途如下：
+
+| 变量 | 是否必需 | 用途 |
+|------|----------|------|
+| `LLM_MODEL_ID` | 必需 | `03/04/05/06/07` 使用的模型 ID |
+| `LLM_API_KEY` | 必需 | `03/04/05/06/07` 的 API Key |
+| `LLM_BASE_URL` | 必需 | `03/04/05/06/07` 的接口地址 |
+| `VIDEO_MODEL_ID` | 仅步骤 `08` 必需 | 分支图片生成模型 ID |
+| `VIDEO_API_KEY` | 仅步骤 `08` 必需 | 分支图片生成 API Key |
+| `VIDEO_BASE_URL` | 仅步骤 `08` 必需 | 分支图片生成接口地址 |
+
+如果你只跑到 `05` 或 `07`，可以先不配置 `VIDEO_*`。
+
+## 数据准备
+
+### 1. 准备视频
+
+按下面的目录组织原始剧集视频：
+
+```text
+data/
+  video/
+    某短剧/
+      第1集.mp4
+      第2集.mp4
+```
+
+### 2. 准备短剧元数据
+
+`03/04/06/07` 依赖 `data/video/drama_info.json`。你有两种准备方式：
+
+- 方式 A：先准备 `data/video/name2id.json`，再执行 `02_extract_desc_char.py`
+- 方式 B：手动维护 `data/video/drama_info.json`
+
+`name2id.json` 的最小格式示例：
+
+```json
+[
+  {
+    "name": "某短剧",
+    "book_id": "123456"
+  }
+]
+```
+
+## 快速开始
+
+### 只跑主链路：高光与互动
 
 ```bash
-# 完整流水线（每步独立运行）
-python pipline/01_video2audio.py
 python pipline/02_extract_desc_char.py
+python pipline/01_video2audio.py
 python pipline/03_audio2text.py
 python pipline/04_text2highlight.py
 python pipline/05_highlight2interaction.py
-
-# 单文件处理
-python pipline/04_text2highlight.py --text-path data/text/某剧/第1集.json
-
-# 调试模式：只生成指定互动类型
-python pipline/05_highlight2interaction.py --highlight-path data/highlight/某剧/第1集.json --type 1
 ```
+
+### 继续跑扩展链路：剧情分支与分支图片
+
+```bash
+python pipline/06_plot_branch.py
+python pipline/07_branch_video.py
+python pipline/08_branch_image.py
+```
+
+### 常用单文件命令
+
+```bash
+# 只处理一集视频
+python pipline/01_video2audio.py --video-path data/video/某短剧/第1集.mp4
+
+# 抓取单部短剧信息
+python pipline/02_extract_desc_char.py --book-id 123456
+python pipline/02_extract_desc_char.py --name 某短剧
+
+# 只转一集音频
+python pipline/03_audio2text.py --audio-path data/audio/某短剧/第1集.mp3
+
+# 只做一集高光识别
+python pipline/04_text2highlight.py --text-path data/text/某短剧/第1集.json
+
+# 只做一集互动生成
+python pipline/05_highlight2interaction.py --highlight-path data/highlight/某短剧/第1集.json
+
+# 调试：只输出某一种互动类型到 stdout，不落盘
+python pipline/05_highlight2interaction.py --highlight-path data/highlight/某短剧/第1集.json --type 1
+
+# 只生成一集剧情分支
+python pipline/06_plot_branch.py --text-path data/text/某短剧/第1集.json
+
+# 只生成一集分支提示词
+python pipline/07_branch_video.py --branch-path data/branch/json/某短剧/第1集.json
+
+# 只生成一集分支图片
+python pipline/08_branch_image.py --prompt-path data/branch/prompt/某短剧/第1集.json
+```
+
+## 设计特点
+
+### 1. 严格的结构化输出
+
+每个 LLM 步骤都不是自由文本，而是被提示词约束到明确 JSON 结构，再通过 Pydantic 做二次校验。
+
+### 2. 真实面向落盘产物的校验
+
+仓库不是只验证“模型有没有返回 JSON”，还会验证：
+
+- 时间戳格式是否合法
+- segment / highlight / interaction 的引用关系是否闭环
+- 台词复述是否真的存在于证据片段中
+- 延迟投票是否能正确回算揭晓时间和答案下标
+- 分支配置是否真的能回流到当前集或下一集
+
+### 3. 异步批处理
+
+`ffmpeg`、网页抓取和多文件 LLM 调用都按批处理方式组织，默认支持目录级递归扫描与跳过已有产物。
+
+### 4. 为未来视频分支预留结构
+
+虽然当前最终产物是分支图片，但 `06` 和 `07` 的数据结构仍然围绕“可回流的分支视频内容”设计，这让后续升级路径比较清晰。
+
+## 验证方式
+
+当前仓库没有保留一套可直接用于 `unittest discover` 的自动化单测。
+
+`test/` 目录目前只剩两个手工联调脚本：
+
+- `test/test-audio.py`
+- `test/test-text.py`
+
+这两个脚本都依赖有效的 `.env` 和可用的模型接口，更适合作为联调或接口冒烟检查，而不是本地离线单测。
+
+如果要验证主链路或扩展链路，当前更实际的方式是直接使用上面的“单文件命令”对某一集做端到端抽查。
 
 ## 项目结构
 
-```
+```text
 drama-highlight-mark/
-├── pipline/                    # 流水线核心代码
-│   ├── 01_video2audio.py       # 视频转音频
-│   ├── 02_extract_desc_char.py # 爬取短剧简介与角色
-│   ├── 03_audio2text.py        # 音频语义转写
-│   ├── 04_text2highlight.py    # 高光点识别
-│   ├── 05_highlight2interaction.py  # 互动方案生成
-│   ├── steps_05/               # 5 种互动类型实现
-│   └── common/                 # 共享模块
-│       ├── config.py           # 环境配置与客户端
-│       ├── paths.py            # 路径工具
-│       ├── schemas.py          # Pydantic 数据模型
-│       └── runtime.py          # 运行时工具（解析、校验、重试）
-├── data/                       # 数据目录
-│   ├── video/                  # 原始视频 + 元数据
-│   ├── audio/                  # 提取的音频
-│   ├── text/                   # 语义转写结果
-│   ├── highlight/              # 高光点识别结果
-│   └── interaction/            # 互动方案最终输出
-├── test/                       # 测试
-├── docs/codex/plans/           # 设计文档与方案记录
+├── pipline/
+│   ├── 01_video2audio.py
+│   ├── 02_extract_desc_char.py
+│   ├── 03_audio2text.py
+│   ├── 04_text2highlight.py
+│   ├── 05_highlight2interaction.py
+│   ├── 06_plot_branch.py
+│   ├── 07_branch_video.py
+│   ├── 08_branch_image.py
+│   ├── common/
+│   │   ├── config.py
+│   │   ├── paths.py
+│   │   ├── runtime.py
+│   │   └── schemas.py
+│   └── steps_05/
+│       ├── deferred_vote.py
+│       ├── emotion_button.py
+│       ├── instant_vote.py
+│       ├── repeat_keyline.py
+│       └── side_comment.py
+├── data/
+│   ├── video/
+│   ├── audio/
+│   ├── text/
+│   ├── highlight/
+│   ├── interaction/
+│   └── branch/
+│       ├── json/
+│       ├── prompt/
+│       └── image/
+├── test/                       # 当前仅保留手工联调脚本
+├── docs/codex/plans/
+├── schema.md
 └── requirements.txt
 ```
+
+## 已知限制
+
+- `02_extract_desc_char.py` 依赖目标站点页面结构和 `data/video/name2id.json`。
+- `03/04/06/07` 依赖 `data/video/drama_info.json`；缺失时会直接报错。
+- `06_plot_branch.py` 需要“当前集 + 下一集”的文本，最后一集会被跳过。
+- `08_branch_image.py` 当前输出的是分支图片，而不是分支视频；这是基于生成成本做出的现实折中。
+- `test/` 目录当前不是完整自动化测试套件，更多是接口联调用脚本。
+- LLM 输出已经做了 schema 校验，但如果要直接投入生产，仍建议保留人工抽检。
 
 ## License
 

@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "summary": "女性亲了男性，并质疑他是否没经验。",
+    "level": 2,
+    "reason": "情绪峰值点，具有亲密互动和调侃，台词具有记忆点。",
+    "segment_ids": [
+      4
+    ],
+    "trigger_segment_id": 4,
+    "start": "00:00:18.760",
+    "end": "00:00:28.900",
+    "trigger_time": "00:00:18.760",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:18.760",
+        "end": "00:00:28.900",
+        "text": "哎，我不过就是亲了你一下，你怎么这么大反应，该不会你没经验吧。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "男性命令女性立刻从他身上下去。",
+    "level": 2,
+    "reason": "冲突判断点，显示男性对女性的拒绝和命令，具有冲突张力。",
+    "segment_ids": [
+      9
+    ],
+    "trigger_segment_id": 9,
+    "start": "00:00:41.120",
+    "end": "00:00:44.220",
+    "trigger_time": "00:00:41.120",
+    "evidence_segments": [
+      {
+        "id": 9,
+        "start": "00:00:41.120",
+        "end": "00:00:44.220",
+        "text": "现在立刻从我身上下去。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "女性内心独白，提到亲了京硕，并认为即使他一年后要死，她也赚了。",
+    "level": 3,
+    "reason": "重大信息冲击，揭示京硕计划一年后死的核心设定，具有悬念价值和情绪强度。",
+    "segment_ids": [
+      11
+    ],
+    "trigger_segment_id": 11,
+    "start": "00:00:57.320",
+    "end": "00:01:06.320",
+    "trigger_time": "00:00:57.320",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:00:57.320",
+        "end": "00:01:06.320",
+        "text": "我刚才亲了京硕，就算一年后他要死我也赚了，南昭宁不愧是你。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "京昕然指责女性是冲着钱来的，没有资格感到委屈。",
+    "level": 2,
+    "reason": "冲突判断点，角色立场对撞，具有冲突张力。",
+    "segment_ids": [
+      17
+    ],
+    "trigger_segment_id": 17,
+    "start": "00:02:03.230",
+    "end": "00:02:08.010",
+    "trigger_time": "00:02:03.230",
+    "evidence_segments": [
+      {
+        "id": 17,
+        "start": "00:02:03.230",
+        "end": "00:02:08.010",
+        "text": "太奶奶，这个女人就是冲着咱们家钱来的，她有什么好委屈的。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "summary": "女性反驳说喜欢钱是正常的，并反问对方是否不喜欢。",
+    "level": 2,
+    "reason": "反差感，弱势突然强硬，台词具有传播性。",
+    "segment_ids": [
+      20
+    ],
+    "trigger_segment_id": 20,
+    "start": "00:02:13.430",
+    "end": "00:02:18.070",
+    "trigger_time": "00:02:13.430",
+    "evidence_segments": [
+      {
+        "id": 20,
+        "start": "00:02:13.430",
+        "end": "00:02:18.070",
+        "text": "喜欢钱又怎么了，谁不喜欢呐，你不喜欢吗？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "summary": "京昕然说小叔不喜欢女性，而是喜欢许黛青。",
+    "level": 2,
+    "reason": "悬念节点，揭示潜在情感关系，具有信息增量和冲突价值。",
+    "segment_ids": [
+      22
+    ],
+    "trigger_segment_id": 22,
+    "start": "00:02:30.260",
+    "end": "00:02:36.080",
+    "trigger_time": "00:02:30.260",
+    "evidence_segments": [
+      {
+        "id": 22,
+        "start": "00:02:30.260",
+        "end": "00:02:36.080",
+        "text": "她才不是我小婶，小叔又不喜欢她，小叔喜欢的明明是许黛青姐姐。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

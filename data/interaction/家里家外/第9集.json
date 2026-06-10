@@ -1,0 +1,259 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 28011,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "婆媳冲突爆发！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 28011,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "扯铺盖！",
+      "danmaku": [
+        "气死我了",
+        "这婆娘欠揍",
+        "快住手！",
+        "太过分了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 48412,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话真扎心"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 48412,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "偷嫁妆！",
+      "danmaku": [
+        "偷东西可耻",
+        "真敢说啊",
+        "气死我了",
+        "太不要脸了"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 48412,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你偷儿媳妇嫁妆你不要脸"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 48412,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "谁更不要脸？",
+      "options": [
+        "母亲",
+        "儿媳妇"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 63066,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "啥逻辑啊这"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 63066,
+    "duration_ms": 3567,
+    "payload": {
+      "button_id": 2,
+      "text": "喂过奶？",
+      "danmaku": [
+        "这反问绝了",
+        "气得笑出声",
+        "太讽刺了",
+        "太荒谬了"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 63066,
+    "duration_ms": 3567,
+    "payload": {
+      "text": "未必他小时候给我喂过奶吗？"
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 70112,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "要动手了吗？"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 70112,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 70112,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "晓得歪就不要惹我"
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 77340,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "戏精本精了"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 77340,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "演得太假了",
+        "笑死我了",
+        "这哭戏绝了",
+        "表演满分"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 4,
+    "show_at": 77340,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "母亲在演戏吗？",
+      "options": [
+        "演戏",
+        "真哭"
+      ],
+      "reveal_time": 96237,
+      "reveal_delay": 3493,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 16,
+    "type": 1,
+    "show_at": 85618,
+    "duration_ms": 1919,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "淡定姐啊",
+        "反差太大",
+        "笑不活了",
+        "这波操作秀"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "type": 2,
+    "show_at": 85618,
+    "duration_ms": 1919,
+    "payload": {
+      "text": "用不到你夸我。"
+    }
+  },
+  {
+    "id": 18,
+    "type": 5,
+    "show_at": 85618,
+    "duration_ms": 1919,
+    "payload": {
+      "text": "淡定得可以"
+    }
+  },
+  {
+    "id": 19,
+    "type": 5,
+    "show_at": 96237,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "儿子看透了"
+    }
+  },
+  {
+    "id": 20,
+    "type": 1,
+    "show_at": 96237,
+    "duration_ms": 3493,
+    "payload": {
+      "button_id": 0,
+      "text": "演过了！",
+      "danmaku": [
+        "说得太对了",
+        "终于拆穿了",
+        "儿子清醒",
+        "太解气了"
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "type": 2,
+    "show_at": 96237,
+    "duration_ms": 3493,
+    "payload": {
+      "text": "我在说你，妈，演过了哈。"
+    }
+  },
+  {
+    "id": 22,
+    "type": 3,
+    "show_at": 96237,
+    "duration_ms": 3493,
+    "payload": {
+      "question": "儿子该拆穿吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

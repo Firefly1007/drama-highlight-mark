@@ -1,0 +1,175 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 64281,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这话真欠揍"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 64281,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太可恶了",
+      "danmaku": [
+        "气死人了",
+        "退退退！",
+        "太欠揍了",
+        "恶心人呢"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 64281,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你不过就是一个避孕失败以后的廉价产物"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 85736,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "救援命令好霸道"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 85736,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 85736,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "勾住，手，勾住我。"
+    }
+  },
+  {
+    "id": 7,
+    "type": 4,
+    "show_at": 85736,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "他救她是出于好意吗？",
+      "options": [
+        "好心",
+        "有企图"
+      ],
+      "reveal_time": 137531,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 137531,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这压迫感绝了"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 137531,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "真强势",
+      "danmaku": [
+        "太过分了",
+        "命令谁呢",
+        "气死人了",
+        "退退退！"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 137531,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你最好听话"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 137531,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该听他的吗？",
+      "options": [
+        "听",
+        "不听"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 166346,
+    "duration_ms": 1642,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "磕到了！",
+        "太上头了",
+        "锁死锁死",
+        "在一起吧"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 166346,
+    "duration_ms": 1642,
+    "payload": {
+      "text": "那就熟一点。"
+    }
+  },
+  {
+    "id": 14,
+    "type": 3,
+    "show_at": 166346,
+    "duration_ms": 1642,
+    "payload": {
+      "question": "他这么做对吗？",
+      "options": [
+        "对",
+        "不对"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 166346,
+    "duration_ms": 1642,
+    "payload": {
+      "text": "这就开始撩了？"
+    }
+  }
+]

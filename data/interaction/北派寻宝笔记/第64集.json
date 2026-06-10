@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 540,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "摊主急眼了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 540,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "假货还横",
+      "danmaku": [
+        "气死我了",
+        "外地人咋了",
+        "假货贩子",
+        "退退退！",
+        "欠揍发言"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 540,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "根本就没有汉朝的青花瓷"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 540,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "青花瓷是真是假？",
+      "options": [
+        "假的",
+        "真的"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 158019,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "偷钱的太嚣张"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 158019,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "蛮横无理",
+      "danmaku": [
+        "气死人了",
+        "偷钱还横",
+        "外地人咋了",
+        "报警啊！",
+        "无理取闹"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 158019,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你丫一外地人丢钱算你活该"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 195719,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "一分钟赚两万？"
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 195719,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "只需一分钟"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 195719,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该接受提议吗？",
+      "options": [
+        "接受",
+        "拒绝"
+      ]
+    }
+  }
+]

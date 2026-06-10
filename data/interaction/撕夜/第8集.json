@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 13000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这计划真阴险！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 13000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "不留活口",
+      "danmaku": [
+        "气死人了",
+        "阴谋家！",
+        "欠揍行为",
+        "太过分了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 13000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "一不做，二不休"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 47000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这反转太疯了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 47000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 47000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "跟你一块去死"
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 47000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "楚辰安的威胁是爱吗？",
+      "options": [
+        "是爱",
+        "是疯"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 155000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "爸妈出事了？急！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 155000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

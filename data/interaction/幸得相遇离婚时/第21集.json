@@ -1,0 +1,136 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 67600,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "捧杀计划来了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 67600,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "捧杀策略",
+      "danmaku": [
+        "这招太狠了",
+        "期待打脸",
+        "狂拽酷炫",
+        "爽到飞起"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 67600,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "从最高处一脚给他踹下去"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 89100,
+    "duration_ms": 2600,
+    "payload": {
+      "button_id": 0,
+      "text": "有仇必报",
+      "danmaku": [
+        "这气场太强",
+        "帅到我了",
+        "期待复仇大戏",
+        "好有杀气"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 89100,
+    "duration_ms": 2600,
+    "payload": {
+      "text": "有仇。"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 89100,
+    "duration_ms": 2600,
+    "payload": {
+      "text": "这仇结得深"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 91100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "搞就搞",
+      "danmaku": [
+        "这兄弟够意思",
+        "爽快答应",
+        "全力支持",
+        "干就完了"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 91100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "好，那就搞"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 109600,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太损了"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 109600,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑到肚子疼",
+        "太搞了吧",
+        "哈哈哈笑死",
+        "这都能聊"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 125600,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "乒乓球比喻",
+        "反杀成功",
+        "笑不活了",
+        "这调侃绝了"
+      ]
+    }
+  }
+]

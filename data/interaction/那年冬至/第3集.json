@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "type": 3,
+    "show_at": 75800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "京烁该接受手术吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 123000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "南昭宁真敢想！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 123000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死，这也太直接了",
+        "小瞎子更方便了哈哈",
+        "做么？笑不活了",
+        "京烁反应绝了",
+        "南昭宁太皮了",
+        "这反差我爱了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 123000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你要做么？"
+    }
+  }
+]

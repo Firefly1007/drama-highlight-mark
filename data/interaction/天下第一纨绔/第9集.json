@@ -1,0 +1,168 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 54580,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "死也不能认输！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 54580,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太嚣张",
+      "danmaku": [
+        "嚣张什么啊",
+        "太气人了",
+        "欠揍的家伙",
+        "真想骂他"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 54580,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "今天你就是死，也得给我死在台上。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 54580,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该投降吗？",
+      "options": [
+        "投降",
+        "不投降"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 4,
+    "show_at": 54580,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "镇北侯会投降吗？",
+      "options": [
+        "不投降",
+        "投降"
+      ],
+      "reveal_time": 197660,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 69620,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "温情后秒嚣张！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 69620,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "跪下认输",
+      "danmaku": [
+        "霸气侧漏",
+        "这谁顶得住",
+        "狂得可以",
+        "解气得很"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 69620,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "跪下认输"
+    }
+  },
+  {
+    "id": 9,
+    "type": 3,
+    "show_at": 69620,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "威胁合理吗？",
+      "options": [
+        "合理",
+        "不合理"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 153020,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "嘲笑声真响！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 153020,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "哈哈哈太离谱",
+        "笑到肚子疼",
+        "这也太搞笑了",
+        "笑不活了"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 197660,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这就投降了？"
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 197660,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "逆子，你敢，我投降"
+    }
+  },
+  {
+    "id": 14,
+    "type": 3,
+    "show_at": 197660,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "投降决定对吗？",
+      "options": [
+        "对",
+        "错"
+      ]
+    }
+  }
+]

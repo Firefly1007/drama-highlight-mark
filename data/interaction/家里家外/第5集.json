@@ -1,0 +1,63 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 92687,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "好一个歪婆娘！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 92687,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "护好娃儿",
+      "danmaku": [
+        "太霸气了",
+        "护崽满分",
+        "打整到底",
+        "爽到了啊",
+        "歪婆娘牛"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 134683,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "原来早就认识！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 134683,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "磕到了啊",
+        "太甜了吧",
+        "CP感满满",
+        "锁死这对",
+        "好甜好甜"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 134683,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "其实我之前都认得到你了"
+    }
+  }
+]

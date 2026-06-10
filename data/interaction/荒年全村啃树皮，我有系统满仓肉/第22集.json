@@ -1,0 +1,81 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 49780,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "娘家人这话太过分了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 49780,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "赔钱货？",
+      "danmaku": [
+        "气死我了",
+        "这家人过分",
+        "欺负人呢",
+        "赔钱货？呸！",
+        "威胁谁啊",
+        "退退退啊"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 49780,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "娘家人威胁后，程弯弯会？",
+      "options": [
+        "强势反击",
+        "忍气吞声"
+      ],
+      "reveal_time": 63620,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 63620,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这波反击漂亮！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 63620,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "物归原主",
+      "danmaku": [
+        "太解气了",
+        "反击漂亮",
+        "物归原主！",
+        "搬回家去",
+        "爽到了啊",
+        "气场拉满"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 63620,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "物归原主了吧"
+    }
+  }
+]

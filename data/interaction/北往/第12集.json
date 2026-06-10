@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 75900,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这情绪爆发得太突然了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 75900,
+    "duration_ms": 4800,
+    "payload": {
+      "button_id": 2,
+      "text": "太气人",
+      "danmaku": [
+        "气死我了",
+        "这人太不争气",
+        "看着就来气",
+        "赶紧醒醒吧"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 75900,
+    "duration_ms": 4800,
+    "payload": {
+      "text": "不就是站不起来了吗？"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 84300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "天啊，快醒醒！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 84300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

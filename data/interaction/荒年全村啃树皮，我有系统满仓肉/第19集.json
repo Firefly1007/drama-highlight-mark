@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 45660,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "那又如何",
+      "danmaku": [
+        "淡定如斯",
+        "太狂了吧",
+        "爽到不行",
+        "气场全开"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 66340,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 66340,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "拿刀反击",
+      "danmaku": [
+        "霸气侧漏",
+        "这波操作",
+        "爽文照进现实",
+        "终于硬气了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 66340,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "那又如何呢？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 3,
+    "show_at": 66340,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该赔偿吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 85350,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "违抗命令",
+      "danmaku": [
+        "霸气妈妈",
+        "太严格了",
+        "管教有方",
+        "儿子们怕了"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 91530,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "她真火大了"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 91530,
+    "duration_ms": 3330,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 91530,
+    "duration_ms": 3330,
+    "payload": {
+      "text": "咋的，现在我说话不管用了是吧？"
+    }
+  }
+]

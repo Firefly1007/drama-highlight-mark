@@ -1,0 +1,125 @@
+[
+  {
+    "id": 1,
+    "summary": "男子轻佻地说当前情况更像偷情。",
+    "level": 2,
+    "reason": "台词短促有力，有传播性和悬念感，暗示剧情中的秘密关系。",
+    "segment_ids": [
+      2
+    ],
+    "trigger_segment_id": 2,
+    "start": "00:00:12.800",
+    "end": "00:00:16.170",
+    "trigger_time": "00:00:12.800",
+    "evidence_segments": [
+      {
+        "id": 2,
+        "start": "00:00:12.800",
+        "end": "00:00:16.170",
+        "text": "现在这样，更像偷情了。",
+        "speech": "单人发言",
+        "emotion": "语气轻佻",
+        "voice": "语速平缓",
+        "music": "悬疑氛围的背景音乐",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "女子骂男子“混蛋”，男子以笑意回应说要干混蛋事。",
+    "level": 2,
+    "reason": "互动显示冲突和调侃，情绪强度高，有笑点和反差感。",
+    "segment_ids": [
+      4,
+      5
+    ],
+    "trigger_segment_id": 5,
+    "start": "00:00:21.260",
+    "end": "00:00:29.140",
+    "trigger_time": "00:00:25.330",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:21.260",
+        "end": "00:00:22.380",
+        "text": "混蛋！",
+        "speech": "单人发言",
+        "emotion": "恼怒",
+        "voice": "低声嗔怪",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 5,
+        "start": "00:00:25.330",
+        "end": "00:00:29.140",
+        "text": "那你说我要是不干点混蛋的事，那我不是白挨骂了。",
+        "speech": "单人发言",
+        "emotion": "语气带着笑意",
+        "voice": "语调轻松",
+        "music": "",
+        "audio_cues": [
+          "几声车门敲击声"
+        ],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "男子郑重承诺，如果女子老公欺负她，他会随时接应并出头。",
+    "level": 2,
+    "reason": "台词郑重，显示保护承诺，有情绪价值和人物关系发展。",
+    "segment_ids": [
+      13
+    ],
+    "trigger_segment_id": 13,
+    "start": "00:01:33.640",
+    "end": "00:01:43.310",
+    "trigger_time": "00:01:33.640",
+    "evidence_segments": [
+      {
+        "id": 13,
+        "start": "00:01:33.640",
+        "end": "00:01:43.310",
+        "text": "以后你老公要是欺负你，随时联系我，不管我在哪，我都能赶过来接你，哥给你出头。",
+        "speech": "单人发言",
+        "emotion": "语气郑重",
+        "voice": "语速平缓",
+        "music": "抒情流行背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "女子调侃男子看起来不像好人。",
+    "level": 1,
+    "reason": "调侃回应，有轻松反差和传播性。",
+    "segment_ids": [
+      14
+    ],
+    "trigger_segment_id": 14,
+    "start": "00:01:44.780",
+    "end": "00:01:46.860",
+    "trigger_time": "00:01:44.780",
+    "evidence_segments": [
+      {
+        "id": 14,
+        "start": "00:01:44.780",
+        "end": "00:01:46.860",
+        "text": "你看起来就不像是什么好人。",
+        "speech": "单人发言",
+        "emotion": "带着调侃的意味",
+        "voice": "语调轻松",
+        "music": "抒情流行背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

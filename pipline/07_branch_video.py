@@ -140,6 +140,7 @@ from pipline.common.runtime import (
 
 MAX_ATTEMPTS = 3
 STEP_NAME = "branch_video"
+API_SEMAPHORE = asyncio.Semaphore(20)
 EPISODE_PATTERN = re.compile(r"第(\d+)集$")
 
 
@@ -490,8 +491,13 @@ async def batch_convert(branch_files: list[str], prompt_files: list[str]) -> Non
     """批量生成分支视频提示词文件。"""
     success_count = 0
     fail_count = 0
+
+    async def _run(branch_path, prompt_path):
+        async with API_SEMAPHORE:
+            return await branch_file_to_prompt_file(branch_path, prompt_path)
+
     tasks = [
-        branch_file_to_prompt_file(branch_path, prompt_path)
+        _run(branch_path, prompt_path)
         for branch_path, prompt_path in zip(branch_files, prompt_files)
     ]
     for task in tqdm_asyncio.as_completed(

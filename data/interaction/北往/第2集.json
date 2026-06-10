@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 57460,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢想了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 57460,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "这也行？",
+        "好自信呐",
+        "离大谱了",
+        "噗哈哈哈"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 124030,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "快来站队了"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 124030,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "气死人了",
+      "danmaku": [
+        "太气人了",
+        "什么玩意儿",
+        "气到爆炸",
+        "退退退退",
+        "无语了"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 124030,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这个女人就是冲着咱们家钱来的"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 134220,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "回怼得漂亮！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 134220,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "反击太帅",
+      "danmaku": [
+        "太牛了吧",
+        "舒服了啊",
+        "打脸真爽",
+        "气场全开",
+        "怼得漂亮"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 134220,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "喜欢钱又怎么了"
+    }
+  },
+  {
+    "id": 9,
+    "type": 3,
+    "show_at": 134220,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "喜欢钱有错吗？",
+      "options": [
+        "没错",
+        "有错"
+      ]
+    }
+  }
+]

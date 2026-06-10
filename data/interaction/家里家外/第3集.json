@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 44530,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "霸气护短，这波站她"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 44530,
+    "duration_ms": 3530,
+    "payload": {
+      "button_id": 0,
+      "text": "我帮他喝",
+      "danmaku": [
+        "太霸气了！",
+        "护短满分",
+        "打脸成功",
+        "气场全开"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 44530,
+    "duration_ms": 3530,
+    "payload": {
+      "text": "他是我男人，我帮他喝"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 44530,
+    "duration_ms": 3530,
+    "payload": {
+      "question": "该帮他喝酒吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 134560,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "工资交老婆，支持"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 134560,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "工资该交谁管？",
+      "options": [
+        "老婆",
+        "母亲"
+      ]
+    }
+  }
+]

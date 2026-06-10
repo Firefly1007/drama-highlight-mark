@@ -1,0 +1,63 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 43260,
+    "duration_ms": 2750,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑不活了",
+        "逻辑满分",
+        "无法反驳",
+        "真实了啊",
+        "太敢说了"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 43260,
+    "duration_ms": 2750,
+    "payload": {
+      "text": "矜持又不利于繁殖。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 43260,
+    "duration_ms": 2750,
+    "payload": {
+      "text": "这回应太俏皮了！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 106760,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "自嘲也太可爱了"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 106760,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "自己都吐槽",
+        "真实了啊",
+        "没出息实锤",
+        "尴尬癌犯了",
+        "哈哈太真实"
+      ]
+    }
+  }
+]

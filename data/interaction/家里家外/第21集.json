@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 90031,
+    "duration_ms": 2443,
+    "payload": {
+      "button_id": 0,
+      "text": "夺冠了！",
+      "danmaku": [
+        "太厉害了！",
+        "中国女排牛！",
+        "爽翻了！",
+        "欢呼吧！",
+        "骄傲自豪！"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 90031,
+    "duration_ms": 2443,
+    "payload": {
+      "text": "太激动了！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 120400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "火气真大！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 120400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "气死了！",
+      "danmaku": [
+        "太气人了！",
+        "火冒三丈！",
+        "真欠揍！",
+        "退退退！",
+        "想砸电视！"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 120400,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "老子越想越冒火，真的想给你一锭子。"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 166600,
+    "duration_ms": 1300,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了！",
+        "这也行？",
+        "亲妈无疑！",
+        "随妈呀！",
+        "太搞笑了！",
+        "真爽快！"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 166600,
+    "duration_ms": 1300,
+    "payload": {
+      "text": "咋子嘛，你娃儿随我。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 166600,
+    "duration_ms": 1300,
+    "payload": {
+      "text": "这反差绝了"
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 173200,
+    "duration_ms": 2800,
+    "payload": {
+      "text": "这是我们两娘母的秘密。"
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 173200,
+    "duration_ms": 2800,
+    "payload": {
+      "text": "好可爱啊"
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 183500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这决定太暖"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 183500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

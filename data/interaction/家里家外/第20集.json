@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 49980,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "厂长不如老婆"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 49980,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "这也太甜了",
+        "磕死我了",
+        "老公真会说话",
+        "好羡慕啊",
+        "锁死这对CP"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 49980,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "过几年你还是我老婆吗？"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 49980,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该给厂长买礼物吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 92730,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "出头维护棒"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 92730,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "干得漂亮",
+      "danmaku": [
+        "太解气了",
+        "干得漂亮",
+        "老师怂了",
+        "继母真帅",
+        "护女成功"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 113950,
+    "duration_ms": 2880,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "太会撩了",
+        "害羞什么",
+        "老夫老妻真甜",
+        "磕死我了"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 113950,
+    "duration_ms": 2880,
+    "payload": {
+      "text": "不急，晚上时间长，啊。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 113950,
+    "duration_ms": 2880,
+    "payload": {
+      "text": "哈哈想歪了"
+    }
+  }
+]

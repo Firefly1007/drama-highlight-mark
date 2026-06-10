@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 58500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这反差我惊了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 58500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "护我山河",
+      "danmaku": [
+        "热血沸腾",
+        "这才是真男人",
+        "气场拉满",
+        "太霸气了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 58500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "护我大炎万里河山"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 58500,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "他的志向是真心的吗？",
+      "options": [
+        "真心",
+        "假意"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 120700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "又去浪了？"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 120700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "欠揍",
+      "danmaku": [
+        "气死我了",
+        "欠揍玩意",
+        "太气人了",
+        "打他丫的"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 151300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "该治治了"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 151300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "打断狗腿",
+      "danmaku": [
+        "气死我了",
+        "打他丫的",
+        "太气人了",
+        "必须严惩"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 151300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "老子今天要打断他的狗腿！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 151300,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该打断他的腿吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

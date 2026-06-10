@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 23590,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这保护宣言太霸气！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 23590,
+    "duration_ms": 3630,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 23590,
+    "duration_ms": 3630,
+    "payload": {
+      "text": "今天我在这里，谁都不会伤害你。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 47620,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "他值得！这回答绝了。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 47620,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 47620,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这一世谁都可以死，只有你不行。"
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 47620,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "这付出值得吗？",
+      "options": [
+        "值得",
+        "不值得"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 60130,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这威胁够狠！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 60130,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 60130,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "今天你们谁要是再敢动他一下，我就杀了你们！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 60130,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "支持死亡威胁吗？",
+      "options": [
+        "支持",
+        "反对"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 65360,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这笑声太嚣张了。"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 65360,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "一起上路？",
+      "danmaku": [
+        "嚣张大笑",
+        "威胁一起死",
+        "气死我了",
+        "退！退！退！"
+      ]
+    }
+  }
+]

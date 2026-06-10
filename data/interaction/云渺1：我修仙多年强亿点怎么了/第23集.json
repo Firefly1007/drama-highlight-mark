@@ -1,0 +1,117 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 1820,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这谁受得了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 1820,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 1820,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "那我岂不是残害了母亲"
+    }
+  },
+  {
+    "id": 4,
+    "type": 4,
+    "show_at": 1820,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "残害母亲是真的吗？",
+      "options": [
+        "否",
+        "是"
+      ],
+      "reveal_time": 63080,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 45300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太快了，有隐情！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 63080,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这操作太毒了！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 63080,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "真相恶毒",
+      "danmaku": [
+        "太残忍了",
+        "子女该死",
+        "老人太惨",
+        "必须负责",
+        "气到发抖"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 82170,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这嘲讽到位！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 82170,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "又毒又蠢",
+      "danmaku": [
+        "太愚蠢了",
+        "毒到家了",
+        "必须教训",
+        "自作自受",
+        "太可恨了"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 82170,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你们孙家不但毒，而且蠢"
+    }
+  }
+]

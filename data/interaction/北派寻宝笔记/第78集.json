@@ -1,0 +1,69 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 20300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这动静太吓人了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 20300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 57100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "报警？想多了吧"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 57100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "怒斥报警",
+      "danmaku": [
+        "气死个人",
+        "脑子有坑",
+        "报警作死",
+        "斥责得对"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 57100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你脑子被驴踢了吧"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 57100,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该报警吗？",
+      "options": [
+        "报警",
+        "不报警"
+      ]
+    }
+  }
+]

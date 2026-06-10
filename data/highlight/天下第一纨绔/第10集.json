@@ -1,0 +1,166 @@
+[
+  {
+    "id": 1,
+    "summary": "一人愤怒斥责三国来者为蛮夷，呵斥其不配娶公主并要求滚出大炎。",
+    "level": 2,
+    "reason": "情绪激动，充满愤怒，冲突张力强，直接表达驱赶意图。",
+    "segment_ids": [
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:10.620",
+    "end": "00:00:14.719",
+    "trigger_time": "00:00:10.620",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:00:10.620",
+        "end": "00:00:14.719",
+        "text": "区区蛮夷，也想娶我大炎公主，你们也配！滚出大炎！",
+        "speech": "单人发言",
+        "emotion": "情绪激动，充满愤怒",
+        "voice": "音量拔高",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "一人狂妄嘲笑大炎皇帝，威胁若认输交出公主便可离开，并伴随哄笑。",
+    "level": 2,
+    "reason": "狂妄自大，带有羞辱和威胁，冲突尖锐，有声音情绪增强。",
+    "segment_ids": [
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:00:27.000",
+    "end": "00:00:37.319",
+    "trigger_time": "00:00:27.000",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:27.000",
+        "end": "00:00:37.319",
+        "text": "大炎的皇帝，你要是怕了，就乖乖认输吧，把公主送给我们，我们就可以离开，哈哈哈哈哈哈。",
+        "speech": "单人发言后接多人哄笑",
+        "emotion": "狂妄自大",
+        "voice": "伴随放肆的大笑",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "一人厉声呵斥‘放肆’，伴随刀剑出鞘声，冲突进一步升级。",
+    "level": 2,
+    "reason": "声音事件突出，冲突张力升级，有明显的威胁感和情绪爆发。",
+    "segment_ids": [
+      8
+    ],
+    "trigger_segment_id": 8,
+    "start": "00:00:40.519",
+    "end": "00:00:41.280",
+    "trigger_time": "00:00:40.519",
+    "evidence_segments": [
+      {
+        "id": 8,
+        "start": "00:00:40.519",
+        "end": "00:00:41.280",
+        "text": "放肆！",
+        "speech": "单人发言",
+        "emotion": "厉声呵斥",
+        "voice": "厚重有力",
+        "music": "",
+        "audio_cues": [
+          "刀剑出鞘声"
+        ],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "大炎方面回应三国威胁，宣示即使面对联盟也要战斗，情绪决绝。",
+    "level": 2,
+    "reason": "情绪激昂，铿锵有力，做出宣战决定，是剧情关键转折点。",
+    "segment_ids": [
+      10
+    ],
+    "trigger_segment_id": 10,
+    "start": "00:00:51.100",
+    "end": "00:00:59.319",
+    "trigger_time": "00:00:51.100",
+    "evidence_segments": [
+      {
+        "id": 10,
+        "start": "00:00:51.100",
+        "end": "00:00:59.319",
+        "text": "你们三国和我大炎交战多年，杀害我多少无辜子民，战！就战！",
+        "speech": "单人发言",
+        "emotion": "情绪激昂，充满决绝",
+        "voice": "铿锵有力",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "summary": "一人向大炎皇帝指出三国已结盟，比武实为开战的阴谋。",
+    "level": 3,
+    "reason": "揭露了三国联盟和真实意图，颠覆比武表面，是重大信息冲击和关键局势反转。",
+    "segment_ids": [
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:01:10.239",
+    "end": "00:01:15.559",
+    "trigger_time": "00:01:10.239",
+    "evidence_segments": [
+      {
+        "id": 12,
+        "start": "00:01:10.239",
+        "end": "00:01:15.559",
+        "text": "陛下，他们三国是结盟了，我看比武是假，开战是真。",
+        "speech": "单人发言",
+        "emotion": "沉稳恳切",
+        "voice": "语速平稳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "summary": "大炎皇帝霸气接受比武挑战，宣称会让三国皇子心服口服，伴随恢弘音乐。",
+    "level": 2,
+    "reason": "帝王气场拉满，声音洪亮，音乐增强，展现自信和威严，为后续比武铺垫悬念。",
+    "segment_ids": [
+      15
+    ],
+    "trigger_segment_id": 15,
+    "start": "00:01:22.100",
+    "end": "00:01:34.379",
+    "trigger_time": "00:01:22.100",
+    "evidence_segments": [
+      {
+        "id": 15,
+        "start": "00:01:22.100",
+        "end": "00:01:34.379",
+        "text": "三位皇子远道而来，我大炎岂有拒绝的道理，今日比武，定会让三位皇子心服口服。",
+        "speech": "单人发言",
+        "emotion": "霸气从容",
+        "voice": "帝王气场拉满，声音洪亮",
+        "music": "恢弘大气的史诗管弦乐响起",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

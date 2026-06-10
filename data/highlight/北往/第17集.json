@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "summary": "一个人轻声自语，担心自己买的游戏机是否被他人喜欢。",
+    "level": 1,
+    "reason": "剧情信息增量，揭示角色内心对礼物被接受的担忧。",
+    "segment_ids": [
+      11
+    ],
+    "trigger_segment_id": 11,
+    "start": "00:00:37.830",
+    "end": "00:00:40.470",
+    "trigger_time": "00:00:37.830",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:00:37.830",
+        "end": "00:00:40.470",
+        "text": "我买的游戏机，他们喜欢吗？",
+        "speech": "单人轻声自语",
+        "emotion": "忐忑",
+        "voice": "音量偏低",
+        "music": "悬疑风格的背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "一个人惊呼着看到未知物体，情绪惊吓。",
+    "level": 2,
+    "reason": "情绪强度高，声音事件惊吓，抛出悬念引发好奇。",
+    "segment_ids": [
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:00:56.320",
+    "end": "00:00:58.220",
+    "trigger_time": "00:00:56.320",
+    "evidence_segments": [
+      {
+        "id": 12,
+        "start": "00:00:56.320",
+        "end": "00:00:58.220",
+        "text": "我去，这什么东西啊这是？",
+        "speech": "单人惊呼",
+        "emotion": "惊吓",
+        "voice": "声音拔高，语气慌乱",
+        "music": "悬疑风格的背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

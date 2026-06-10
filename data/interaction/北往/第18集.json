@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 22200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 22200,
+    "duration_ms": 4460,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "太尴尬了",
+        "这也行？",
+        "社死现场",
+        "牛啊牛啊"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 22200,
+    "duration_ms": 4460,
+    "payload": {
+      "question": "这些小电影是他的吗？",
+      "options": [
+        "不是他的",
+        "是他的"
+      ],
+      "reveal_time": 45810,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 45810,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "慌什么，心虚了？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 45810,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "急了急了",
+        "慌得一批",
+        "借口太假",
+        "经典结束",
+        "太搞笑了"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 45810,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这些都不是我买的"
+    }
+  }
+]

@@ -1,0 +1,166 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 8500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "婆婆好凶啊"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 8500,
+    "duration_ms": 4100,
+    "payload": {
+      "button_id": 2,
+      "text": "欺人太甚",
+      "danmaku": [
+        "太霸道了",
+        "谁才是婆婆",
+        "气死人了",
+        "受不了了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 8500,
+    "duration_ms": 4100,
+    "payload": {
+      "text": "谁才是你婆婆？"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 8500,
+    "duration_ms": 4100,
+    "payload": {
+      "question": "该听婆婆吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 21000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太惨了"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 21000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 88500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "娘挺厉害啊"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 88500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "真解气",
+      "danmaku": [
+        "太牛了吧",
+        "好厉害啊",
+        "真解气啊",
+        "打脸成功"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 88500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我娘可厉害了"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 88500,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "娘是骗子吗？",
+      "options": [
+        "是",
+        "不是"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 4,
+    "show_at": 88500,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "娘在骗人吗？",
+      "options": [
+        "是骗子",
+        "不是骗子"
+      ],
+      "reveal_time": 111100,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 111100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "娘真爽快"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 111100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "揍得好",
+      "danmaku": [
+        "揍得对啊",
+        "欠收拾啊",
+        "娘霸气啊",
+        "干得漂亮"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 111100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "皮痒了欠收拾"
+    }
+  }
+]

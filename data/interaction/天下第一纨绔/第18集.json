@@ -1,0 +1,179 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 8400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这结拜太随意了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 8400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "大哥豪气",
+        "喜剧反差",
+        "突然结拜"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 8400,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "大哥帮你撑腰"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 63000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "清场！",
+      "danmaku": [
+        "好大的威风",
+        "吓死人了",
+        "气死人了",
+        "都给我滚"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 63000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "清场。"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 73170,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "杀无赦！",
+      "danmaku": [
+        "太狠了吧",
+        "胆战心惊",
+        "吓死人了",
+        "赶紧闭嘴"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 73170,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "杀无赦！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 84470,
+    "duration_ms": 1660,
+    "payload": {
+      "text": "那逆子呢？"
+    }
+  },
+  {
+    "id": 9,
+    "type": 4,
+    "show_at": 84470,
+    "duration_ms": 1660,
+    "payload": {
+      "question": "他在干嘛？",
+      "options": [
+        "在赌博",
+        "一掷千金"
+      ],
+      "reveal_time": 118330,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 118330,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "儿子这波操作真下头！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 118330,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "活腻了",
+      "danmaku": [
+        "太欠揍了",
+        "败家子一个",
+        "气死人了",
+        "活该挨骂"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 118330,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "他是活腻了"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 159090,
+    "duration_ms": 1400,
+    "payload": {
+      "button_id": 2,
+      "text": "逆子！",
+      "danmaku": [
+        "吼什么吼",
+        "吓死人了",
+        "气到爆炸",
+        "太气人了"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 159090,
+    "duration_ms": 1400,
+    "payload": {
+      "text": "逆子！"
+    }
+  },
+  {
+    "id": 15,
+    "type": 5,
+    "show_at": 159090,
+    "duration_ms": 1400,
+    "payload": {
+      "text": "名场面：父亲怒吼！"
+    }
+  }
+]

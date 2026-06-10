@@ -1,0 +1,145 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 21000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "四蛋太委屈了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 21000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 60000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这巴掌真解气！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 60000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "打脸了",
+      "danmaku": [
+        "太解气了",
+        "打得好爽",
+        "霸气反击",
+        "解气了啊"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 60000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "程弯弯你敢打我！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 60000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "程弯弯该打人吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 74000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "就该这么硬气！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 74000,
+    "duration_ms": 4700,
+    "payload": {
+      "button_id": 0,
+      "text": "霸气二姑",
+      "danmaku": [
+        "二姑太狂了",
+        "打你就打你",
+        "这谁顶得住",
+        "霸气宣言"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 74000,
+    "duration_ms": 4700,
+    "payload": {
+      "text": "知道我是你二姑，我就打你了，咋的？"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 74000,
+    "duration_ms": 4700,
+    "payload": {
+      "question": "霸气还是霸道？",
+      "options": [
+        "霸气",
+        "霸道"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 95000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "娘永远是后盾！"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 95000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 95000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "娘永远是你坚实的后盾"
+    }
+  }
+]

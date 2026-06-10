@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "summary": "人物拒绝接受江先生点的茶，并态度冷淡地要求归还。",
+    "level": 2,
+    "reason": "态度冷淡的拒绝行为展现冲突张力，有明确情绪和态度表达。",
+    "segment_ids": [
+      4
+    ],
+    "trigger_segment_id": 4,
+    "start": "00:00:33.220",
+    "end": "00:00:35.580",
+    "trigger_time": "00:00:33.220",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:33.220",
+        "end": "00:00:35.580",
+        "text": "茶我不要了，帮我还给他。",
+        "speech": "单人发言",
+        "emotion": "态度冷淡",
+        "voice": "语气平静",
+        "music": "轻柔舒缓的钢琴背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "手机铃声响起，背景音乐从轻柔钢琴切换为轻快电子音乐并加入镲片撞击音效。",
+    "level": 1,
+    "reason": "声音事件可能预示剧情转折，有悬念价值和声音事件特征。",
+    "segment_ids": [
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:00:39.460",
+    "end": "00:00:54.200",
+    "trigger_time": "00:00:39.460",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:39.460",
+        "end": "00:00:54.200",
+        "text": "",
+        "speech": "",
+        "emotion": "",
+        "voice": "",
+        "music": "背景音乐切换为节奏轻快的电子音乐，随后加入镲片的撞击音效",
+        "audio_cues": [
+          "手机铃声响起"
+        ],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

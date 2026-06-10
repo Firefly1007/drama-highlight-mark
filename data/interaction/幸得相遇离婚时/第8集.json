@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 66120,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "托举就该这样！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 66120,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "让她稳稳地踩在自己的背上"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 66120,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "男人该托举妻子吗？",
+      "options": [
+        "该托举",
+        "该配合"
+      ]
+    }
+  }
+]

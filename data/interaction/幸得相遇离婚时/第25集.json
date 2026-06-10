@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 14200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太狠了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 14200,
+    "duration_ms": 4200,
+    "payload": {
+      "button_id": 2,
+      "text": "杀了他",
+      "danmaku": [
+        "气死我了",
+        "渣男去死",
+        "支持报仇",
+        "杀了他啊"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 14200,
+    "duration_ms": 4200,
+    "payload": {
+      "text": "我要杀了他"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 19200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太虐了，心疼"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 19200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 63000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "爸，妈，以后交给我。"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 152400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "喜欢但不爱，绝了"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 152400,
+    "duration_ms": 3700,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑不活了",
+        "这也太淡",
+        "喜欢不爱",
+        "太离谱了"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 152400,
+    "duration_ms": 3700,
+    "payload": {
+      "text": "喜欢，但不爱。"
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 152400,
+    "duration_ms": 3700,
+    "payload": {
+      "question": "喜欢但不爱合理吗？",
+      "options": [
+        "合理",
+        "不合理"
+      ]
+    }
+  }
+]

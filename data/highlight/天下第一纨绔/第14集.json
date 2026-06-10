@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "summary": "有人震惊地指出苏宇打败了拓跋雄。",
+    "level": 2,
+    "reason": "剧情信息增量，显示苏宇隐藏实力，打破废物预期。",
+    "segment_ids": [
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:09.300",
+    "end": "00:00:12.800",
+    "trigger_time": "00:00:09.300",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:00:09.300",
+        "end": "00:00:12.800",
+        "text": "我没看错吧，这苏宇居然打败了拓跋雄。",
+        "speech": "单人发言",
+        "emotion": "震惊",
+        "voice": "语气激动",
+        "music": "宏大的史诗管弦乐背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "苏思南激动地宣称苏宇是他的儿子。",
+    "level": 2,
+    "reason": "情绪强度，台词短促有力，具有传播性。",
+    "segment_ids": [
+      7
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:00:25.900",
+    "end": "00:00:29.400",
+    "trigger_time": "00:00:25.900",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:00:25.900",
+        "end": "00:00:29.400",
+        "text": "那是我的儿子，那是我苏思南的儿子。",
+        "speech": "单人发言",
+        "emotion": "自豪激动",
+        "voice": "声音洪亮有力",
+        "music": "宏大的史诗管弦乐背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "一人对另一人表示，宇儿是他们的孩子，不可能是废物。",
+    "level": 1,
+    "reason": "情绪笃定，台词表达信任和欣慰。",
+    "segment_ids": [
+      11
+    ],
+    "trigger_segment_id": 11,
+    "start": "00:00:48.100",
+    "end": "00:00:55.500",
+    "trigger_time": "00:00:48.100",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:00:48.100",
+        "end": "00:00:55.500",
+        "text": "希儿，我就知道，宇儿是我和你的孩子，他不可能是废物。",
+        "speech": "单人发言",
+        "emotion": "笃定欣慰",
+        "voice": "语气坚定有力",
+        "music": "宏大的史诗管弦乐背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "有人阴冷地指责苏宇隐藏很深。",
+    "level": 2,
+    "reason": "冲突张力，敌对角色的态度表达。",
+    "segment_ids": [
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:00:56.300",
+    "end": "00:01:02.800",
+    "trigger_time": "00:00:56.300",
+    "evidence_segments": [
+      {
+        "id": 12,
+        "start": "00:00:56.300",
+        "end": "00:01:02.800",
+        "text": "小杂种，你隐藏的可真是深啊。",
+        "speech": "单人发言",
+        "emotion": "阴冷怨毒",
+        "voice": "语调低沉",
+        "music": "宏大的史诗管弦乐背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

@@ -1,0 +1,204 @@
+[
+  {
+    "id": 1,
+    "summary": "程弯弯被告知上公堂会导致大哥不认她，但她坚持只在乎十八两银子何时归还。",
+    "level": 2,
+    "reason": "程弯弯的坚定回应与之前的巴结形成反差，冲突升级，有情绪强度。",
+    "segment_ids": [
+      2,
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:06.430",
+    "end": "00:00:17.060",
+    "trigger_time": "00:00:11.710",
+    "evidence_segments": [
+      {
+        "id": 2,
+        "start": "00:00:06.430",
+        "end": "00:00:11.170",
+        "text": "她二姑，你是疯了吗？你要是敢上公堂，大哥，再也不会认你这个妹妹。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 3,
+        "start": "00:00:11.710",
+        "end": "00:00:17.060",
+        "text": "他认不认我不在意，我只在乎，我那十八两银子什么时候还回来。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "程老太太辱骂程弯弯是赔钱货，质问谁给她的脸，并强势表示是自己。",
+    "level": 2,
+    "reason": "强烈的情绪爆发和辱骂，体现直接冲突。",
+    "segment_ids": [
+      4
+    ],
+    "trigger_segment_id": 4,
+    "start": "00:00:17.320",
+    "end": "00:00:22.610",
+    "trigger_time": "00:00:17.320",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:17.320",
+        "end": "00:00:22.610",
+        "text": "你这个赔钱货，竟敢来程家要钱，谁给你的脸？我！",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "程老太太威胁要打死程弯弯，重复辱骂她为赔钱货。",
+    "level": 2,
+    "reason": "直接的暴力威胁，增加危险感和冲突张力。",
+    "segment_ids": [
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:00:27.120",
+    "end": "00:00:34.400",
+    "trigger_time": "00:00:27.120",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:27.120",
+        "end": "00:00:34.400",
+        "text": "你翅膀硬了，跟老娘作对，你这个赔钱货，我，我打死你这个赔钱货！",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "程弯弯在冲突后决定去公堂告官，命令儿子们前往镇上。",
+    "level": 2,
+    "reason": "冲突升级为法律行动，有剧情转向和决心表达。",
+    "segment_ids": [
+      7
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:00:39.130",
+    "end": "00:00:46.410",
+    "trigger_time": "00:00:39.130",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:00:39.130",
+        "end": "00:00:46.410",
+        "text": "既然老太太要撕破脸皮，那我们就公堂见吧，大山二狗三牛，我们去镇上告官。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "summary": "程家媳妇担心程弯弯影响夫君秀才的名声，建议先答应给钱以平息事态。",
+    "level": 2,
+    "reason": "揭示程家为保全面子愿意妥协的算计，与之前的强硬形成反差。",
+    "segment_ids": [
+      8
+    ],
+    "trigger_segment_id": 8,
+    "start": "00:00:49.230",
+    "end": "00:00:55.310",
+    "trigger_time": "00:00:49.230",
+    "evidence_segments": [
+      {
+        "id": 8,
+        "start": "00:00:49.230",
+        "end": "00:00:55.310",
+        "text": "夫君好不容易考上了秀才，我还等着他光宗耀祖呢，不能让这个贱人坏了夫君的名声。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "summary": "程家媳妇表示等夫君当了大官后，不会让程弯弯占任何便宜。",
+    "level": 2,
+    "reason": "台词“等我夫君当了大官啊，休想让她占一点便宜。” 具有传播性和傲慢态度，形成记忆点。",
+    "segment_ids": [
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:01:14.920",
+    "end": "00:01:25.010",
+    "trigger_time": "00:01:14.920",
+    "evidence_segments": [
+      {
+        "id": 12,
+        "start": "00:01:14.920",
+        "end": "00:01:25.010",
+        "text": "就算她咬着不放，咱郎君以后升了官，还差那点银子吗？等我夫君当了大官啊，休想让她占一点便宜。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "summary": "程家承诺等大哥高中后还钱给程弯弯。",
+    "level": 1,
+    "reason": "承诺的结果未揭晓，有悬念价值。",
+    "segment_ids": [
+      13
+    ],
+    "trigger_segment_id": 13,
+    "start": "00:01:27.400",
+    "end": "00:01:32.400",
+    "trigger_time": "00:01:27.400",
+    "evidence_segments": [
+      {
+        "id": 13,
+        "start": "00:01:27.400",
+        "end": "00:01:32.400",
+        "text": "等你大哥高中了，你那笔银子，程家不会少你一文钱！",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

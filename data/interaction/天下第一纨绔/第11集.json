@@ -1,0 +1,403 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 0,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "开场就这么狂？"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 0,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "找死！",
+      "danmaku": [
+        "太嚣张了",
+        "气死我了",
+        "真是欠揍",
+        "打他丫的",
+        "忍不了啊"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 0,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "谁先来送死"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 0,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "接受挑战吗？",
+      "options": [
+        "应战",
+        "不应战"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 22600,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 22600,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "找死！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 38700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "打脸现场来了。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 1,
+    "show_at": 38700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "打脸来得太快",
+        "哈哈哈哈哈",
+        "这反差绝了",
+        "太离谱了"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 2,
+    "show_at": 38700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我儿子可不像某人的儿子，是个废物。"
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 53700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "防御也太强了！"
+    }
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "show_at": 53700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "毫发无伤？",
+        "这防御牛了",
+        "笑死我了",
+        "尴尬了吧",
+        "打不破啊"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 53700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你这个娘们！"
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 63100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你找死！"
+    }
+  },
+  {
+    "id": 14,
+    "type": 5,
+    "show_at": 73500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "心疼，太惨了。"
+    }
+  },
+  {
+    "id": 15,
+    "type": 1,
+    "show_at": 73500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 16,
+    "type": 2,
+    "show_at": 73500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我的儿！"
+    }
+  },
+  {
+    "id": 17,
+    "type": 5,
+    "show_at": 83000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "皇帝都被怼了！"
+    }
+  },
+  {
+    "id": 18,
+    "type": 1,
+    "show_at": 83000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "教训你！",
+      "danmaku": [
+        "狂什么狂",
+        "太欠揍了",
+        "教训皇帝？",
+        "气死我了",
+        "退退退吧"
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "type": 2,
+    "show_at": 83000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我来教训教训你。"
+    }
+  },
+  {
+    "id": 20,
+    "type": 3,
+    "show_at": 83000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该归降吗？",
+      "options": [
+        "归降",
+        "不归降"
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "type": 5,
+    "show_at": 109300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "一个能打的都没有？"
+    }
+  },
+  {
+    "id": 22,
+    "type": 1,
+    "show_at": 109300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "废物！",
+      "danmaku": [
+        "一个能打的都没有",
+        "太嚣张了",
+        "气死人了",
+        "打他丫的",
+        "忍不了啊"
+      ]
+    }
+  },
+  {
+    "id": 23,
+    "type": 2,
+    "show_at": 109300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "一个能打的都没有"
+    }
+  },
+  {
+    "id": 24,
+    "type": 3,
+    "show_at": 109300,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该反驳吗？",
+      "options": [
+        "反驳",
+        "忍了"
+      ]
+    }
+  },
+  {
+    "id": 25,
+    "type": 5,
+    "show_at": 152300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "该有人站出来了。"
+    }
+  },
+  {
+    "id": 26,
+    "type": 1,
+    "show_at": 152300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 27,
+    "type": 2,
+    "show_at": 152300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "连最基本的血性都没有。"
+    }
+  },
+  {
+    "id": 28,
+    "type": 3,
+    "show_at": 152300,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "无血性吗？",
+      "options": [
+        "是",
+        "否"
+      ]
+    }
+  },
+  {
+    "id": 29,
+    "type": 5,
+    "show_at": 171100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "侮辱性拉满！"
+    }
+  },
+  {
+    "id": 30,
+    "type": 1,
+    "show_at": 171100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "废物！",
+      "danmaku": [
+        "都是废物",
+        "皇帝也这样",
+        "气死我了",
+        "太欠揍了",
+        "退退退吧"
+      ]
+    }
+  },
+  {
+    "id": 31,
+    "type": 2,
+    "show_at": 171100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "个个都是废物"
+    }
+  },
+  {
+    "id": 32,
+    "type": 3,
+    "show_at": 171100,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该反驳嘲讽吗？",
+      "options": [
+        "反驳",
+        "不反驳"
+      ]
+    }
+  },
+  {
+    "id": 33,
+    "type": 5,
+    "show_at": 205200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "终于有人请战！"
+    }
+  },
+  {
+    "id": 34,
+    "type": 1,
+    "show_at": 205200,
+    "duration_ms": 4000,
+    "payload": {
+      "button_id": 0,
+      "text": "请战！",
+      "danmaku": [
+        "终于来了",
+        "霸气侧漏",
+        "帅得不行",
+        "就等你了",
+        "好样的啊"
+      ]
+    }
+  },
+  {
+    "id": 35,
+    "type": 3,
+    "show_at": 205200,
+    "duration_ms": 4000,
+    "payload": {
+      "question": "该让他上吗？",
+      "options": [
+        "支持",
+        "反对"
+      ]
+    }
+  }
+]

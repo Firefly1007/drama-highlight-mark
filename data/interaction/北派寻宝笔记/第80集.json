@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 29300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这波真仗义！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 40400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "条件肯定有坑。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "show_at": 40400,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "霸头的条件是？",
+      "options": [
+        "等以后还账",
+        "立即还钱"
+      ],
+      "reveal_time": 63400,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 63400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "真是老狐狸！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 93700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这威胁够狠！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 93700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "阴险算计",
+      "danmaku": [
+        "太阴险了",
+        "缺德发言",
+        "气死个人",
+        "欠揍到家"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 93700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你要是觉得亏了的话，就上了她"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 93700,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该听从暗示吗？",
+      "options": [
+        "听从",
+        "拒绝"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 143000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "真让人心疼。"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 143000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 158100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太直接了！"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 158100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "甜到心坎",
+        "磕到了啊",
+        "锁死这对",
+        "太上头了"
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "show_at": 158100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我是你的了"
+    }
+  }
+]

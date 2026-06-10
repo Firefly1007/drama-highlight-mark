@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:01.580",
+    "end": "00:00:02.300",
+    "text": "哇。",
+    "speech": "单人感叹",
+    "emotion": "惊喜",
+    "voice": "语调上扬",
+    "music": "轻柔舒缓的原声吉他背景音乐",
+    "audio_cues": [
+      "脚步声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:00:10.340",
+    "end": "00:00:12.860",
+    "text": "靳叔，这里有派大星哎。",
+    "speech": "单人呼喊",
+    "emotion": "兴奋",
+    "voice": "声音清脆明亮",
+    "music": "轻柔舒缓的原声吉他背景音乐持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:01:16.070",
+    "end": "00:01:19.750",
+    "text": "小姑娘，想要海星？看看有没有合眼缘的。",
+    "speech": "店主主动搭话",
+    "emotion": "热情随和",
+    "voice": "语气爽朗",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:20.180",
+    "end": "00:00:24.380",
+    "text": "啊，老板，这个海星好养活吗？我怕我养不好。",
+    "speech": "顾客询问",
+    "emotion": "略带犹豫",
+    "voice": "语气轻柔",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:24.940",
+    "end": "00:00:31.180",
+    "text": "好养活，这个比阿猫阿狗好养活，你只要注意这个水质干净，这一般。",
+    "speech": "店主解答",
+    "emotion": "耐心",
+    "voice": "语速平稳",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 6,
+    "start": "00:00:31.300",
+    "end": "00:00:32.170",
+    "text": "死不了的。",
+    "speech": "店主补充说明",
+    "emotion": "笃定",
+    "voice": "语气干脆",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:32.600",
+    "end": "00:00:39.130",
+    "text": "没事，死了再补获就是，别有负担，喜欢就养。",
+    "speech": "男子安抚",
+    "emotion": "温柔从容",
+    "voice": "语调低沉舒缓",
+    "music": "背景音乐短暂切换为轻柔的钢琴旋律",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:40.500",
+    "end": "00:00:45.120",
+    "text": "养海星，应该不会投入太多感情吧？",
+    "speech": "女子轻声自语",
+    "emotion": "略带纠结",
+    "voice": "声音轻柔，语速偏慢",
+    "music": "钢琴背景音乐持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:47.570",
+    "end": "00:00:52.120",
+    "text": "老板，能帮我配一个好一点的鱼缸，明天送货上门吗？",
+    "speech": "男子提出需求",
+    "emotion": "平和",
+    "voice": "语气沉稳",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:00:52.430",
+    "end": "00:00:55.420",
+    "text": "没问题，明天肯定给你送过去啊。",
+    "speech": "店主爽快答应",
+    "emotion": "热情",
+    "voice": "语调上扬",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:00:55.720",
+    "end": "00:01:01.130",
+    "text": "啊，老板，那我想要多几个颜色的海星，胖一点的。",
+    "speech": "女子补充要求",
+    "emotion": "开心",
+    "voice": "语气轻快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:01:01.590",
+    "end": "00:01:02.170",
+    "text": "没问题。",
+    "speech": "店主回应",
+    "emotion": "干脆",
+    "voice": "语速快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:01:02.570",
+    "end": "00:01:06.460",
+    "text": "谢谢，走吧。",
+    "speech": "女子致谢并同行",
+    "emotion": "满足",
+    "voice": "声音柔和",
+    "music": "",
+    "audio_cues": [
+      "脚步声"
+    ],
+    "uncertainty": ""
+  }
+]

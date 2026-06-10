@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 110000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "嘴硬有什么用！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 110000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "嚣张什么",
+      "danmaku": [
+        "太嚣张了",
+        "气死人了",
+        "欠揍行为",
+        "退退退退"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 110000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "给我宰了他！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 160300,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太阴了！楚辰安加油"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 160300,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "卑鄙小人",
+      "danmaku": [
+        "气死人了",
+        "这人好狂",
+        "欠收拾啊",
+        "卑鄙无耻"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 160300,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我现在就送你上路"
+    }
+  }
+]

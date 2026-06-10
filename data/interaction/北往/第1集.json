@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 59800,
+    "duration_ms": 2100,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "这也太直接了",
+        "生孩子计划",
+        "太离谱了",
+        "笑不活了",
+        "反差感强"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 59800,
+    "duration_ms": 2100,
+    "payload": {
+      "text": "我们抓紧时间要个孩子。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 77200,
+    "duration_ms": 3200,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 77200,
+    "duration_ms": 3200,
+    "payload": {
+      "text": "那又如何，一年之后我就死了。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 81400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "免费基因，这算盘打得响。"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 81400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "基因免费？",
+        "这理由绝了",
+        "坦然到可怕",
+        "太好笑了",
+        "笑死我了"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 81400,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "不要白不要哦。"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 121800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "安排后事，真体贴。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "安排后事？",
+        "这选择太绝",
+        "太荒诞了",
+        "我的天啊",
+        "笑不活了"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "安排后事，我可真体贴。"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "你选哪个方案？",
+      "options": [
+        "见孩子",
+        "培养感情"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 4,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "他选早生孩子还是培养感情？",
+      "options": [
+        "早点生子",
+        "培养感情"
+      ],
+      "reveal_time": 147000,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 147000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "你慌什么",
+        "选二了行",
+        "笑死我了",
+        "可怜巴巴"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 147000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我选二，我选二，培养感情，行了吧。"
+    }
+  }
+]

@@ -1,0 +1,63 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 45900,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "新婚夜就睡觉？"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 45900,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "哈哈哈尴尬了",
+        "这操作绝了",
+        "新婚夜这样？",
+        "处理掉笑死",
+        "慌得一批"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 69000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "调侃到位"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 69000,
+    "duration_ms": 3870,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "吐槽精准",
+        "好一个调侃",
+        "尴尬到家了",
+        "这回应绝",
+        "笑死我了"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 69000,
+    "duration_ms": 3870,
+    "payload": {
+      "text": "看来，今天不培养感情了。"
+    }
+  }
+]

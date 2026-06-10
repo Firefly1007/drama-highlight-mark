@@ -1,0 +1,153 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 27816,
+    "duration_ms": 2617,
+    "payload": {
+      "button_id": 2,
+      "text": "找抽",
+      "danmaku": [
+        "嚣张过头了",
+        "气死人了",
+        "欠揍啊你",
+        "真欠收拾"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 27816,
+    "duration_ms": 2617,
+    "payload": {
+      "text": "小杂种，你。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 27816,
+    "duration_ms": 2617,
+    "payload": {
+      "question": "这种挑衅行为合适吗？",
+      "options": [
+        "合适",
+        "不合适"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 27816,
+    "duration_ms": 2617,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 47433,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "赏赐太炸了吧！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 47433,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "封侯拜将",
+      "danmaku": [
+        "赏赐拉满",
+        "逆袭了牛",
+        "爽翻天了",
+        "太狂了吧"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 85533,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这质疑在理！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 85533,
+    "duration_ms": 4016,
+    "payload": {
+      "question": "赏赐太多了吗？",
+      "options": [
+        "是",
+        "否"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 4,
+    "show_at": 85533,
+    "duration_ms": 4016,
+    "payload": {
+      "question": "皇帝会怎么回应？",
+      "options": [
+        "坚持原赏赐",
+        "减少赏赐",
+        "提出条件"
+      ],
+      "reveal_time": 89216,
+      "reveal_delay": 5000,
+      "answer_id": 2
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 89216,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "条件有点意思"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 89216,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "这个条件公平吗？",
+      "options": [
+        "公平",
+        "不公平"
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "show_at": 99749,
+    "duration_ms": 1450,
+    "payload": {
+      "text": "且慢。"
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 99749,
+    "duration_ms": 1450,
+    "payload": {
+      "text": "有新人来了！"
+    }
+  }
+]

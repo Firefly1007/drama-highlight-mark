@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 10620,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "太敢说了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 10620,
+    "duration_ms": 4799,
+    "payload": {
+      "button_id": 0,
+      "text": "滚出大炎",
+      "danmaku": [
+        "这波操作太帅",
+        "气场全开",
+        "爽到不行",
+        "支持大炎"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 10620,
+    "duration_ms": 4799,
+    "payload": {
+      "text": "你们也配！滚出大炎！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 27000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这太嚣张了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 27000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太狂妄了",
+      "danmaku": [
+        "气死个人",
+        "太欠揍了",
+        "找打是吧",
+        "赶紧滚蛋"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 27000,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "乖乖认输吧"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 40519,
+    "duration_ms": 1461,
+    "payload": {
+      "button_id": 0,
+      "text": "放肆！",
+      "danmaku": [
+        "好有气场",
+        "这声放肆绝了",
+        "刀剑声配得好",
+        "霸气侧漏"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 40519,
+    "duration_ms": 1461,
+    "payload": {
+      "text": "刀剑出鞘了！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 51100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "战就战！"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 51100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "战！",
+      "danmaku": [
+        "热血沸腾",
+        "宣战宣言",
+        "支持大炎",
+        "这气势牛"
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "show_at": 51100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "战！就战！"
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 70239,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "阴谋曝光了！"
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 82100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "气场全开！"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 82100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "霸气应战",
+      "danmaku": [
+        "帝王气场",
+        "自信满满",
+        "心服口服",
+        "这波稳了"
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "show_at": 82100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "定会让三位皇子心服口服"
+    }
+  }
+]

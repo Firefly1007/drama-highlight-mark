@@ -1,0 +1,117 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 28779,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "护妻狂魔上线！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 28779,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "护妻宣言",
+      "danmaku": [
+        "霸气护妻",
+        "说得太对了",
+        "护妻到底",
+        "谁也别动"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 28779,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我老婆的东西哪个都不许拿"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 28779,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该护妻吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 100822,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "哈哈，这理由绝了！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 100822,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "太搞笑了",
+        "没力气吵架",
+        "饿坏了吧"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 100822,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "不吃饱哪来的力气？"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 135104,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "救命，太会说了！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 135104,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "甜到心里",
+        "磕死我了",
+        "锁死这对",
+        "真会说话"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 135104,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "是让你来享福的"
+    }
+  }
+]

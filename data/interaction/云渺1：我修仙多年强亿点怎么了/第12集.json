@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 5820,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "听就滚，好拽啊！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 5820,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "滚远点",
+      "danmaku": [
+        "这也太横了",
+        "命令个啥",
+        "听不下去了",
+        "太嚣张了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 5820,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "听到就给我滚。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 144130,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "他自己都懵了？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 144130,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死，自己懵了",
+        "这转变绝了",
+        "什么鬼啊",
+        "太好笑了"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 144130,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "想法不由自主吗？",
+      "options": [
+        "是",
+        "否"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 180610,
+    "duration_ms": 2110,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "打脸来了",
+        "反转太快",
+        "说早了哈哈",
+        "赞了个寂寞"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 2,
+    "show_at": 180610,
+    "duration_ms": 2110,
+    "payload": {
+      "text": "话还是说早了。"
+    }
+  },
+  {
+    "id": 9,
+    "type": 3,
+    "show_at": 180610,
+    "duration_ms": 2110,
+    "payload": {
+      "question": "周家不全是蠢人？",
+      "options": [
+        "是",
+        "不是"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 5,
+    "show_at": 180610,
+    "duration_ms": 2110,
+    "payload": {
+      "text": "反转来了！"
+    }
+  }
+]

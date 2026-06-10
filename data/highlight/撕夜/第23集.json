@@ -1,0 +1,109 @@
+[
+  {
+    "id": 1,
+    "summary": "江清芷回忆上一世为了逃跑曾拿刀捅过楚辰安。",
+    "level": 1,
+    "reason": "提供前世冲突的剧情信息增量，有回忆价值。",
+    "segment_ids": [
+      8
+    ],
+    "trigger_segment_id": 8,
+    "start": "00:01:40.330",
+    "end": "00:01:47.170",
+    "trigger_time": "00:01:40.330",
+    "evidence_segments": [
+      {
+        "id": 8,
+        "start": "00:01:40.330",
+        "end": "00:01:47.170",
+        "text": "我想起来了，上一世我为了逃跑，好像还拿刀捅过他。",
+        "speech": "单人发言",
+        "emotion": "语气恍惚",
+        "voice": "音量轻柔，带有回忆感",
+        "music": "韩语抒情女声演唱持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "楚辰安告诉江清芷可以随便利用他，他对她绝对服从。",
+    "level": 2,
+    "reason": "台词记忆点，情绪坚定，体现承诺服从的人物关系变化。",
+    "segment_ids": [
+      11
+    ],
+    "trigger_segment_id": 11,
+    "start": "00:02:11.360",
+    "end": "00:02:20.050",
+    "trigger_time": "00:02:11.360",
+    "evidence_segments": [
+      {
+        "id": 11,
+        "start": "00:02:11.360",
+        "end": "00:02:20.050",
+        "text": "你不用跟我说对不起，你可以随便利用我，我对你，绝对服从。",
+        "speech": "单人发言",
+        "emotion": "语气坚定",
+        "voice": "声线低沉",
+        "music": "韩语抒情女声演唱持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "江清芷惊慌拒绝楚辰安帮她洗澡，楚辰安要求她叫老公。",
+    "level": 2,
+    "reason": "有反差感和冲突，从惊慌拒绝到被要求叫老公，台词传播性强。",
+    "segment_ids": [
+      13,
+      15,
+      16
+    ],
+    "trigger_segment_id": 16,
+    "start": "00:02:49.240",
+    "end": "00:03:00.310",
+    "trigger_time": "00:02:58.080",
+    "evidence_segments": [
+      {
+        "id": 13,
+        "start": "00:02:49.240",
+        "end": "00:02:51.370",
+        "text": "楚尘，你干什么？你放我下来！",
+        "speech": "单人发言",
+        "emotion": "惊慌喊叫",
+        "voice": "音量拔高，语速急促",
+        "music": "转为轻快活泼的背景音乐",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 15,
+        "start": "00:02:54.960",
+        "end": "00:02:57.360",
+        "text": "我伤的是脸又不是手，楚尘！",
+        "speech": "单人发言",
+        "emotion": "语气激动",
+        "voice": "音量拔高",
+        "music": "轻快活泼的背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 16,
+        "start": "00:02:58.080",
+        "end": "00:03:00.310",
+        "text": "还叫我名字，叫老公。",
+        "speech": "单人发言",
+        "emotion": "略带戏谑",
+        "voice": "声线低沉",
+        "music": "轻快活泼的背景音乐持续",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

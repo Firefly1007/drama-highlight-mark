@@ -1,0 +1,163 @@
+[
+  {
+    "id": 1,
+    "summary": "男子虚弱地质疑女子为何救他，声称死亡正合她意。",
+    "level": 2,
+    "reason": "显示角色间的紧张关系和情绪冲突，有明确质问和情绪强度。",
+    "segment_ids": [
+      4
+    ],
+    "trigger_segment_id": 4,
+    "start": "00:00:10.300",
+    "end": "00:00:14.330",
+    "trigger_time": "00:00:10.300",
+    "evidence_segments": [
+      {
+        "id": 4,
+        "start": "00:00:10.300",
+        "end": "00:00:14.330",
+        "text": "为什么要救我？我死了不是正合你意吗？",
+        "speech": "单人发言",
+        "emotion": "带着虚弱的情绪",
+        "voice": "声音低沉沙哑",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "女子略带委屈地否认曾说过希望男子死的话，并威胁不理他。",
+    "level": 2,
+    "reason": "情绪反应强烈，冲突升级，显示情感张力。",
+    "segment_ids": [
+      5
+    ],
+    "trigger_segment_id": 5,
+    "start": "00:00:15.130",
+    "end": "00:00:20.170",
+    "trigger_time": "00:00:15.130",
+    "evidence_segments": [
+      {
+        "id": 5,
+        "start": "00:00:15.130",
+        "end": "00:00:20.170",
+        "text": "我什么时候说过这样的话，你要是再胡说，我真的就不理你了。",
+        "speech": "单人发言",
+        "emotion": "略带委屈又带着嗔怪",
+        "voice": "语气柔和",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "女子温柔地对昏迷中的周时韫说等他醒来有重要事情要说。",
+    "level": 2,
+    "reason": "设置剧情悬念，暗示后续关键信息，具有悬念价值。",
+    "segment_ids": [
+      6
+    ],
+    "trigger_segment_id": 6,
+    "start": "00:00:25.930",
+    "end": "00:00:33.050",
+    "trigger_time": "00:00:25.930",
+    "evidence_segments": [
+      {
+        "id": 6,
+        "start": "00:00:25.930",
+        "end": "00:00:33.050",
+        "text": "周时韫，等你醒过来，我跟你说件事。",
+        "speech": "单人发言",
+        "emotion": "温柔",
+        "voice": "语速放缓",
+        "music": "舒缓抒情的背景音乐",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "女子戏谑地对醒来的男子说可以随意触摸她，甚至脱衣。",
+    "level": 1,
+    "reason": "从关切到戏谑的反差，增加轻松趣味和情绪变化。",
+    "segment_ids": [
+      8
+    ],
+    "trigger_segment_id": 8,
+    "start": "00:01:09.020",
+    "end": "00:01:16.000",
+    "trigger_time": "00:01:09.020",
+    "evidence_segments": [
+      {
+        "id": 8,
+        "start": "00:01:09.020",
+        "end": "00:01:16.000",
+        "text": "想摸就摸嘛，那么扭扭捏捏的干什么，还想摸哪，我脱给你摸啊。",
+        "speech": "单人发言",
+        "emotion": "戏谑",
+        "voice": "语气慵懒",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "summary": "女子在男子询问后，对苏矜北发出偏执威胁，说如果离开就关起来直到死。",
+    "level": 3,
+    "reason": "强情绪爆发、偏执威胁，具有强传播性、记忆点和反差感。",
+    "segment_ids": [
+      10,
+      11,
+      12
+    ],
+    "trigger_segment_id": 12,
+    "start": "00:01:33.500",
+    "end": "00:01:49.010",
+    "trigger_time": "00:01:39.830",
+    "evidence_segments": [
+      {
+        "id": 10,
+        "start": "00:01:33.500",
+        "end": "00:01:34.780",
+        "text": "你想跟我说什么？",
+        "speech": "单人发言",
+        "emotion": "平静",
+        "voice": "轻声询问",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 11,
+        "start": "00:01:37.420",
+        "end": "00:01:38.630",
+        "text": "我想说。",
+        "speech": "单人发言",
+        "emotion": "认真",
+        "voice": "语气郑重",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 12,
+        "start": "00:01:39.830",
+        "end": "00:01:49.010",
+        "text": "苏矜北，你要是敢离开我，我就把你关起来，关到死为止，别离开我。",
+        "speech": "单人发言",
+        "emotion": "偏执又带着脆弱",
+        "voice": "声音逐渐加重",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

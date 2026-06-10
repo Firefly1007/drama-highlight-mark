@@ -25,6 +25,7 @@ from pipline.common.runtime import EpisodeStatus
 
 MAX_ATTEMPTS = 3
 STEP_NAME = "branch_image"
+API_SEMAPHORE = asyncio.Semaphore(20)
 EPISODE_PATTERN = re.compile(r"第(\d+)集$")
 
 
@@ -344,10 +345,12 @@ async def batch_process_prompt_files(prompt_files: list[Path]) -> None:
     """异步批量处理 prompt 文件。"""
     success_count = 0
     fail_count = 0
-    tasks = [
-        process_prompt_file(prompt_file, emit_status_logs=False)
-        for prompt_file in prompt_files
-    ]
+
+    async def _run(prompt_file):
+        async with API_SEMAPHORE:
+            return await process_prompt_file(prompt_file, emit_status_logs=False)
+
+    tasks = [_run(prompt_file) for prompt_file in prompt_files]
     for task in tqdm_asyncio.as_completed(
         tasks,
         total=len(tasks),

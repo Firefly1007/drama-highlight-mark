@@ -138,6 +138,7 @@ USER_PROMPT = """
 
 
 client = get_async_openai_client()
+API_SEMAPHORE = asyncio.Semaphore(20)
 
 
 def build_user_prompt(audio_path: str | Path) -> str:
@@ -271,7 +272,12 @@ async def batch_convert(audio_files: list[str], text_files: list[str]):
     """批量转换"""
     success_count = 0
     fail_count = 0
-    tasks = [audio_to_text(a, t) for a, t in zip(audio_files, text_files)]
+
+    async def _run(a, t):
+        async with API_SEMAPHORE:
+            return await audio_to_text(a, t)
+
+    tasks = [_run(a, t) for a, t in zip(audio_files, text_files)]
     for task in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="音频转文本"):
         try:
             await task

@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 39100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "变漂亮了这么多，惊了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 48000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这嘲讽，不能忍！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 48000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "别步后尘",
+      "danmaku": [
+        "气人得很",
+        "太嚣张了",
+        "欠揍发言",
+        "闭嘴吧！"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 48000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该这么嘲讽吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 69700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "人和狗？绝了！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 69700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "回得好",
+      "danmaku": [
+        "太霸气了",
+        "怼得漂亮",
+        "气场拉满",
+        "解气得很"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 69700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "人和狗，挺难有共同语言"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 95000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "打脸时刻来了！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 95000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "打脸！",
+      "danmaku": [
+        "太解气了",
+        "活该挨打",
+        "巴掌声响",
+        "干得漂亮"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 3,
+    "show_at": 95000,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "这种挑衅该挨打吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  }
+]

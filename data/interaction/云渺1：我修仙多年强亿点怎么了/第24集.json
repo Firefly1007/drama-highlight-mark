@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 53600,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这开棺有点吓人"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 53600,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "开棺验证",
+      "danmaku": [
+        "太气人了",
+        "胡说八道",
+        "开棺疯了",
+        "气死我了"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 53600,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "打开母亲的棺材"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 64400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "哭得人心碎"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 64400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 64400,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "这就不是大逆不道了！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 64400,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "开棺是大逆不道吗？",
+      "options": [
+        "是",
+        "不是"
+      ]
+    }
+  }
+]

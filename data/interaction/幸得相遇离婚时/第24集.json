@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 17500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "爸爸的这句话好戳心"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 17500,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 17500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "过得不好就回家"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 30000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "前夫太可恶了！"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 30000,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "太可恨了",
+      "danmaku": [
+        "太过分了！",
+        "害人不浅！",
+        "气死我了！",
+        "退退退！",
+        "必须严惩！"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 84400,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  }
+]

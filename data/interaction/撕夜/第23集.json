@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 131360,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这承诺太绝了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 131360,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "好甜啊啊",
+        "绝对服从",
+        "锁死这对",
+        "磕糖上头",
+        "太宠了吧"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 131360,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "你可以随便利用我"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 178080,
+    "duration_ms": 2930,
+    "payload": {
+      "button_id": 5,
+      "text": null,
+      "danmaku": [
+        "叫老公好害羞",
+        "楚辰安好会",
+        "磕糖上头",
+        "甜度爆表",
+        "好害羞啊"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 178080,
+    "duration_ms": 2930,
+    "payload": {
+      "text": "还叫我名字，叫老公"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 178080,
+    "duration_ms": 2930,
+    "payload": {
+      "question": "江清芷该叫老公吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 178080,
+    "duration_ms": 2930,
+    "payload": {
+      "text": "叫老公？进展太快"
+    }
+  }
+]

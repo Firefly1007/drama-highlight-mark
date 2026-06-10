@@ -1,0 +1,161 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 52583,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这打断太急了"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 52583,
+    "duration_ms": 4516,
+    "payload": {
+      "text": "什么病会连吐三日黑血"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 52583,
+    "duration_ms": 4516,
+    "payload": {
+      "question": "死因是病死还是蹊跷？",
+      "options": [
+        "病死",
+        "蹊跷"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 81214,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "装纨绔不容易"
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 81214,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我能有命活到今天"
+    }
+  },
+  {
+    "id": 6,
+    "type": 5,
+    "show_at": 104266,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "算计真深啊"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 104266,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "好算计",
+      "danmaku": [
+        "气死我了",
+        "装委屈真恶心",
+        "算计太深",
+        "太阴险了"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 140331,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "谁给的底气"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 140331,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 1,
+      "text": null,
+      "danmaku": [
+        "笑死我了",
+        "大哥是谁啊",
+        "皇帝老儿也行",
+        "吹牛大王"
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 140331,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "哪怕是皇帝老儿来了，他都能罩着我"
+    }
+  },
+  {
+    "id": 11,
+    "type": 4,
+    "show_at": 140331,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "大哥到底是谁？",
+      "options": [
+        "不存在",
+        "皇帝"
+      ],
+      "reveal_time": 218459,
+      "reveal_delay": 5000,
+      "answer_id": 1
+    }
+  },
+  {
+    "id": 12,
+    "type": 5,
+    "show_at": 218459,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这反转绝了"
+    }
+  },
+  {
+    "id": 13,
+    "type": 1,
+    "show_at": 218459,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "威严降临",
+      "danmaku": [
+        "霸气侧漏",
+        "陛下威武",
+        "爽翻天了",
+        "气场全开",
+        "打脸真爽"
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "show_at": 218459,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我倒要看看，是谁要砍了朕的脑袋呀！"
+    }
+  }
+]

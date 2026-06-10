@@ -1,0 +1,125 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 48200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这妈心真硬！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 48200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "冷血无情",
+      "danmaku": [
+        "冷血成这样",
+        "太狠了吧",
+        "气到不行",
+        "怨气冲天"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 48200,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "他痛不痛苦，关我屁事"
+    }
+  },
+  {
+    "id": 4,
+    "type": 3,
+    "show_at": 48200,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "黄老夫人该体谅吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 69200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "嘴太毒了吧！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 69200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "狐媚子",
+      "danmaku": [
+        "嘴太毒了",
+        "恶毒诅咒",
+        "气死我了",
+        "这什么话"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 69200,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "早去早死"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 121700,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "看得人心疼"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 121700,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 121700,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "当真是奇耻大辱"
+    }
+  },
+  {
+    "id": 11,
+    "type": 3,
+    "show_at": 121700,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "黄老夫人值得同情吗？",
+      "options": [
+        "值得",
+        "不值得"
+      ]
+    }
+  }
+]

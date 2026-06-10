@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 56320,
+    "duration_ms": 2600,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 56320,
+    "duration_ms": 2600,
+    "payload": {
+      "text": "啥玩意儿？"
+    }
+  }
+]

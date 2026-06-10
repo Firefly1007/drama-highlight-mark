@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 38000,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 38000,
+    "duration_ms": 3700,
+    "payload": {
+      "button_id": 0,
+      "text": "赢定了",
+      "danmaku": [
+        "这自信绝了",
+        "太狂了吧",
+        "稳赢局面",
+        "气场拉满"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 38000,
+    "duration_ms": 3700,
+    "payload": {
+      "text": "放心吧爹，输不了。"
+    }
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "show_at": 66100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "就你会叫？"
+    }
+  },
+  {
+    "id": 5,
+    "type": 1,
+    "show_at": 66100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "嚣张",
+      "danmaku": [
+        "废物说谁呢",
+        "太气人了",
+        "嚣张什么",
+        "看不起谁呢"
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "type": 2,
+    "show_at": 66100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "去死吧！"
+    }
+  },
+  {
+    "id": 7,
+    "type": 1,
+    "show_at": 86400,
+    "duration_ms": 3000,
+    "payload": {
+      "button_id": 0,
+      "text": "打脸了",
+      "danmaku": [
+        "怎么可能",
+        "躲得漂亮",
+        "震惊我了",
+        "帅呆了吧"
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 86400,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "打脸了吧！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 129700,
+    "duration_ms": 1500,
+    "payload": {
+      "button_id": 0,
+      "text": "爆发了",
+      "danmaku": [
+        "打得好啊",
+        "帅炸了啊",
+        "发力了啊",
+        "太强了吧"
+      ]
+    }
+  }
+]

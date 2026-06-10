@@ -1,0 +1,49 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 63500,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太敢说了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 63500,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "他们不嫁，我嫁"
+    }
+  },
+  {
+    "id": 3,
+    "type": 3,
+    "show_at": 63500,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该嫁吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 4,
+    "show_at": 63500,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "她为何坚持要嫁？",
+      "options": [
+        "出于真情",
+        "为了捡漏"
+      ],
+      "reveal_time": 97500,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  }
+]

@@ -1,0 +1,215 @@
+[
+  {
+    "id": 1,
+    "type": 5,
+    "show_at": 2430,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这也太欺负人了吧！"
+    }
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "show_at": 2430,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "嚣张狂徒",
+      "danmaku": [
+        "太嚣张了吧",
+        "欠揍发言",
+        "放过她们",
+        "嚣张啥呢"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "type": 2,
+    "show_at": 2430,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "把它们全给我吃了"
+    }
+  },
+  {
+    "id": 4,
+    "type": 4,
+    "show_at": 2430,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "鸡蛋会被吃吗？",
+      "options": [
+        "会吃",
+        "不会吃"
+      ],
+      "reveal_time": 46310,
+      "reveal_delay": 5000,
+      "answer_id": 0
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 36790,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "报警！支持！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 36790,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "嘲讽报警",
+      "danmaku": [
+        "报警怎么了",
+        "欠债还钱",
+        "威胁个啥",
+        "真狂啊"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 2,
+    "show_at": 36790,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "欠债还钱天经地义"
+    }
+  },
+  {
+    "id": 8,
+    "type": 3,
+    "show_at": 36790,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该报警吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "show_at": 46310,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "心疼母女俩"
+    }
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "show_at": 46310,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 11,
+    "type": 5,
+    "show_at": 73460,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "妈妈哭了好心酸"
+    }
+  },
+  {
+    "id": 12,
+    "type": 1,
+    "show_at": 73460,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "show_at": 93020,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "这气势可以！"
+    }
+  },
+  {
+    "id": 14,
+    "type": 1,
+    "show_at": 93020,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 3,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 15,
+    "type": 2,
+    "show_at": 93020,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "我和你们拼了！"
+    }
+  },
+  {
+    "id": 16,
+    "type": 3,
+    "show_at": 93020,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "该拼了吗？",
+      "options": [
+        "该",
+        "不该"
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "type": 5,
+    "show_at": 113100,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "要出大事了！"
+    }
+  },
+  {
+    "id": 18,
+    "type": 1,
+    "show_at": 113100,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 2,
+      "text": "凶狠命令",
+      "danmaku": [
+        "太狠了吧",
+        "打人啦",
+        "住手啊",
+        "欠揍命令"
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "type": 2,
+    "show_at": 113100,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "给我干他！"
+    }
+  }
+]

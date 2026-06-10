@@ -1,0 +1,455 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:00.000",
+    "end": "00:12:05.000",
+    "text": "向云峰，你醒了？",
+    "speech": "单人发言",
+    "emotion": "惊喜",
+    "voice": "语调上扬，语气轻快",
+    "music": "舒缓的钢琴背景音",
+    "audio_cues": [
+      "咳嗽声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:12:07.000",
+    "end": "00:23:00.000",
+    "text": "没事吧？",
+    "speech": "单人发言",
+    "emotion": "关切",
+    "voice": "语速放缓，语气轻柔",
+    "music": "舒缓的钢琴背景音持续",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:23:05.000",
+    "end": "00:00:24.000",
+    "text": "这是哪儿啊？",
+    "speech": "单人发言",
+    "emotion": "虚弱迷茫",
+    "voice": "声音沙哑，气息不稳",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:24.500",
+    "end": "00:00:26.500",
+    "text": "这是我家，你昨天晕倒了。",
+    "speech": "单人发言",
+    "emotion": "平和",
+    "voice": "语气自然",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:27.500",
+    "end": "00:00:28.500",
+    "text": "哎呀，您可来了。",
+    "speech": "单人发言",
+    "emotion": "焦急",
+    "voice": "语速偏快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 6,
+    "start": "00:00:28.700",
+    "end": "00:00:29.300",
+    "text": "人呢？",
+    "speech": "单人发言",
+    "emotion": "沉稳",
+    "voice": "语气严肃",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:29.600",
+    "end": "00:00:32.000",
+    "text": "啊，就在屋里，说是被蛇咬了。",
+    "speech": "单人发言",
+    "emotion": "急切",
+    "voice": "语速较快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:32.100",
+    "end": "00:00:33.500",
+    "text": "你们都不要进来啊。",
+    "speech": "单人发言",
+    "emotion": "郑重",
+    "voice": "语气坚定",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:34.200",
+    "end": "00:00:35.800",
+    "text": "静静，快出来。",
+    "speech": "单人发言",
+    "emotion": "催促",
+    "voice": "声音拔高",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:00:35.900",
+    "end": "00:00:37.800",
+    "text": "别打扰婆婆治病啊。",
+    "speech": "单人发言",
+    "emotion": "叮嘱",
+    "voice": "语气认真",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:00:37.900",
+    "end": "00:00:38.800",
+    "text": "好嘞妈。",
+    "speech": "单人发言",
+    "emotion": "爽快",
+    "voice": "语调轻快",
+    "music": "",
+    "audio_cues": [
+      "脚步声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:00:45.000",
+    "end": "00:00:47.500",
+    "text": "后生，你哪里被蛇咬了？",
+    "speech": "单人发言",
+    "emotion": "严肃",
+    "voice": "语气沉稳",
+    "music": "悬疑低沉的背景音乐起",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:00:49.300",
+    "end": "00:00:50.000",
+    "text": "这里。",
+    "speech": "单人发言",
+    "emotion": "虚弱",
+    "voice": "声音微弱",
+    "music": "",
+    "audio_cues": [
+      "特效音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 14,
+    "start": "00:00:54.300",
+    "end": "00:00:59.100",
+    "text": "这不是被蛇咬了，这，这是尸脚仙。",
+    "speech": "单人发言",
+    "emotion": "震惊",
+    "voice": "语气错愕，语速放缓",
+    "music": "悬疑背景音乐持续",
+    "audio_cues": [
+      "重音打击音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 15,
+    "start": "00:01:01.100",
+    "end": "00:01:01.900",
+    "text": "你认识？",
+    "speech": "单人发言",
+    "emotion": "惊讶",
+    "voice": "声音略带颤抖",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 16,
+    "start": "00:01:02.300",
+    "end": "00:01:07.300",
+    "text": "当然，我们苗家的老一辈，都是用这种东西下蛊。",
+    "speech": "单人发言",
+    "emotion": "笃定",
+    "voice": "语气严肃",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 17,
+    "start": "00:01:08.500",
+    "end": "00:01:09.400",
+    "text": "我会死吗？",
+    "speech": "单人发言",
+    "emotion": "恐慌",
+    "voice": "声音发颤",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 18,
+    "start": "00:01:10.600",
+    "end": "00:01:13.800",
+    "text": "会死的，而且你会死的很惨很惨。",
+    "speech": "单人发言",
+    "emotion": "冷酷",
+    "voice": "语气平淡却有压迫感",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 19,
+    "start": "00:01:15.700",
+    "end": "00:01:20.500",
+    "text": "婆婆，你能救我吗？我能给你钱，我不能死。",
+    "speech": "单人发言",
+    "emotion": "极度恐慌哀求",
+    "voice": "语速急促，声音带着哭腔",
+    "music": "",
+    "audio_cues": [
+      "衣物摩擦声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 20,
+    "start": "00:01:22.000",
+    "end": "00:01:25.800",
+    "text": "可以，但是你得告诉我，你自己是做什么的？",
+    "speech": "单人发言",
+    "emotion": "从容",
+    "voice": "语气不紧不慢",
+    "music": "",
+    "audio_cues": [
+      "转场特效音",
+      "蝉鸣音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 21,
+    "start": "00:01:31.300",
+    "end": "00:01:36.700",
+    "text": "对不起婆婆，我不能说，我向云峰不是出卖朋友的人。",
+    "speech": "单人发言",
+    "emotion": "坚定隐忍",
+    "voice": "声音虚弱却透着倔强",
+    "music": "",
+    "audio_cues": [
+      "重音鼓点音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 22,
+    "start": "00:01:38.600",
+    "end": "00:01:49.700",
+    "text": "哼，跑江湖的，能有你这种品质，真是难得。静静，把婆婆车子上的盘子给我拿过来。",
+    "speech": "单人发言",
+    "emotion": "赞许",
+    "voice": "语气缓和下来",
+    "music": "舒缓的钢琴背景音重新响起",
+    "audio_cues": [
+      "金属碰撞声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 23,
+    "start": "00:01:54.000",
+    "end": "00:01:55.000",
+    "text": "早就准备好了。",
+    "speech": "单人发言",
+    "emotion": "乖巧",
+    "voice": "语调轻快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 24,
+    "start": "00:01:55.400",
+    "end": "00:01:57.600",
+    "text": "你这丫头，真是聪慧。",
+    "speech": "单人发言",
+    "emotion": "慈爱",
+    "voice": "语气带着笑意",
+    "music": "",
+    "audio_cues": [
+      "杯子碰撞声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 25,
+    "start": "00:02:11.300",
+    "end": "00:02:14.500",
+    "text": "没事了，明天就好了，你先休息吧。",
+    "speech": "单人发言",
+    "emotion": "平和",
+    "voice": "语气轻柔",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 26,
+    "start": "00:02:16.700",
+    "end": "00:02:25.300",
+    "text": "谢谢你婆婆，你救了我一命，李静救了我一命，你们的恩，我一定会报答的。",
+    "speech": "单人发言",
+    "emotion": "真诚感激",
+    "voice": "语气郑重",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 27,
+    "start": "00:02:25.900",
+    "end": "00:02:33.300",
+    "text": "哼，年纪不大，何必背负那么多东西，走了。",
+    "speech": "单人发言",
+    "emotion": "淡然",
+    "voice": "语气舒缓",
+    "music": "",
+    "audio_cues": [
+      "开门声",
+      "脚步声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 28,
+    "start": "00:02:43.000",
+    "end": "00:02:43.900",
+    "text": "你怎么样了？",
+    "speech": "单人发言",
+    "emotion": "关切",
+    "voice": "语气轻柔",
+    "music": "",
+    "audio_cues": [
+      "衣物摩擦声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 29,
+    "start": "00:02:45.500",
+    "end": "00:02:54.200",
+    "text": "不疼了，今天的事，谢谢你，要不是你的话，我可能就会死在外面了。",
+    "speech": "单人发言",
+    "emotion": "心有余悸",
+    "voice": "语速放缓，语气诚恳",
+    "music": "",
+    "audio_cues": [
+      "特效音"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 30,
+    "start": "00:02:54.700",
+    "end": "00:02:55.800",
+    "text": "客气啥呀。",
+    "speech": "单人发言",
+    "emotion": "爽朗",
+    "voice": "语调轻快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 31,
+    "start": "00:02:57.500",
+    "end": "00:03:00.500",
+    "text": "我向云峰，不是知恩不报的人。",
+    "speech": "单人发言",
+    "emotion": "坚定",
+    "voice": "语气郑重",
+    "music": "",
+    "audio_cues": [
+      "女生笑声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 32,
+    "start": "00:03:02.400",
+    "end": "00:03:05.700",
+    "text": "没想到向云峰你，还挺讲义气的。",
+    "speech": "单人发言",
+    "emotion": "欣赏",
+    "voice": "语气带着笑意",
+    "music": "",
+    "audio_cues": [
+      "手机震动声",
+      "特效音"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 33,
+    "start": "00:03:10.000",
+    "end": "00:03:10.500",
+    "text": "喂？",
+    "speech": "单人发言",
+    "emotion": "疑惑",
+    "voice": "语气略带茫然",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 34,
+    "start": "00:03:10.900",
+    "end": "00:03:13.300",
+    "text": "快回来，老二昨晚在坑里失踪了。",
+    "speech": "电话通话发言",
+    "emotion": "焦急",
+    "voice": "声音从电话传出，语速急促",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 35,
+    "start": "00:03:13.400",
+    "end": "00:03:13.800",
+    "text": "什么？",
+    "speech": "单人发言",
+    "emotion": "震惊",
+    "voice": "声音陡然拔高",
+    "music": "",
+    "audio_cues": [
+      "转场特效音"
+    ],
+    "uncertainty": ""
+  }
+]

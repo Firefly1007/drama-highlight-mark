@@ -1,0 +1,84 @@
+[
+  {
+    "id": 1,
+    "type": 2,
+    "show_at": 12500,
+    "duration_ms": 4200,
+    "payload": {
+      "text": "明日葬礼，必生事端。"
+    }
+  },
+  {
+    "id": 2,
+    "type": 5,
+    "show_at": 121800,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "云小姐真神了！"
+    }
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "太神了",
+      "danmaku": [
+        "服了服了",
+        "太牛了吧",
+        "这谁顶得住",
+        "气场全开",
+        "神了神了"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "show_at": 121800,
+    "duration_ms": 5000,
+    "payload": {
+      "text": "云小姐真是神。"
+    }
+  },
+  {
+    "id": 5,
+    "type": 5,
+    "show_at": 138200,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "面子真大！"
+    }
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "show_at": 138200,
+    "duration_ms": 5000,
+    "payload": {
+      "button_id": 0,
+      "text": "面子真大",
+      "danmaku": [
+        "震撼到了",
+        "来头不小",
+        "气场惊人",
+        "卧槽这排场"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 3,
+    "show_at": 138200,
+    "duration_ms": 5000,
+    "payload": {
+      "question": "来客看她面子？",
+      "options": [
+        "是",
+        "不是"
+      ]
+    }
+  }
+]

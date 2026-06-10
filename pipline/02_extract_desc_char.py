@@ -35,6 +35,7 @@ HEADERS = {
 
 MAX_RETRIES = 3
 RETRY_DELAYS = [1, 2, 4]
+API_SEMAPHORE = asyncio.Semaphore(20)
 
 
 def extract_info(html: str):
@@ -144,22 +145,26 @@ async def extract_batch():
     results: list[dict[str, Any] | None] = [None] * len(items)
 
     async with aiohttp.ClientSession() as session:
-        task_map: dict[asyncio.Future[Any], int] = {
-            asyncio.create_task(_fetch_one(session, item)): i
-            for i, item in enumerate(items)
-        }
-        with tqdm(total=len(task_map), desc="Fetching", unit="drama") as pbar:
-            for fut in asyncio.as_completed(task_map):
-                idx = task_map[fut]
-                try:
-                    results[idx] = await fut
-                except Exception as e:
+        async def _fetch_with_index(i: int):
+            try:
+                async with API_SEMAPHORE:
+                    return i, await _fetch_one(session, items[i])
+            except Exception as e:
+                tqdm.write(f"[FAIL] {items[i]['name']}: {e}")
+                return i, None
+
+        tasks = [_fetch_with_index(i) for i in range(len(items))]
+        with tqdm(total=len(tasks), desc="Fetching", unit="drama") as pbar:
+            for coro in asyncio.as_completed(tasks):
+                idx, result = await coro
+                if result is not None:
+                    results[idx] = result
+                else:
                     results[idx] = {
                         "name": items[idx]["name"],
                         "description": "",
                         "characters": [],
                     }
-                    tqdm.write(f"[FAIL] {items[idx]['name']}: {e}")
                 pbar.update(1)
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)

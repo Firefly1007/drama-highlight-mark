@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "show_at": 29130,
+    "duration_ms": 2500,
+    "payload": {
+      "button_id": 2,
+      "text": "真敷衍",
+      "danmaku": [
+        "真够无语的",
+        "这态度真差",
+        "太冷漠了",
+        "敷衍至极"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": 2,
+    "show_at": 29130,
+    "duration_ms": 2500,
+    "payload": {
+      "text": "随便。"
+    }
+  },
+  {
+    "id": 3,
+    "type": 5,
+    "show_at": 29130,
+    "duration_ms": 2500,
+    "payload": {
+      "text": "太敷衍了！"
+    }
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "show_at": 35430,
+    "duration_ms": 1630,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "show_at": 35430,
+    "duration_ms": 1630,
+    "payload": {
+      "text": "我不出门。"
+    }
+  },
+  {
+    "id": 6,
+    "type": 3,
+    "show_at": 35430,
+    "duration_ms": 1630,
+    "payload": {
+      "question": "该出门接吗？",
+      "options": [
+        "出门接",
+        "不出门接"
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "type": 5,
+    "show_at": 35430,
+    "duration_ms": 1630,
+    "payload": {
+      "text": "太伤人了！"
+    }
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "show_at": 79770,
+    "duration_ms": 3000,
+    "payload": {
+      "text": "果然没来！"
+    }
+  },
+  {
+    "id": 9,
+    "type": 1,
+    "show_at": 79770,
+    "duration_ms": 3340,
+    "payload": {
+      "button_id": 4,
+      "text": null,
+      "danmaku": null
+    }
+  },
+  {
+    "id": 10,
+    "type": 2,
+    "show_at": 79770,
+    "duration_ms": 3340,
+    "payload": {
+      "text": "果然没来接我。"
+    }
+  }
+]

@@ -124,6 +124,7 @@ from pipline.common.schemas import Segment
 
 MAX_ATTEMPTS = 3
 STEP_NAME = "plot_branch"
+API_SEMAPHORE = asyncio.Semaphore(20)
 EPISODE_PATTERN = re.compile(r"第(\d+)集$")
 
 
@@ -454,8 +455,13 @@ async def batch_convert(text_files: list[str], branch_files: list[str]) -> None:
     success_count = 0
     skip_count = 0
     fail_count = 0
+
+    async def _run(text_path, branch_path):
+        async with API_SEMAPHORE:
+            return await text_to_branch(text_path, branch_path)
+
     tasks = [
-        text_to_branch(text_path, branch_path)
+        _run(text_path, branch_path)
         for text_path, branch_path in zip(text_files, branch_files)
     ]
     for task in tqdm_asyncio.as_completed(tasks, total=len(tasks), desc="文本转分支"):

@@ -1,0 +1,171 @@
+[
+  {
+    "id": 1,
+    "start": "00:00:00.480",
+    "end": "00:00:04.430",
+    "text": "老三，你说这斗里有压箱底的宝贝？",
+    "speech": "单人发言",
+    "emotion": "略带急切",
+    "voice": "语气压低",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 2,
+    "start": "00:00:04.450",
+    "end": "00:00:05.700",
+    "text": "没错。",
+    "speech": "单人回应",
+    "emotion": "肯定",
+    "voice": "简短有力",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 3,
+    "start": "00:00:05.720",
+    "end": "00:00:09.400",
+    "text": "啊，啥样的？叫做压箱底的宝贝啊？",
+    "speech": "单人提问",
+    "emotion": "好奇",
+    "voice": "语速稍快",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 4,
+    "start": "00:00:09.430",
+    "end": "00:00:19.210",
+    "text": "司母戊鼎，四羊方尊，马踏飞燕，青铜血方雷，这些东西，每一件都是稀世珍宝，独一无二的。",
+    "speech": "单人讲述",
+    "emotion": "激动",
+    "voice": "音量逐渐提高",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 5,
+    "start": "00:00:19.230",
+    "end": "00:00:27.370",
+    "text": "这件事情太大了，我先问问把头，把头把头，把头，现在情况就是这样，该怎么办？",
+    "speech": "单人发言",
+    "emotion": "紧张",
+    "voice": "语气急促",
+    "music": "",
+    "audio_cues": [
+      "无线电通讯音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 6,
+    "start": "00:00:27.720",
+    "end": "00:00:34.810",
+    "text": "老三说的对，此事已经太大了，你们先上来吧，注意安全，啊。",
+    "speech": "通过通讯设备发言",
+    "emotion": "沉稳",
+    "voice": "声音带有滤波效果",
+    "music": "",
+    "audio_cues": [
+      "无线电通讯音效"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 7,
+    "start": "00:00:35.000",
+    "end": "00:00:40.250",
+    "text": "知道了，云峰，上去把那些老铜件归置一下，咱们准备撤了。",
+    "speech": "单人下达指令",
+    "emotion": "果断",
+    "voice": "语气严肃",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 8,
+    "start": "00:00:40.270",
+    "end": "00:00:40.890",
+    "text": "好。",
+    "speech": "简短回应",
+    "emotion": "干脆",
+    "voice": "声音简短",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 9,
+    "start": "00:00:41.000",
+    "end": "00:01:02.000",
+    "text": "",
+    "speech": "无",
+    "emotion": "",
+    "voice": "",
+    "music": "悬疑氛围电子音乐",
+    "audio_cues": [
+      "能量涌动声",
+      "空间嗡鸣声",
+      "脚步声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 10,
+    "start": "00:01:04.760",
+    "end": "00:01:07.010",
+    "text": "这是哪里？",
+    "speech": "单人疑惑提问",
+    "emotion": "茫然",
+    "voice": "语气带着困惑",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 11,
+    "start": "00:01:11.630",
+    "end": "00:01:14.060",
+    "text": "哎，哈哈哈。",
+    "speech": "单人发出笑声",
+    "emotion": "诡异",
+    "voice": "笑声沙哑",
+    "music": "",
+    "audio_cues": [],
+    "uncertainty": ""
+  },
+  {
+    "id": 12,
+    "start": "00:01:17.400",
+    "end": "00:01:38.050",
+    "text": "",
+    "speech": "无",
+    "emotion": "",
+    "voice": "",
+    "music": "节奏加快的紧张电子音乐",
+    "audio_cues": [
+      "尖锐呼啸声",
+      "怪物嘶吼声"
+    ],
+    "uncertainty": ""
+  },
+  {
+    "id": 13,
+    "start": "00:01:38.070",
+    "end": "00:01:40.510",
+    "text": "不好，里面东西出来了！",
+    "speech": "单人惊呼示警",
+    "emotion": "极度恐慌",
+    "voice": "声音大喊",
+    "music": "",
+    "audio_cues": [
+      "剧烈冲击声"
+    ],
+    "uncertainty": ""
+  }
+]

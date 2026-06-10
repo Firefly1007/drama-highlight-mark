@@ -1,0 +1,150 @@
+[
+  {
+    "id": 1,
+    "summary": "江清池自打耳光，挑衅说“我说错了吗？来打呀，快打呀！”，被质问是否疯了，并解释为脑子被楚沉安打坏，自己打自己。",
+    "level": 2,
+    "reason": "耳光声声音事件，挑衅台词显示冲突张力，自己打自己的反差感。",
+    "segment_ids": [
+      2,
+      3,
+      4,
+      6
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:02.700",
+    "end": "00:00:21.800",
+    "trigger_time": "00:00:03.300",
+    "evidence_segments": [
+      {
+        "id": 2,
+        "start": "00:00:02.700",
+        "end": "00:00:03.200",
+        "text": "",
+        "speech": "",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [
+          "清脆的耳光声"
+        ],
+        "uncertainty": ""
+      },
+      {
+        "id": 3,
+        "start": "00:00:03.300",
+        "end": "00:00:10.800",
+        "text": "我说错了吗？来打呀，快打呀！",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 4,
+        "start": "00:00:11.200",
+        "end": "00:00:13.800",
+        "text": "江清池，你是不是疯了呀？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 6,
+        "start": "00:00:17.000",
+        "end": "00:00:21.800",
+        "text": "江清池，你脑子是被楚沉安给打坏了吧，哪有自己打自己的？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "通知有楚先生到来，引发疑问“什么楚先生？”。",
+    "level": 1,
+    "reason": "楚先生身份未知，具有悬念价值。",
+    "segment_ids": [
+      7,
+      8
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:00:31.700",
+    "end": "00:00:37.700",
+    "trigger_time": "00:00:31.700",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:00:31.700",
+        "end": "00:00:33.900",
+        "text": "老爷，夫人，有位楚先生来了。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 8,
+        "start": "00:00:35.400",
+        "end": "00:00:37.700",
+        "text": "楚先生？什么楚先生？",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "有人呼唤江清池，江清池求救“沉安，救我。”。",
+    "level": 2,
+    "reason": "求救台词情绪强烈，暗示紧张局势。",
+    "segment_ids": [
+      9,
+      10
+    ],
+    "trigger_segment_id": 10,
+    "start": "00:00:38.600",
+    "end": "00:00:52.000",
+    "trigger_time": "00:00:48.600",
+    "evidence_segments": [
+      {
+        "id": 9,
+        "start": "00:00:38.600",
+        "end": "00:00:44.000",
+        "text": "阿池，阿池。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      },
+      {
+        "id": 10,
+        "start": "00:00:48.600",
+        "end": "00:00:52.000",
+        "text": "沉安，救我。",
+        "speech": "单人发言",
+        "emotion": "",
+        "voice": "",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]

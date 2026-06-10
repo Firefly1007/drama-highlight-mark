@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "summary": "皇帝免除吕氏死罪，改为杖责五十，并下令将镇北侯一并拖出去杖责。",
+    "level": 2,
+    "reason": "剧情信息增量，显示皇帝的决定和冲突升级，情绪威严，具有冲突张力。",
+    "segment_ids": [
+      1
+    ],
+    "trigger_segment_id": 1,
+    "start": "00:00:02.700",
+    "end": "00:00:22.150",
+    "trigger_time": "00:00:02.700",
+    "evidence_segments": [
+      {
+        "id": 1,
+        "start": "00:00:02.700",
+        "end": "00:00:22.150",
+        "text": "好，朕就给我这好女婿一个面子，吕氏死罪暂免，但活罪难逃，拖出去杖责五十，镇北侯既然也想替吕氏受罚，那便一并拖出去。",
+        "speech": "单人发言",
+        "emotion": "威严",
+        "voice": "声线低沉厚重，语气沉稳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "summary": "皇帝揭露某人曾辱骂他，下令一并带出去处罚。",
+    "level": 2,
+    "reason": "冲突张力增加，揭露隐藏信息，情绪威严，具有剧情推进价值。",
+    "segment_ids": [
+      3
+    ],
+    "trigger_segment_id": 3,
+    "start": "00:00:25.730",
+    "end": "00:00:32.410",
+    "trigger_time": "00:00:25.730",
+    "evidence_segments": [
+      {
+        "id": 3,
+        "start": "00:00:25.730",
+        "end": "00:00:32.410",
+        "text": "还有你，辱骂朕，你以为朕不知道啊，一并带出去。",
+        "speech": "单人发言",
+        "emotion": "威严",
+        "voice": "声线低沉厚重，语气沉稳",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "summary": "某人对苏雨发出威胁，表示事情没完。",
+    "level": 2,
+    "reason": "悬念价值，为后续冲突埋下伏笔，语气怨恨，具有冲突张力。",
+    "segment_ids": [
+      7
+    ],
+    "trigger_segment_id": 7,
+    "start": "00:00:40.530",
+    "end": "00:00:43.070",
+    "trigger_time": "00:00:40.530",
+    "evidence_segments": [
+      {
+        "id": 7,
+        "start": "00:00:40.530",
+        "end": "00:00:43.070",
+        "text": "苏雨，这事没完。",
+        "speech": "单人发言",
+        "emotion": "怨恨",
+        "voice": "语气阴冷",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "summary": "皇帝起身表示不用见外，说大哥当不成了但可以当岳父。",
+    "level": 2,
+    "reason": "语气亲切随和，有笑声，提及关系变化，具有反差感和信息增量。",
+    "segment_ids": [
+      9
+    ],
+    "trigger_segment_id": 9,
+    "start": "00:00:47.480",
+    "end": "00:01:01.700",
+    "trigger_time": "00:00:47.480",
+    "evidence_segments": [
+      {
+        "id": 9,
+        "start": "00:00:47.480",
+        "end": "00:01:01.700",
+        "text": "哎呀，起来起来起来，起来，咱俩之间不用那么见外，哎呀，大哥是当不成了，但是当个岳父还是可以的嘛。",
+        "speech": "单人发言",
+        "emotion": "随和亲切",
+        "voice": "声线低沉厚重，伴随笑声，语气轻松",
+        "music": "",
+        "audio_cues": [],
+        "uncertainty": ""
+      }
+    ]
+  }
+]
