@@ -177,7 +177,7 @@ data/
 
 `03/04/06/07` 依赖 `data/video/drama_info.json`。你有两种准备方式：
 
-- 方式 A：先准备 `data/video/name2id.json`，再执行 `02_extract_desc_char.py`
+- 方式 A：先准备 `data/video/name2id.json`，再执行 `02_extract_desc_char.py`（仅限红果短剧）
 - 方式 B：手动维护 `data/video/drama_info.json`
 
 `name2id.json` 的最小格式示例：
@@ -265,20 +265,16 @@ python pipline/08_branch_image.py --prompt-path data/branch/prompt/某短剧/第
 
 ### 4. 为未来视频分支预留结构
 
-虽然当前最终产物是分支图片，但 `06` 和 `07` 的数据结构仍然围绕“可回流的分支视频内容”设计，这让后续升级路径比较清晰。
+虽然当前最终产物是分支图片，但 `07` 和 `08` 的数据结构仍然围绕“可回流的分支视频内容”设计，这让后续升级路径比较清晰。
 
-## 验证方式
+## 接口有效性验证
 
-当前仓库没有保留一套可直接用于 `unittest discover` 的自动化单测。
-
-`test/` 目录目前只剩两个手工联调脚本：
+`test/` 目录：
 
 - `test/test-audio.py`
 - `test/test-text.py`
 
-这两个脚本都依赖有效的 `.env` 和可用的模型接口，更适合作为联调或接口冒烟检查，而不是本地离线单测。
-
-如果要验证主链路或扩展链路，当前更实际的方式是直接使用上面的“单文件命令”对某一集做端到端抽查。
+这两个脚本都依赖有效的 `.env` 和可用的模型接口，可以测试模型文本和音频模态有效性
 
 ## 当前问题
 
