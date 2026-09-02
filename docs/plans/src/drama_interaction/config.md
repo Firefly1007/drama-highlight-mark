@@ -1,7 +1,7 @@
 # src/drama_interaction/config.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：ADR-019、PRD §16、README_v2.md「配置」「使用」两节
+- 上游依据：ADR-019、PRD §16、README.md「配置」「使用」两节
 
 ## 职责与边界
 

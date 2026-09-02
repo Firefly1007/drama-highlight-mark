@@ -1,7 +1,7 @@
 # 根配置文件（pyproject.toml / .env.example / langgraph.json）内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：README_v2.md 结构树、ADR-022
+- 上游依据：README.md 结构树、ADR-022
 
 ## 总原则
 
@@ -29,7 +29,7 @@
 
 ## langgraph.json
 
-- 声明图入口：指向 drama_interaction 包内 graph/builder.py 编译产出的图（供 langgraph dev / LangGraph Studio 可视化调试用，README_v2.md 结构树定位）。
+- 声明图入口：指向 drama_interaction 包内 graph/builder.py 编译产出的图（供 langgraph dev / LangGraph Studio 可视化调试用，README.md 结构树定位）。
 - 声明依赖环境（项目环境/venv）与配置加载方式；具体 模式(schema)随 LangGraph 1.x 版本核对（待定项）。
 - 该文件只服务开发调试，不参与生产 运行(run)（生产走 命令行(cli)）。
 

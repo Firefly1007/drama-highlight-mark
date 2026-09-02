@@ -1,7 +1,7 @@
 # src/drama_interaction/cli.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：README_v2.md「使用」节（唯一权威）、ADR-016、PRD §13 / §17 / §20.2
+- 上游依据：README.md「使用」节（唯一权威）、ADR-016、PRD §13 / §17 / §20.2
 
 ## 职责与边界
 

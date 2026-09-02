@@ -1,7 +1,7 @@
 # src/drama_interaction/evidence/adapter.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：ADR-007、PRD §7、PRD §20.3、README_v2.md「使用」节
+- 上游依据：ADR-007、PRD §7、PRD §20.3、README.md「使用」节
 
 ## 职责与边界
 

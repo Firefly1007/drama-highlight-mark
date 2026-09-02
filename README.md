@@ -8,7 +8,7 @@ V2 是对 V1「高光 → 互动」链路的架构级重构。
 - 产品需求见 [产品需求文档(PRD)](docs/drama-interaction-v2-PRD.md)
 - 最终输出格式见 [契约(schema)](docs/schema.md)
 
-> 状态：开发中。V1 链路（[README.md](README.md)）仍可运行，用于 基准评测(benchmark)对照。
+> 状态：开发中。V1 链路（[v1/README.md](v1/README.md)）仍可运行，用于 基准评测(benchmark)对照。
 
 ## 与 V1 的区别
 
@@ -105,8 +105,8 @@ V2 代码按以下组织，尚未全部实现：
 
 ```text
 drama-highlight-mark/
-├── README.md                     # V1 说明
-├── README_v2.md                  # 本文件
+├── README.md                     # 本文档（V2 说明）
+├── v1/                           # V1 收拢代码（说明见 v1/README.md）
 ├── pyproject.toml                # 依赖与工具链（uv + ruff + pytest）
 ├── .env.example
 ├── langgraph.json                # LangGraph Studio / langgraph dev 可视化调试入口

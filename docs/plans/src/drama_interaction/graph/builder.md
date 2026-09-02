@@ -1,12 +1,12 @@
 # src/drama_interaction/graph/builder.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：ADR-015 / 016 / 022、PRD §13 / §20.1、README_v2.md（langgraph.json 定位）
+- 上游依据：ADR-015 / 016 / 022、PRD §13 / §20.1、README.md（langgraph.json 定位）
 
 ## 职责与边界
 
 - LangGraph 组装层：状态图(StateGraph)的节点注册、边结构、节点级重试与错误处理策略、检查点存储(checkpointer)装配、中断(interrupt)/恢复(resume)通道、编译产物导出(export)。
-- 框架接入点集中于此：LangGraph 版本升级的破坏性变更只应波及本文件与 nodes/state 的装配细节，业务模块不感知框架（README_v2.md 分层原则）。
+- 框架接入点集中于此：LangGraph 版本升级的破坏性变更只应波及本文件与 nodes/state 的装配细节，业务模块不感知框架（README.md 分层原则）。
 - 明确不做：业务逻辑（nodes.py）、工作流状态(State)定义（state.py）、命令行(cli)交互（cli.py）。
 
 ## 依赖关系
@@ -29,7 +29,7 @@
   - 含 大语言模型(LLM)调用的节点：specialist、semantic、repair 退回。
   - 重试策略(RetryPolicy)为瞬时错误有限重试，与 llm.py 调用层重试分层：调用层管单请求，节点层管「整个节点步骤」。
   - 确定性节点（adapter、rules、constraints、render_node、终检）不配 大语言模型(LLM)式重试。
-- 检查点存储(checkpointer)装配：开发期本地 SQLite/文件 检查点存储(checkpointer)，位置与介质来自 config（介质本身 暂缓(Deferred)，PRD §22 第 8 项）；线程(thread) id 即 execution_id（README_v2.md 使用节）。
+- 检查点存储(checkpointer)装配：开发期本地 SQLite/文件 检查点存储(checkpointer)，位置与介质来自 config（介质本身 暂缓(Deferred)，PRD §22 第 8 项）；线程(thread) id 即 execution_id（README.md 使用节）。
 - 中断(interrupt)/恢复(resume)通道：图编译为可恢复形态。
   - 恢复(resume)路径 = 人工结果写入 工作流状态(State)后从 中断(interrupt)挂点继续（nodes.py 定义的挂点）。
   - 已完成节点（adapter、成功 生成专家(Specialist)）天然不重跑——检查点(checkpoint)语义的直接结果，也是 ADR-016 的落实。

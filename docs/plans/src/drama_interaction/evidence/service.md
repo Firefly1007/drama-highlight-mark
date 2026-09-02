@@ -1,7 +1,7 @@
 # src/drama_interaction/evidence/service.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：ADR-009、PRD §8（§8.1–8.3）、README_v2.md 架构节
+- 上游依据：ADR-009、PRD §8（§8.1–8.3）、README.md 架构节
 
 ## 职责与边界
 

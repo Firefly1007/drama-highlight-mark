@@ -1,7 +1,7 @@
 # src/drama_interaction/schemas/interaction.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：docs/schema.md（核心依据）、ADR-017、PRD §17、README_v2.md「使用」节
+- 上游依据：docs/schema.md（核心依据）、ADR-017、PRD §17、README.md「使用」节
 
 ## 职责与边界
 

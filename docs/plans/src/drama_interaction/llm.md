@@ -1,7 +1,7 @@
 # src/drama_interaction/llm.py 内容规划
 
 - 状态：规划中（未实现）
-- 上游依据：ADR-009、ADR-018、PRD §20.2（可观测性）、README_v2.md 结构树
+- 上游依据：ADR-009、ADR-018、PRD §20.2（可观测性）、README.md 结构树
 
 ## 职责与边界
 
