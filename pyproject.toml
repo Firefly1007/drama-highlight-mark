@@ -25,6 +25,7 @@ requires = ["uv_build>=0.12.5,<0.13.0"]
 build-backend = "uv_build"
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 testpaths = ["tests/unit_tests"]
 markers = [
     "integration: 需要真实 LLM 端点，默认跳过（用 --integration 显式触发）",
@@ -32,7 +33,7 @@ markers = [
 addopts = "-m 'not integration'"
 
 [tool.ruff]
-line-length = 100
+ignore = ["E501"]
 src = ["src", "tests"]
 
 [tool.ruff.lint]

@@ -3,9 +3,10 @@
 .env.local
 .env.*.local
 
-# ===== WorkBuddy 本地数据（记忆/技能，不入库）=====
+# ===== WorkBuddy / Agent 本地数据（记忆/技能/运行态，不入库）=====
 .workbuddy/
 .learnings/
+.agents/
 
 # ===== 数据：全部运行数据（媒体与产物，不入库）=====
 data/

@@ -1,6 +1,6 @@
 # 根配置文件（pyproject.toml / .env.example / langgraph.json）内容规划
 
-- 状态：规划中（未实现）
+- 状态：已部分实现
 - 上游依据：README.md 结构树、ADR-022
 
 ## 总原则
