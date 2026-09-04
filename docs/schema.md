@@ -1,74 +1,133 @@
-最终输出是数组，数组中的每个元素都符合下面这个公用 模式(schema)（`duration_ms` 按 V2 时长表取值——类型常数 + 跟读金句(repeat_keyline)内容自适应，见 ADR-023；示例值仅为格式示意）：
+# V2 最终互动 JSON 契约
+
+本文是 V2 交给后端的最终输出契约。它只定义可消费的互动 JSON，不定义生成过程、中间状态或内部数据结构。
+
+V2 的 `type` 使用字符串，不接受 V1 的数字类型编码。V2 可以参考 V1 的业务含义，但**不承诺严格兼容 V1 输出**；接入方应按本文契约解析。
+
+## 输出外壳
+
+最终输出是一个 JSON 数组。数组中的对象只允许下列公共字段，且按 `show_at` 升序排列；`id` 是数组内从 1 开始的唯一序号。
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `id` | integer | 是 | 大于等于 1，数组内唯一。 |
+| `type` | string | 是 | 只能是 `emotion_button`、`repeat_keyline`、`instant_vote`、`deferred_vote`、`side_comment` 之一。 |
+| `show_at` | integer | 是 | 展示开始时间，单位毫秒，大于等于 0。 |
+| `duration_ms` | integer | 是 | 展示时长，单位毫秒，大于 0。 |
+| `payload` | object | 是 | 与 `type` 严格对应的载荷，见下文。 |
+
+所有对象均为严格对象：未在对应表中声明的字段不可出现。所有文本字段不得为空或仅含空白字符；可选字段不需要时应省略，不使用 `null` 占位。
+
+## 类型与载荷
+
+### `emotion_button`
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `button_id` | integer | 是 | 0 至 5 的按钮业务编号。 |
+| `text` | string | 否 | 仅 `button_id` 为 0 或 2 时允许出现。 |
+| `danmaku` | array of string | 否 | 非空数组；仅 `button_id` 为 0、1、2 或 5 时允许出现。 |
+
+`button_id` 的业务含义保持数字编码：0 为 `cool`（爽），1 为 `laugh`（笑），2 为 `tomato`（丢番茄），3 为 `protect`（护住 TA），4 为 `pity`（心疼 TA），5 为 `ship`（磕到了）。`type` 改为字符串不改变这些载荷字段的含义。
+
+### `repeat_keyline`
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `text` | string | 是 | 用户要复述的关键台词。 |
+
+### `instant_vote`
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `question` | string | 是 | 投票题干。 |
+| `options` | array of string | 是 | 恰好两个非空且互不重复的选项。 |
+
+### `deferred_vote`
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `question` | string | 是 | 竞猜或预测题干。 |
+| `options` | array of string | 是 | 两至四个非空且互不重复的选项。 |
+| `answer_id` | integer | 是 | 正确选项在最终 `options` 数组中的从 0 开始索引。 |
+| `reveal_time` | integer | 是 | 揭晓开始时间，单位毫秒，且不得早于该互动展示结束。 |
+| `reveal_delay` | integer | 是 | 揭晓展示时长，单位毫秒，大于 0。 |
+
+`answer_id` 必须落在 `options` 的有效索引范围内。最终 JSON 中的选项顺序与 `answer_id` 必须一致。
+
+### `side_comment`
+
+| 字段 | 类型 | 必填 | 约束 |
+| --- | --- | --- | --- |
+| `text` | string | 是 | 展示的短吐槽、短评或提醒。 |
+| `mood` | string | 是 | 必须是全小写的 `roast`、`shock`、`laugh`、`praise`、`sympathy`、`doubt` 之一。 |
+
+## 完整示例
 
 ```json
 [
   {
     "id": 1,
-    "type": 1,
-    "show_at": 0,
+    "type": "emotion_button",
+    "show_at": 12000,
     "duration_ms": 2800,
-    "payload": {}
+    "payload": {
+      "button_id": 0,
+      "text": "太解气了",
+      "danmaku": [
+        "爽到了"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "type": "repeat_keyline",
+    "show_at": 26300,
+    "duration_ms": 3400,
+    "payload": {
+      "text": "因为我在哪，纪家就在哪。"
+    }
+  },
+  {
+    "id": 3,
+    "type": "instant_vote",
+    "show_at": 38900,
+    "duration_ms": 3600,
+    "payload": {
+      "question": "你站谁？",
+      "options": [
+        "站她",
+        "站他"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "type": "deferred_vote",
+    "show_at": 50800,
+    "duration_ms": 3600,
+    "payload": {
+      "question": "她说的是真的吗？",
+      "options": [
+        "是真的",
+        "有问题"
+      ],
+      "answer_id": 1,
+      "reveal_time": 67000,
+      "reveal_delay": 3000
+    }
+  },
+  {
+    "id": 5,
+    "type": "side_comment",
+    "show_at": 82400,
+    "duration_ms": 2600,
+    "payload": {
+      "text": "这也太敢说了吧！",
+      "mood": "shock"
+    }
   }
 ]
 ```
 
-`payload`字段：
-
-1. `emotion_button`:
-
-    ```json
-    {
-      "button_id":1,
-      "text":"恶有恶报",(可选字段)
-      "danmaku":["弹幕1","弹幕2",...](可选字段)
-    }
-    ```
-
-    `button_id`可选：
-    
-    |   id | name   | en_name | text | danmaku | 适用场景                   |
-    | ---- | ------ | ------- | ---- | ------- | -------------------------- |
-    |    0 | 爽     | cool    | 有   | 有      | 打脸、强势宣言、反击、逆袭 |
-    |    1 | 笑     | laugh   | 无   | 有      | 搞笑、反差、离谱台词       |
-    |    2 | 丢番茄 | tomato  | 有   | 有      | 恶人、渣男、欠揍、离谱操作 |
-    |    3 | 护住TA | protect | 无   | 无      | 危险、受伤、救人、惊险场面 |
-    |    4 | 心疼TA | pity    | 无   | 无      | 虐点、委屈、哭戏、被误解   |
-    |    5 | 磕到了 | ship    | 无   | 有      | 甜宠、暧昧、撒糖、CP互动   |
-
-2. `repeat_keyline`:
-
-    ```json
-    {
-      "text": "因为我在哪，纪家就在哪"
-    }
-
-3. `instant_vote`:
-
-    ```json
-    {
-      "question": "你站谁？",
-      "options": ["站她","站他"](必须是2个元素)
-    }
-    ```
-
-4. `deferred_vote`:
-
-    ```json
-    {
-      "question": "她说的是真的吗？",
-      "options": ["是真的", "有问题"](2-4个元素),
-      "reveal_time": 1000,
-      "reveal_delay":5000,
-      "answer_id": 0
-    }
-
-    注：`answer_id` 指向 `options` 中正确项的索引（ 生成专家(Specialist)生成时指向原 options[0]，渲染打乱后由渲染环节重映射为新索引）。`reveal_time` / `reveal_delay` 为渲染环节的程序产物——生成侧（生成专家(Specialist) / 候选(Candidate)）中必须为 null，不输出毫秒（ADR-011 / ADR-023）。
-
-5. `side_comment`：
-
-    ```json
-    {
-      "text": "这也太敢说了吧！",
-      "mood": "mood"(未来加入)
-    }
-    ```
+接入方应先按 `type` 选择对应的 `payload` 规则，再渲染互动；不得根据数字类型、缺省 `mood` 或未声明字段推断行为。

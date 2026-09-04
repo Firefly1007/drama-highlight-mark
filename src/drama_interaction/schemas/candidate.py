@@ -7,6 +7,7 @@
 """
 
 from typing import Any
+
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -15,18 +16,26 @@ from pydantic import (
     model_validator,
 )
 
+from drama_interaction.schemas.evidence import (
+    DerivedObservationId,
+    EvidenceId,
+    ObservationId,
+    TranscriptId,
+)
 from drama_interaction.schemas.interaction import (
-    TYPE_STR_TO_INT,
     DeferredVotePayload,
     EmotionButtonPayload,
     InstantVotePayload,
     InteractionPayload,
+    InteractionType,
     RepeatKeylinePayload,
     SideCommentPayload,
 )
 
 # 允许的生成专家类型列表
-VALID_SPECIALIST_TYPES: set[str] = set(TYPE_STR_TO_INT.keys())
+VALID_SPECIALIST_TYPES: set[str] = {
+    interaction_type.value for interaction_type in InteractionType
+}
 
 
 class TriggerAnchor(BaseModel):
@@ -35,15 +44,17 @@ class TriggerAnchor(BaseModel):
     指向触发互动呈现的证据位置。
 
     Attributes:
-        window_id: 所在的 3 秒证据窗口编号（必填）。
-        transcript_segment_id: 关联的精确台词片段标识符（可选；纯视觉/音频证据时为空）。
+        transcript_segment_id: 台词片段标识符 T<n>（可选）。
+        observation_id: 基线或派生观察标识符 O<n>/D<n>（可选）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    window_id: int = Field(..., ge=0, description="证据窗口编号")
-    transcript_segment_id: str | None = Field(
+    transcript_segment_id: TranscriptId | None = Field(
         default=None, description="可选台词片段标识符"
+    )
+    observation_id: ObservationId | DerivedObservationId | None = Field(
+        default=None, description="可选观察标识符"
     )
 
     @field_validator("transcript_segment_id")
@@ -63,6 +74,21 @@ class TriggerAnchor(BaseModel):
         if v is not None and not v.strip():
             raise ValueError("transcript_segment_id 不能全为空白字符")
         return v
+
+    @field_validator("observation_id")
+    @classmethod
+    def validate_observation_id(cls, v: str | None) -> str | None:
+        """校验观察标识若提供则不能全为空白。"""
+        if v is not None and not v.strip():
+            raise ValueError("observation_id 不能全为空白字符")
+        return v
+
+    @model_validator(mode="after")
+    def validate_reference_present(self) -> "TriggerAnchor":
+        """校验锚点至少引用一个证据标识。"""
+        if self.transcript_segment_id is None and self.observation_id is None:
+            raise ValueError("触发锚点至少需要 transcript_segment_id 或 observation_id")
+        return self
 
 
 class RevealAnchor(BaseModel):
@@ -71,15 +97,17 @@ class RevealAnchor(BaseModel):
     指向延时投票公布答案或剧情揭晓的证据位置。
 
     Attributes:
-        window_id: 揭晓所在的 3 秒证据窗口编号（必填）。
-        transcript_segment_id: 关联的精确台词片段标识符（可选）。
+        transcript_segment_id: 台词片段标识符 T<n>（可选）。
+        observation_id: 基线或派生观察标识符 O<n>/D<n>（可选）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    window_id: int = Field(..., ge=0, description="揭晓证据窗口编号")
-    transcript_segment_id: str | None = Field(
+    transcript_segment_id: TranscriptId | None = Field(
         default=None, description="可选台词片段标识符"
+    )
+    observation_id: ObservationId | DerivedObservationId | None = Field(
+        default=None, description="可选观察标识符"
     )
 
     @field_validator("transcript_segment_id")
@@ -99,6 +127,21 @@ class RevealAnchor(BaseModel):
         if v is not None and not v.strip():
             raise ValueError("transcript_segment_id 不能全为空白字符")
         return v
+
+    @field_validator("observation_id")
+    @classmethod
+    def validate_observation_id(cls, v: str | None) -> str | None:
+        """校验观察标识若提供则不能全为空白。"""
+        if v is not None and not v.strip():
+            raise ValueError("observation_id 不能全为空白字符")
+        return v
+
+    @model_validator(mode="after")
+    def validate_reference_present(self) -> "RevealAnchor":
+        """校验锚点至少引用一个证据标识。"""
+        if self.transcript_segment_id is None and self.observation_id is None:
+            raise ValueError("揭晓锚点至少需要 transcript_segment_id 或 observation_id")
+        return self
 
 
 class Candidate(BaseModel):
@@ -110,7 +153,7 @@ class Candidate(BaseModel):
     Attributes:
         candidate_id: 候选唯一标识符（LLM 输出时为空，汇入 Candidate Pool 时程序赋值）。
         specialist_type: 生成该候选的专家类型（五类之一）。
-        evidence_window_ids: 该候选依赖支撑的所有证据窗口编号列表。
+        evidence_ids: 支撑候选的 T<n>/O<n>/D<n> 证据标识列表。
         trigger_anchor: 触发锚点。
         payload: 对应互动类型的业务载荷对象。
         reveal_anchor: 揭晓锚点（仅 deferred_vote 延时投票要求且允许存在）。
@@ -122,8 +165,8 @@ class Candidate(BaseModel):
         default=None, description="候选ID（程序入池时生成）"
     )
     specialist_type: str = Field(..., description="专家类型名称")
-    evidence_window_ids: list[int] = Field(
-        ..., min_length=1, description="支撑该候选的所有证据窗口编号列表"
+    evidence_ids: list[EvidenceId] = Field(
+        ..., min_length=1, description="支撑该候选的证据标识列表"
     )
     trigger_anchor: TriggerAnchor = Field(..., description="触发锚点")
     payload: InteractionPayload = Field(..., description="业务载荷对象")
@@ -169,27 +212,27 @@ class Candidate(BaseModel):
             )
         return v
 
-    @field_validator("evidence_window_ids")
+    @field_validator("evidence_ids")
     @classmethod
-    def validate_window_ids_non_negative(cls, v: list[int]) -> list[int]:
-        """校验证据窗口编号必须非负、非空且无重复。
+    def validate_evidence_ids(cls, v: list[str]) -> list[str]:
+        """校验证据标识必须合法、非空且无重复。
 
         Args:
-            v: 证据窗口编号列表。
+            v: 证据标识列表。
 
         Returns:
-            校验通过的窗口编号列表。
+            校验通过的证据标识列表。
 
         Raises:
-            ValueError: 当列表为空、包含负数窗口编号或包含重复窗口编号时抛出。
+            ValueError: 当列表为空、标识格式非法或包含重复标识时抛出。
         """
         if not v:
-            raise ValueError("evidence_window_ids 不能为空列表")
-        for wid in v:
-            if wid < 0:
-                raise ValueError(f"evidence_window_ids 包含非法负数窗口编号: {wid}")
+            raise ValueError("evidence_ids 不能为空列表")
+        for evidence_id in v:
+            if not evidence_id.strip():
+                raise ValueError("evidence_ids 不能包含空白标识")
         if len(set(v)) != len(v):
-            raise ValueError(f"evidence_window_ids 包含重复的窗口编号: {v}")
+            raise ValueError(f"evidence_ids 包含重复标识: {v}")
         return v
 
     @model_validator(mode="before")
@@ -203,36 +246,22 @@ class Candidate(BaseModel):
         Returns:
             解析后的数据。
         """
-        if isinstance(data, dict):
-            stype = data.get("specialist_type")
-            payload_data = data.get("payload")
+        if not isinstance(data, dict):
+            return data
 
-            # 零毫秒禁令静默清洗（ADR-023）：若生成侧提供了 reveal 毫秒字段，静默重置为 None
-            if stype == "deferred_vote":
-                if isinstance(payload_data, dict):
-                    payload_data["reveal_time"] = None
-                    payload_data["reveal_delay"] = None
-                elif isinstance(payload_data, DeferredVotePayload):
-                    if (
-                        payload_data.reveal_time is not None
-                        or payload_data.reveal_delay is not None
-                    ):
-                        payload_data = payload_data.model_copy(
-                            update={"reveal_time": None, "reveal_delay": None}
-                        )
-                        data["payload"] = payload_data
-
-            if isinstance(payload_data, dict) and stype in VALID_SPECIALIST_TYPES:
-                if stype == "emotion_button":
-                    data["payload"] = EmotionButtonPayload(**payload_data)
-                elif stype == "repeat_keyline":
-                    data["payload"] = RepeatKeylinePayload(**payload_data)
-                elif stype == "instant_vote":
-                    data["payload"] = InstantVotePayload(**payload_data)
-                elif stype == "deferred_vote":
-                    data["payload"] = DeferredVotePayload(**payload_data)
-                elif stype == "side_comment":
-                    data["payload"] = SideCommentPayload(**payload_data)
+        stype = data.get("specialist_type")
+        payload_data = data.get("payload")
+        payload_model = {
+            "emotion_button": EmotionButtonPayload,
+            "repeat_keyline": RepeatKeylinePayload,
+            "instant_vote": InstantVotePayload,
+            "deferred_vote": DeferredVotePayload,
+            "side_comment": SideCommentPayload,
+        }.get(stype)
+        if isinstance(payload_data, dict) and payload_model is not None:
+            parsed_data = dict(data)
+            parsed_data["payload"] = payload_model.model_validate(payload_data)
+            return parsed_data
         return data
 
     @model_validator(mode="after")
@@ -266,26 +295,14 @@ class Candidate(BaseModel):
             if self.reveal_anchor is None:
                 raise ValueError("延时投票 (deferred_vote) 必须配置 reveal_anchor")
 
-            # 揭晓窗口不得早于触发窗口
-            if self.reveal_anchor.window_id < self.trigger_anchor.window_id:
-                raise ValueError(
-                    f"揭晓窗口 ({self.reveal_anchor.window_id}) "
-                    f"不能早于触发窗口 ({self.trigger_anchor.window_id})"
-                )
-
-            # 生成侧零毫秒静默清洗兜底（确保实例上的 reveal 毫秒字段始终为 None）
             if isinstance(self.payload, DeferredVotePayload):
+                if self.payload.answer_id != 0:
+                    raise ValueError("生成侧 deferred_vote 的 answer_id 必须固定为 0")
                 if (
                     self.payload.reveal_time is not None
                     or self.payload.reveal_delay is not None
                 ):
-                    object.__setattr__(
-                        self,
-                        "payload",
-                        self.payload.model_copy(
-                            update={"reveal_time": None, "reveal_delay": None}
-                        ),
-                    )
+                    raise ValueError("生成侧 Candidate 不允许包含绝对揭晓时间字段")
         else:
             # 非延时投票绝对禁止配置 reveal_anchor
             if self.reveal_anchor is not None:

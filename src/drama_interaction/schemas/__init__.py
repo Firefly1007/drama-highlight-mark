@@ -13,16 +13,15 @@ from drama_interaction.schemas.candidate import (
     TriggerAnchor,
 )
 from drama_interaction.schemas.evidence import (
-    WINDOW_SIZE_MS,
-    EvidenceWindow,
+    DerivedObservation,
+    EvidenceDocument,
+    EvidenceProvenance,
+    Observation,
+    QuerySpan,
     TranscriptSegment,
-    validate_evidence_sequence,
+    validate_derived_observations,
 )
 from drama_interaction.schemas.interaction import (
-    MOOD_INT_TO_STR,
-    MOOD_STR_TO_INT,
-    TYPE_INT_TO_STR,
-    TYPE_STR_TO_INT,
     VALID_COMMENT_MOODS,
     CommentMood,
     DeferredVotePayload,
@@ -37,17 +36,16 @@ from drama_interaction.schemas.interaction import (
 
 __all__ = [
     # 证据相关
-    "WINDOW_SIZE_MS",
+    "EvidenceDocument",
+    "Observation",
     "TranscriptSegment",
-    "EvidenceWindow",
-    "validate_evidence_sequence",
+    "DerivedObservation",
+    "EvidenceProvenance",
+    "QuerySpan",
+    "validate_derived_observations",
     # 互动与输出相关
     "InteractionType",
     "CommentMood",
-    "TYPE_STR_TO_INT",
-    "TYPE_INT_TO_STR",
-    "MOOD_STR_TO_INT",
-    "MOOD_INT_TO_STR",
     "VALID_COMMENT_MOODS",
     "EmotionButtonPayload",
     "RepeatKeylinePayload",

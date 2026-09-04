@@ -2,7 +2,7 @@
 name = "drama-interaction"
 version = "0.1.0"
 description = "短剧即时互动生成工作流 V2：输入一集内容证据，输出位置合适、类型多样、不过度打断观看的即时互动配置"
-readme = "README_v2.md"
+readme = "README.md"
 authors = [
     { name = "zjh", email = "1098653175@qq.com" }
 ]

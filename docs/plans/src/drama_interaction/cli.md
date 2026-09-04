@@ -1,71 +1,43 @@
-# src/drama_interaction/cli.py 内容规划
+# cli.py 内容计划
 
-- 状态：规划中（未实现）
-- 上游依据：README.md「使用」节（唯一权威）、ADR-016、PRD §13 / §17 / §20.2
+本模块是单集离线互动点标注引擎的命令行入口；最终 JSON 以 [输出契约](../../../schema.md) 为准。
 
 ## 职责与边界
 
-- 三个命令的用户入口：运行(run) / 恢复(resume) / 导出(export)；负责参数解析、execution-id 生成、图调用、人工介入(HITL)的 命令行(CLI)交互、结果落盘与展示。
-- 明确不做：
-  - 业务逻辑与图结构（图(graph)层）
-  - 产物格式定义（模式(schemas)）
-  - 检查点(checkpoint)介质实现（builder/config）
+- 提供 run、resume、export 三个命令，负责参数解析、执行标识生成、图调用、人工介入交互和结果交付。
+- 目录输入时逐集启动独立执行；每次执行只处理一集。
+- 不实现生成、校验、调度或检查点介质，不定义最终 JSON 字段。
 
-## 依赖关系
+## 输入、输出与接口
 
-- 依赖：
-  - graph/builder.py（编译图与 恢复(resume)通道）
-  - config.py（路径与参数）
-  - schemas/interaction.py（导出(export)格式）
-- 被 pyproject 的 console entry（`python -m drama_interaction`）指向。
+- run 接收一个 V1 片段 JSON 文件或剧集目录，以及允许覆盖的运行参数。
+- run 的起始媒体预处理阶段负责将真实集长写入工作流状态；适配器消费该值，不猜测媒体路径。
+- resume 接收 execution_id，展示待人工项并写回 accept、edit 或 drop 的结果。
+- export 接收 execution_id 和可选输出位置，从持久化状态读取完成的 FinalInteraction 数组，不重新执行图。
 
-## 主要组成
+## 依赖与消费者
 
-- 运行(run)命令：
-  - 参数：输入路径（V1 片段(segments) JSON 文件或整剧目录 `data/text/<剧名>/`）、可选覆盖参数（预算(budget)等，基准评测(benchmark)用）。
-  - 目录输入 = 遍历该剧全部 片段(segments) JSON。
-  - 建议每集独立 执行(execution)：
-    - 独立 execution-id、独立 检查点(checkpoint)、独立产物文件。
-    - 单集失败 / 待人工不阻塞其他集，与分支隔离理念一致。
-  - 启动时生成 execution-id，即 LangGraph 检查点(checkpoint)线程(thread)标识(ID)：
-    - 建议：可读前缀 + 短随机码。
-    - 运行开始即打印，并落盘于 `data/interaction_v2/runs/<execution-id>/`。
-  - 最终互动 JSON 写 `data/interaction_v2/<剧名>/<集名>.json`；适配器(Adapter)中间产物写 `data/evidence/`（由 适配器(Adapter)节点完成）。
-- 恢复(resume)命令：
-  - 参数：`--thread <execution-id>`（必填）。
-  - 流程：
-    - 列出该 执行(execution)的待人工项：候选(candidate)级 / 分支级 / 调度级。
-    - 逐项呈现上下文：候选内容、错误历史、局部证据。
-    - 接受 accept / edit / drop。
-    - edit 采用最朴素形态：把候选导出为临时 JSON 文件让用户手工编辑后回填。
-    - 人工结果写入 工作流状态(Workflow State)后从 检查点(checkpoint)恢复执行（恢复点=触发 人工介入(HITL)的节点，PRD §13）。
-- 导出(export)命令：
-  - 参数：`--thread <execution-id>`（必填）、可选输出路径。
-  - 从已持久化的执行状态读取最终互动数组导出，不重新执行任何节点。
-  - 状态未到可导出阶段（未完成 / 仍待人工）时明确报告当前状态与待办项。
-  - 导出数组的排序与 标识(ID)规则（定稿，ADR-023）：按 (`show_at`, `duration_ms`)排序、标识(ID)为 1-based 自增。
-- 输出与退出码约定：
-  - 正常完成（0）。
-  - 存在待人工项：非零专码，提示 resume 命令与 execution-id。
-  - 失败：非零，附错误摘要。
-  - 运行过程打印节点进度与 指标(metrics)摘要（调用次数、重试、人工介入(HITL)次数——PRD §20.2）。
+- 依赖 config、graph/builder 和 schemas/interaction。
+- 由 pyproject.toml 的命令入口调用；使用方式由 README 描述。
 
-## 关键设计点
+## 目标实现要求
 
-- execution-id 的三重身份：检查点(checkpoint)线程(thread)标识(ID)、runs 目录名、恢复(resume)/导出(export)的引用键——生成规则集中在一处。
-- 人工介入(HITL)是 命令行(CLI)流程的一等公民但保持朴素：第一版交互 = 文本列表 + 序号选择 + JSON 文件编辑，不做 界面(UI)（人工介入(HITL)界面(UI)属 Deferred，PRD §22 第 8 项）。
-- 运行(run)的批处理不牺牲隔离：集与集之间互不影响，符合「异常只影响自身、其余照常」的全局设计理念。
-- 导出(export)严格只读：保证「最终发布暂停」期间（PRD §13）状态可查而不被改动。
+- execution_id 同时作为检查点线程标识、运行目录名和 resume/export 引用键。
+- run 为每集创建独立运行目录与检查点；一集失败或等待人工不得阻塞其他集。
+- 适配后的证据写入证据目录，完成的互动数组写入 V2 产物目录。
+- export 按已完成状态读取并导出，排序与最终 id 由图的终检阶段保证。
+- 第一版人工交互使用终端文本和可编辑 JSON，不提供 Web 或播放器界面。
 
-## 待定项
+## 失败与边界情形
 
-- 运行(run)是否需要 --episode 过滤（目录输入下只跑指定集）。
-- 恢复(resume)的非交互模式（人工结果从文件批量导入，供自动化测试与批量处理）：第一版可只做交互式，标注待定。
-- execution-id 具体格式（可读性与碰撞率的平衡）。
+- 输入路径、媒体预处理结果、execution_id 或命令参数无效时，输出可定位的错误和非零退出码。
+- 遇到等待人工的执行，提示可复制的 resume 命令，不把半成品导出为最终结果。
+- 批处理时单集失败要记录结果后继续下一集。
+- 交互细节和未冻结的参数形式只维护在 [PROGRESS](../../../PROGRESS.md)。
 
-## 测试要点
+## 验证
 
-- 三命令的参数校验与错误提示（缺参、路径不存在、execution-id 无效）。
-- 目录批处理：多集独立 执行(execution)、单集失败不影响他集。
-- 恢复(resume)交互流程用脚本化标准输入模拟：accept/drop/edit 三动作各一条路径。
-- 退出码约定的稳定性测试。
+- 覆盖三个命令的缺参、非法路径、无效 execution_id、正常完成与待人工路径。
+- 用多个小输入验证逐集隔离和单集失败不影响其他集。
+- 模拟标准输入验证 accept、edit、drop 的恢复路径。
+- 验证 export 不触发任何节点执行，且退出码稳定。

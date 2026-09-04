@@ -1,22 +1,22 @@
 """互动输出契约层模块。
 
 定义播放器消费的五类即时互动数据载荷（payload）及最终互动外壳（FinalInteraction）。
-提供类型字符串与数字映射权威定义、情绪标签枚举及严格的字段级约束校验。
+互动类型与边看边聊情绪均使用外部 JSON 直接消费的字符串枚举。
 """
 
-from enum import IntEnum
+from enum import Enum
 from typing import Any, Union
 
 from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    StrictInt,
     field_validator,
     model_validator,
 )
 
 from drama_interaction.config import (
-    DEFAULT_DEFERRED_VOTE_ANSWER_ID,
     DEFERRED_VOTE_MAX_OPTIONS,
     DEFERRED_VOTE_MIN_OPTIONS,
     EMOTION_BUTTON_MAX_ID,
@@ -25,36 +25,28 @@ from drama_interaction.config import (
 )
 
 
-class InteractionType(IntEnum):
-    """权威互动类型枚举定义（数字映射沿用 V1 约定）。"""
+class InteractionType(str, Enum):
+    """V2 对外互动类型字符串枚举。"""
 
-    EMOTION_BUTTON = 1  # 情绪按钮
-    REPEAT_KEYLINE = 2  # 跟读金句
-    INSTANT_VOTE = 3  # 即时投票
-    DEFERRED_VOTE = 4  # 延时投票
-    SIDE_COMMENT = 5  # 边看边聊
-
-
-# 互动类型字符串名称与整数编码的双向映射字典（唯一权威数据源）
-TYPE_STR_TO_INT: dict[str, int] = {e.name.lower(): e.value for e in InteractionType}
-TYPE_INT_TO_STR: dict[int, str] = {e.value: e.name.lower() for e in InteractionType}
+    EMOTION_BUTTON = "emotion_button"  # 情绪按钮
+    REPEAT_KEYLINE = "repeat_keyline"  # 跟读金句
+    INSTANT_VOTE = "instant_vote"  # 即时投票
+    DEFERRED_VOTE = "deferred_vote"  # 延时投票
+    SIDE_COMMENT = "side_comment"  # 边看边聊
 
 
-class CommentMood(IntEnum):
+class CommentMood(str, Enum):
     """边看边聊（side_comment）确定性情绪类型枚举。"""
 
-    ROAST = 1  # 吐槽（离谱反差、降智行为、槽点）
-    SHOCK = 2  # 震惊（反转、暴击、不可思议）
-    LAUGH = 3  # 爆笑（搞笑、幽默、欢乐场面）
-    PRAISE = 4  # 点赞（打脸爽点、高光反击、霸气）
-    SYMPATHY = 5  # 同情（虐心、心疼、委屈泪点）
-    DOUBT = 6  # 质疑（怀疑有诈、猜测真相、侦探视角）
+    ROAST = "roast"  # 吐槽（离谱反差、降智行为、槽点）
+    SHOCK = "shock"  # 震惊（反转、暴击、不可思议）
+    LAUGH = "laugh"  # 爆笑（搞笑、幽默、欢乐场面）
+    PRAISE = "praise"  # 点赞（打脸爽点、高光反击、霸气）
+    SYMPATHY = "sympathy"  # 同情（虐心、心疼、委屈泪点）
+    DOUBT = "doubt"  # 质疑（怀疑有诈、猜测真相、侦探视角）
 
 
-# 边看边聊情绪选项与整数编码映射字典（由 CommentMood 自动派生）
-MOOD_STR_TO_INT: dict[str, int] = {e.name.lower(): e.value for e in CommentMood}
-MOOD_INT_TO_STR: dict[int, str] = {e.value: e.name.lower() for e in CommentMood}
-VALID_COMMENT_MOODS: set[str] = set(MOOD_STR_TO_INT.keys())
+VALID_COMMENT_MOODS: set[str] = {mood.value for mood in CommentMood}
 
 
 class EmotionButtonPayload(BaseModel):
@@ -78,7 +70,7 @@ class EmotionButtonPayload(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    button_id: int = Field(
+    button_id: StrictInt = Field(
         ...,
         ge=EMOTION_BUTTON_MIN_ID,
         le=EMOTION_BUTTON_MAX_ID,
@@ -263,16 +255,16 @@ class DeferredVotePayload(BaseModel):
         ...,
         description=f"选项列表（{DEFERRED_VOTE_MIN_OPTIONS}-{DEFERRED_VOTE_MAX_OPTIONS}项）",
     )
-    answer_id: int = Field(
-        default=DEFAULT_DEFERRED_VOTE_ANSWER_ID,
+    answer_id: StrictInt = Field(
+        ...,
         ge=0,
         description="正确答案在 options 中的索引（生成侧固定为 0，渲染打乱后重映射）",
     )
-    reveal_time: int | None = Field(
+    reveal_time: StrictInt | None = Field(
         default=None, ge=0, description="揭晓时刻（毫秒，渲染环节填入）"
     )
-    reveal_delay: int | None = Field(
-        default=None, ge=0, description="揭晓展示时长（毫秒，渲染环节填入）"
+    reveal_delay: StrictInt | None = Field(
+        default=None, gt=0, description="揭晓展示时长（毫秒，渲染环节填入）"
     )
 
     @field_validator("question")
@@ -347,15 +339,15 @@ class SideCommentPayload(BaseModel):
 
     Attributes:
         text: 评论文本内容，不能为空。
-        mood: 情绪标签字符串（可选，支持 roast/shock/laugh/praise/sympathy/doubt）。
+        mood: 必填小写情绪标签（roast/shock/laugh/praise/sympathy/doubt）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
     text: str = Field(..., min_length=1, description="评论文本内容")
-    mood: str | None = Field(
-        default=None,
-        description="情绪标签（可选，支持 roast/shock/laugh/praise/sympathy/doubt）",
+    mood: CommentMood = Field(
+        ...,
+        description="必填小写情绪标签（roast/shock/laugh/praise/sympathy/doubt）",
     )
 
     @field_validator("text")
@@ -376,32 +368,29 @@ class SideCommentPayload(BaseModel):
             raise ValueError("边看边聊评论文本不能全为空白字符")
         return v
 
-    @field_validator("mood")
+    @field_validator("mood", mode="before")
     @classmethod
-    def validate_mood_known(cls, v: str | None) -> str | None:
-        """校验情绪标签若提供则必须在允许的选项内。
+    def validate_mood_known(cls, v: Any) -> Any:
+        """拒绝非小写字符串情绪标签，不进行自动归一化。
 
         Args:
             v: 输入情绪标签。
 
         Returns:
-            校验通过的标准情绪标签。
+            原始情绪标签，由枚举字段继续校验。
 
         Raises:
             ValueError: 当情绪标签不在合法集合内时抛出。
         """
-        if v is not None:
-            v_norm = v.strip().lower()
-            if v_norm not in VALID_COMMENT_MOODS:
-                raise ValueError(
-                    f"未知的 mood: '{v}'，可选集合为 {sorted(VALID_COMMENT_MOODS)}"
-                )
-            return v_norm
-        return None
+        if not isinstance(v, str) or v not in VALID_COMMENT_MOODS:
+            raise ValueError(
+                f"未知的 mood: '{v}'，可选集合为 {sorted(VALID_COMMENT_MOODS)}"
+            )
+        return v
 
 
 # 五类互动 Payload 的联合类型
-InteractionPayload = Union[  # ruff: ignore[non-pep604-annotation-union]
+InteractionPayload = Union[  # noqa: UP007
     EmotionButtonPayload,
     RepeatKeylinePayload,
     InstantVotePayload,
@@ -417,7 +406,7 @@ class FinalInteraction(BaseModel):
 
     Attributes:
         id: 输出数组内的自增序号（从 1 开始）。
-        type: 互动类型数字（1-5）。
+        type: 五类互动之一的字符串类型。
         show_at: 弹出展示开始时刻（毫秒，非负整数）。
         duration_ms: 展示持续时长（毫秒，正整数）。
         payload: 具体的业务载荷对象。
@@ -425,16 +414,16 @@ class FinalInteraction(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    id: int = Field(..., ge=1, description="最终输出数组内的 1-based 序号")
-    type: int = Field(..., ge=1, le=5, description="互动类型数字（1-5）")
-    show_at: int = Field(..., ge=0, description="展示开始时间（毫秒）")
-    duration_ms: int = Field(..., gt=0, description="展示持续时间（毫秒）")
+    id: StrictInt = Field(..., ge=1, description="最终输出数组内的 1-based 序号")
+    type: InteractionType = Field(..., description="五类互动之一的字符串类型")
+    show_at: StrictInt = Field(..., ge=0, description="展示开始时间（毫秒）")
+    duration_ms: StrictInt = Field(..., gt=0, description="展示持续时间（毫秒）")
     payload: InteractionPayload = Field(..., description="五类互动载荷之一")
 
     @model_validator(mode="before")
     @classmethod
     def parse_payload_by_type(cls, data: Any) -> Any:
-        """根据 type 自动将 dict 形式的 payload 解析为对应的 Payload 模型，并支持字符串类型转数字。
+        """根据字符串 type 将字典 payload 解析为对应的强类型模型。
 
         Args:
             data: 输入的字典或模型数据。
@@ -445,32 +434,28 @@ class FinalInteraction(BaseModel):
         Raises:
             ValueError: 当 type 与 payload 结构不匹配或数据非法时抛出。
         """
-        if isinstance(data, dict):
-            raw_type = data.get("type")
-            # 容错支持：如果传入的是类型字符串名（如 "emotion_button"），自动转为数字 1-5
-            if isinstance(raw_type, str) and raw_type in TYPE_STR_TO_INT:
-                data["type"] = TYPE_STR_TO_INT[raw_type]
-                raw_type = data["type"]
+        if not isinstance(data, dict):
+            return data
 
-            int_type = data.get("type")
-            payload_data = data.get("payload")
-            # 如果 payload 是 dict，且 type 明确，则显式转换为具体的 Payload 类
-            if isinstance(payload_data, dict) and int_type is not None:
-                if int_type == InteractionType.EMOTION_BUTTON.value:
-                    data["payload"] = EmotionButtonPayload(**payload_data)
-                elif int_type == InteractionType.REPEAT_KEYLINE.value:
-                    data["payload"] = RepeatKeylinePayload(**payload_data)
-                elif int_type == InteractionType.INSTANT_VOTE.value:
-                    data["payload"] = InstantVotePayload(**payload_data)
-                elif int_type == InteractionType.DEFERRED_VOTE.value:
-                    data["payload"] = DeferredVotePayload(**payload_data)
-                elif int_type == InteractionType.SIDE_COMMENT.value:
-                    data["payload"] = SideCommentPayload(**payload_data)
+        raw_type = data.get("type")
+        type_value = raw_type.value if isinstance(raw_type, InteractionType) else raw_type
+        payload_data = data.get("payload")
+        payload_model = {
+            InteractionType.EMOTION_BUTTON.value: EmotionButtonPayload,
+            InteractionType.REPEAT_KEYLINE.value: RepeatKeylinePayload,
+            InteractionType.INSTANT_VOTE.value: InstantVotePayload,
+            InteractionType.DEFERRED_VOTE.value: DeferredVotePayload,
+            InteractionType.SIDE_COMMENT.value: SideCommentPayload,
+        }.get(type_value)
+        if isinstance(payload_data, dict) and payload_model is not None:
+            parsed_data = dict(data)
+            parsed_data["payload"] = payload_model.model_validate(payload_data)
+            return parsed_data
         return data
 
     @model_validator(mode="after")
     def validate_type_and_payload_consistency(self) -> "FinalInteraction":
-        """校验 type 数字与 payload 具体类型的严格一致性。
+        """校验字符串 type、payload 类型及最终揭晓时间的一致性。
 
         Returns:
             校验通过的自身实例。
@@ -486,16 +471,26 @@ class FinalInteraction(BaseModel):
             InteractionType.SIDE_COMMENT.value: SideCommentPayload,
         }
 
-        expected_model = type_to_model_map.get(self.type)
-        if expected_model is None:
-            raise ValueError(f"未知的互动类型数字: {self.type}")
+        expected_model = type_to_model_map[self.type.value]
 
         # 检查 payload 是否为该类型对应的正确模型
         if not isinstance(self.payload, expected_model):
             raise ValueError(
-                f"type={self.type} ({TYPE_INT_TO_STR.get(self.type)}) "
+                f"type='{self.type.value}' "
                 f"与 payload 类型 ({type(self.payload).__name__}) 不匹配，"
                 f"预期为 {expected_model.__name__}"
             )
+
+        if isinstance(self.payload, DeferredVotePayload):
+            if self.payload.reveal_time is None:
+                raise ValueError("最终 deferred_vote 必须提供 reveal_time")
+            if self.payload.reveal_delay is None:
+                raise ValueError("最终 deferred_vote 必须提供 reveal_delay")
+            interaction_end = self.show_at + self.duration_ms
+            if self.payload.reveal_time < interaction_end:
+                raise ValueError(
+                    f"reveal_time ({self.payload.reveal_time}) 不得早于互动展示结束时间 "
+                    f"({interaction_end})"
+                )
 
         return self

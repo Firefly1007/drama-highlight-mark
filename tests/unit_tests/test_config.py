@@ -6,11 +6,6 @@
 import drama_interaction.config as cfg
 
 
-def test_evidence_and_window_config():
-    """测试证据与时间窗口参数。"""
-    assert cfg.WINDOW_SIZE_MS == 3000
-
-
 def test_render_duration_constants():
     """测试渲染时长基准与生理时间常量。"""
     assert cfg.DEFAULT_EMOTION_BUTTON_DURATION_MS == 2500
@@ -35,7 +30,6 @@ def test_interaction_shape_constraints():
     assert cfg.INSTANT_VOTE_OPTIONS_COUNT == 2
     assert cfg.DEFERRED_VOTE_MIN_OPTIONS == 2
     assert cfg.DEFERRED_VOTE_MAX_OPTIONS == 4
-    assert cfg.DEFAULT_DEFERRED_VOTE_ANSWER_ID == 0
 
 
 def test_llm_and_path_defaults():
@@ -51,4 +45,3 @@ def test_llm_and_path_defaults():
     assert cfg.DEFAULT_INTERACTION_V2_DIR == "data/interaction_v2"
     assert cfg.DEFAULT_RUNS_DIR == "data/interaction_v2/runs"
     assert cfg.DEFAULT_CHECKPOINT_DB_PATH == "data/interaction_v2/runs/checkpoints.db"
-
