@@ -12,11 +12,11 @@
 
 - 输入为已渲染的候选、各候选所属分支的证据视图和调度配置。
 - resolve_anchor 是唯一锚点时间解析入口，返回引用证据条目的 start_ms 与 end_ms。
-- 预处理输出确定性存活候选、待语义取舍集合和 constraints_report；终检输出通过或可定位错误。
+- 预处理输出确定性存活候选、冲突组和 constraints_report；终检输出通过或可定位错误。
 
 ## 依赖与消费者
 
-- 依赖 schemas、config 和 validation/rules 的可复用断言。
+- 依赖 schemas 与 config。
 - graph/nodes 的 render、constraints、final_check 节点调用本模块；scheduling/semantic 接收待取舍集合。
 
 ## 目标实现要求
@@ -24,6 +24,7 @@
 - 同时给出两个锚点标识时优先使用 transcript_segment_id；D<n> 必须从候选所属专家分支解析。
 - 用同一解析结果生成 show_at、repeat_keyline 时长和 deferred_vote 揭晓时间。
 - 先淘汰渲染后时间不合法的 deferred_vote，再做去重、局部冲突、间隔、冷却和预算分析。
+- 将最终展示区间视为半开区间 `[show_at, show_at + duration_ms)`；两个区间相交即冲突，冲突集合交给语义调度器取舍。
 - 确定性规则只说明哪些不能同时存在；冲突候选的价值选择交给 semantic。
 - 终检必须验证数量、冲突、间隔、冷却、重复、非负时间、金句时长和揭晓间隔，违规直接报错。
 
@@ -31,7 +32,7 @@
 
 - 无法解析锚点、跨分支 D<n>、非法 reveal 时间或无效打乱后的 answer_id 必须成为显式错误或淘汰记录。
 - 未配置的预算、间隔、冷却显式跳过，不得默认为 0。
-- 阈值数值和冲突处理策略的未冻结部分只维护在 [PROGRESS](../../../../PROGRESS.md)。
+- 未配置的间隔、冷却或预算不参与约束；当前实现不引入额外的冲突阈值配置。
 
 ## 验证
 

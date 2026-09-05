@@ -1,6 +1,6 @@
 # specialists/repeat_keyline.py 内容计划
 
-本模块实现跟读金句（repeat_keyline）专家，公共执行逻辑复用 [base](base.md)。
+本模块实现跟读金句（repeat_keyline）专家的类型规则，执行逻辑复用 [base](base.md) 的 Specialist 子图。
 
 ## 职责与边界
 
@@ -10,8 +10,8 @@
 
 ## 输入、输出与接口
 
-- 接收 base 提供的专家输入和可引用证据时间线。
-- 输出 specialist_type 为 repeat_keyline 的 SpecialistResult，payload 只含需要跟读的 text。
+- 接收 base 子图提供的专家输入、可引用证据时间线和 `inspect_span` 工具。
+- 通过 ToolStrategy 输出 specialist_type 为 repeat_keyline 的 SpecialistResult，payload 只含需要跟读的 text。
 - 锚点可引用 transcript_segment_id 或 observation_id；payload 文本仍须能在本集台词中验证。
 
 ## 依赖与消费者
@@ -22,6 +22,7 @@
 ## 目标实现要求
 
 - 选择具有可复述性、剧情辨识度或情绪张力的原始台词，不改写字面内容。
+- 只提供 repeat_keyline 的 focus 和类型约束，不复制 ReAct Agent 或结构化输出骨架。
 - 候选的 evidence_ids 至少覆盖文本出处与触发锚点。
 - 允许使用观察锚点定位合适时刻，但不能因此失去对台词原文的验证。
 - 没有足够突出的原始台词时弃权。
@@ -30,7 +31,7 @@
 
 - 找不到原文、文本与本集台词不一致、锚点不存在时必须拒绝或定向重生。
 - 不能因为没有台词锚点而使用固定时长；时长始终由实际锚点跨度和渲染规则决定。
-- 金句判定和文本归一化细则只维护在 [PROGRESS](../../../../PROGRESS.md)。
+- 完整 V1 金句判定与文案规则只维护在 `config.py` 的 Specialist 提示词中；文本归一化策略仍见 [PROGRESS](../../../../PROGRESS.md)。
 
 ## 验证
 

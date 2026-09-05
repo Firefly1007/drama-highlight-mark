@@ -10,10 +10,10 @@
 
 ## 输入、输出与接口
 
-- run 接收一个 V1 片段 JSON 文件或剧集目录，以及允许覆盖的运行参数。
-- run 的起始媒体预处理阶段负责将真实集长写入工作流状态；适配器消费该值，不猜测媒体路径。
-- resume 接收 execution_id，展示待人工项并写回 accept、edit 或 drop 的结果。
-- export 接收 execution_id 和可选输出位置，从持久化状态读取完成的 FinalInteraction 数组，不重新执行图。
+- run 接收一个 V1 片段 JSON 文件或剧集目录。
+- 当前 run 的起始节点以 V1 片段 JSON 中合法 `end` 的最大值写入 episode_duration_ms；未来 FFmpeg 预处理只替换该来源，适配器不猜测媒体路径。
+- resume 使用唯一公开参数 --execution-id，展示待人工项并写回 accept、edit 或 drop 的结果。
+- export 使用唯一公开参数 --execution-id 和可选输出位置，从持久化状态读取完成的 FinalInteraction 数组，不重新执行图。
 
 ## 依赖与消费者
 
@@ -22,18 +22,18 @@
 
 ## 目标实现要求
 
-- execution_id 同时作为检查点线程标识、运行目录名和 resume/export 引用键。
+- execution_id 同时作为 PostgreSQL checkpoint 线程标识、运行目录名和 resume/export 引用键。
 - run 为每集创建独立运行目录与检查点；一集失败或等待人工不得阻塞其他集。
 - 适配后的证据写入证据目录，完成的互动数组写入 V2 产物目录。
 - export 按已完成状态读取并导出，排序与最终 id 由图的终检阶段保证。
-- 第一版人工交互使用终端文本和可编辑 JSON，不提供 Web 或播放器界面。
+- 第一版人工交互使用终端文本和可编辑 JSON，不提供 Web 或播放器界面；LangSmith 仅可选查看追踪，不能作为回写入口。
 
 ## 失败与边界情形
 
 - 输入路径、媒体预处理结果、execution_id 或命令参数无效时，输出可定位的错误和非零退出码。
 - 遇到等待人工的执行，提示可复制的 resume 命令，不把半成品导出为最终结果。
 - 批处理时单集失败要记录结果后继续下一集。
-- 交互细节和未冻结的参数形式只维护在 [PROGRESS](../../../PROGRESS.md)。
+- 交互细节由本模块与 [ADR](../../../drama-interaction-v2-ADR.md) 共同约束；运行状态见 [PROGRESS](../../../PROGRESS.md)。
 
 ## 验证
 

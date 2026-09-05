@@ -10,27 +10,28 @@
 
 ## 输入、输出与接口
 
-- 输入为待取舍候选、各候选的局部证据、已经选择的互动概况、剩余预算和硬约束。
+- 输入为待取舍候选、各候选的局部证据、`DramaContext`、已经选择的互动概况、剩余预算和硬约束。
 - 输出为保留 candidate_id 列表及可选理由。
 - 只有待取舍集合非空时才调用模型。
 
 ## 依赖与消费者
 
 - 依赖 scheduling/constraints、schemas、evidence/render、llm 和 config。
-- graph/nodes 调用并把结果写入 selected_candidates；CLI/HITL 消费无法合法选择的事件。
+- graph/nodes 调用并把结果写入 selected_candidate_ids；CLI/HITL 消费无法合法选择的事件。
 
 ## 目标实现要求
 
 - 输入只包含候选 evidence_ids 对应的局部证据，不把整集时间线重复送入模型。
 - 模型只能从给定 candidate_id 中选择，数量不能突破配置的硬约束。
-- 用互动价值、剧情覆盖和类型多样性指导取舍，但不让模型改 payload 或锚点。
-- 输出先由程序验证；不合法时按有限重试后转人工介入，而非静默裁剪。
+- 用互动价值、剧情覆盖和类型多样性指导取舍；`DramaContext` 只辅助理解人物和背景，不替代候选证据；不让模型改 payload 或锚点。
+- 使用 LangChain `ToolStrategy(SemanticDecision)` 提交选择；不解析模型文本 JSON。
+- 输出先由程序验证；不合法时直接转人工介入，不静默裁剪。网络超时、连接失败和限流只由 LLM Gateway 重试；网关耗尽直接生成可审计 HITL。
 
 ## 失败与边界情形
 
 - 空集合不得触发模型调用。
 - 不存在的 id、重复 id、超量选择和格式错误都必须拒绝并保留原始响应。
-- 提示词措辞、调用次数与重试上限只维护在 [PROGRESS](../../../../PROGRESS.md)。
+- 调度器提示词模板只维护在 `config.py`；调用次数和 benchmark 参数状态见 [PROGRESS](../../../../PROGRESS.md)。
 
 ## 验证
 

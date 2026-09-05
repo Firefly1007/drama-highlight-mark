@@ -5,15 +5,17 @@
 ## 当前架构
 
 ```text
-V1 片段 JSON + 媒体预处理结果 + 静态上下文
+V1 片段 JSON + 媒体预处理结果 + DramaContext
               ↓
       Legacy Evidence Adapter
               ↓
        EvidenceDocument
               ↓
- ┌───────────────────────────────┐
- │ 五类 Specialist 并行、彼此隔离 │
- └──────────────┬────────────────┘
+ ┌──────────────────────────────────────────┐
+ │ 五个 Specialist 子图并行、分支彼此隔离    │
+ │ ReAct Agent ↔ inspect_span Tool           │
+ │ → LangChain ToolStrategy(SpecialistResult)│
+ └──────────────────┬───────────────────────┘
                 ↓
           Candidate Pool
                 ↓
@@ -28,7 +30,7 @@ V1 片段 JSON + 媒体预处理结果 + 静态上下文
   后端消费的 Interaction JSON
 ```
 
-各 Specialist 分支均为：渲染后的分支证据视图 → 找点、绑定证据、生成 payload → 局部确定性校验 → 安全修复或定向重试 → Candidate Pool / HITL。
+各 Specialist 分支均运行同一套编译子图：渲染后的分支证据视图 → ReAct Agent 按需调用分支私有的 `inspect_span` → 通过 LangChain `ToolStrategy(SpecialistResult)` 提交结构化结果 → 局部确定性校验 → 安全修复或定向重试 → Candidate Pool / HITL。
 
 ## ADR-001：删除高光作为统一中间层
 
@@ -60,8 +62,9 @@ EvidenceDocument
 ```
 
 - 所有证据条目都以自身的 `start_ms` / `end_ms` 定位；两个列表按 `start_ms` 升序，构造期校验且不自动排序。
-- `episode_duration_ms` 由起始媒体预处理阶段写入工作流状态，再由适配器写入文档；适配器不自行探测或猜测视频路径。
-- 预处理缺失有效集长或条目越出集长时快速失败，不从 V1 时间线回退，也不静默截断。
+- `episode_duration_ms` 由起始媒体预处理阶段写入工作流状态，再由适配器写入文档；适配器不自行探测或猜测媒体路径。
+- 目标形态由真实媒体预处理提供集长；当前临时实现仅在起始节点取片段 JSON 中合法 `end` 的最大值。该临时来源只可替换，不得进入适配器或下游证据契约。
+- 预处理缺失有效集长或条目越出集长时快速失败，不静默截断。
 
 **影响**：检索、校验、人工修正和评测都按证据标识进行；证据可直接成为锚点，未来粗粒度来源以更宽跨度表达。
 
@@ -93,23 +96,23 @@ EvidenceDocument
 
 **背景**：重新建设 ASR、OCR 和多模态提取会阻塞下游工作流，但下游也不能直接依赖 V1 模式。
 
-**决策**：起始媒体预处理阶段先产出 `episode_duration_ms` 并写入工作流状态；`Legacy Evidence Adapter` 接收 V1 片段 JSON 和该集长，输出 `EvidenceDocument`。文本映射为 `TranscriptSegment`，音频字段映射为按原片段跨度定位的 `Observation`；适配器不处理媒体，也不猜测视频路径。
+**决策**：起始媒体预处理阶段先产出 `episode_duration_ms` 并写入工作流状态；`Legacy Evidence Adapter` 接收 V1 片段 JSON 和该集长，输出 `EvidenceDocument`。当前临时实现以合法 `end` 的最大值暂代集长，未来由 FFmpeg 媒体预处理替换该来源。文本映射为 `TranscriptSegment`，音频字段映射为按原片段跨度定位的 `Observation`；适配器不处理媒体，也不猜测媒体路径。
 
-**影响**：下游可先按稳定契约开发；未来提取器只要输出同一契约即可替换适配器。适配器的可复现输入是同一 JSON 与同一视频。
+**影响**：下游可先按稳定契约开发；未来提取器只要输出同一集长契约即可替换当前临时来源。当前适配器的可复现输入是同一 JSON 与同一集长。
 
-## ADR-008：五类专家各自完成找点与生成
+## ADR-008：五类 Specialist 复用 ReAct 子图
 
-**背景**：把机会检测、资格判断、路由和生成拆层会重复判断同一段是否适合互动。
+**背景**：把机会检测、资格判断、取证和生成拆成多个独立层会重复判断同一段是否适合互动；单次模型调用又无法在需要时补充证据。
 
-**决策**：五个固定类型的 Specialist 并行；每个专家一次完成找点、绑定证据、给出锚点和生成 payload。
+**决策**：五个固定类型的 Specialist 并行运行在同一套 LangGraph 子图骨架中。每个子图包含一个 ReAct Agent：Agent 读取本分支证据时间线，按需调用绑定当前分支的 `inspect_span` 工具，最后使用 LangChain `ToolStrategy(SpecialistResult)` 以工具调用提交 `SpecialistResult`。类型文件只提供专家名称、焦点和类型专属规则，不复制执行骨架。
 
-**影响**：减少重复语义推理，天然形成扇出/扇入；类型冲突不在专家内解决。
+**影响**：每个专家可以在同一分支内完成取证和生成，天然形成扇出/扇入；结构化输出由 LangChain 约束，类型冲突不在专家内解决。
 
 ## ADR-009：专家消费文本证据，并按需取证
 
 **背景**：业务专家不应因模型模态受限而直接访问视频、音频或帧；基线也可能存在可补充的未覆盖区间。
 
-**决策**：专家消费由 `evidence/render.py` 生成的线性文本时间线。需要补证时调用：
+**决策**：专家消费由 `evidence/render.py` 生成的线性文本时间线。需要补证时，子图内 Agent 通过绑定当前 Specialist 上下文的 LangChain 工具调用：
 
 ```text
 inspect_span(start_ms, end_ms, query)
@@ -118,17 +121,17 @@ inspect_span(start_ms, end_ms, query)
 - 查询端点从时间线中已渲染的时间码复制，不由模型发明。
 - 长度不少于 `min_reported_gap_ms`（当前为 2500）的基线未覆盖区间渲染为 `[未覆盖 起–止]`；该参数属于配置。
 - 缩进观察仍带 `[O<n>]` 或 `[D<n>]` 标签；仅当其跨度不同于父条目时显示时间码。
-- 证据服务是无状态查询工具；派生证据由图的汇聚节点落盘。
+- `inspect_span` 是无状态查询工具；工具只暴露当前 Specialist 的分支证据上下文，返回简洁的可读结果供 Agent 继续推理；派生证据由图的汇聚节点落盘。
 
 **影响**：专家可以使用文本模型，媒体能力被封装在证据服务中；真实取证实现可独立演进。
 
-## ADR-010：静态上下文只提供背景
+## ADR-010：静态上下文只作辅助，当前集事实仍由证据提供
 
-**背景**：剧名、角色表和简介可以帮助理解，但不能替代当前集事实。
+**背景**：剧名、剧情简介和角色表有助于辨认人名、关系和专有名词，但不能把简介中的跨集概括误当成本集事实。
 
-**决策**：专家可读取静态上下文；每条当前集互动的具体事实必须由当前集证据支撑。本轮不额外生成跨集摘要。
+**决策**：工作流从 `data/video/drama_info.json` 按剧名加载 `DramaContext`，将剧名、简介和角色表传给五个 Specialist 及语义调度器。该上下文只用于理解名称、关系、背景和专有名词；互动事件、动作、因果、答案与揭晓必须由当前集 `EvidenceDocument` 的 `T/O/D` 证据支撑，不额外生成跨集摘要。
 
-**影响**：互动具备可追溯证据链，并避免把历史剧情当作当前集事实。
+**影响**：专家拥有必要的剧集语境，同时每条互动仍具备可追溯的本集证据链；简介或角色表不能单独生成互动。
 
 ## ADR-011：候选使用证据锚点，而非模型时间
 
@@ -168,7 +171,7 @@ trigger_anchor / reveal_anchor
 
 **背景**：重跑整集或改变已成功候选会扩大故障范围，并浪费已有结果。
 
-**决策**：校验失败时先做不改变业务语义的安全程序修复；仍失败则把原候选、明确错误和必要局部证据退回原专家，只修该候选；再次失败进入 HITL。
+**决策**：校验失败时先做不改变业务语义的安全程序修复；仍失败则把原候选、明确错误和必要局部证据退回原专家，只修该候选；再次失败进入 HITL。LLM Gateway 使用 LangChain `ChatOpenAI`，并对配置的 `LLM_BASE_URL` 显式使用 Chat Completions API。Gateway 包裹 Specialist 子图的模型调用；网络层的超时、连接失败和限流只由 Gateway 在单次调用内重试。网关耗尽后形成可审计网络错误，直接进入 HITL，不额外消耗定向重生次数。
 
 **影响**：修复范围可控，其他成功候选和分支不被重跑。
 
@@ -176,7 +179,7 @@ trigger_anchor / reveal_anchor
 
 **背景**：单一互动类型失败不应阻断全剧集的其余有效结果。
 
-**决策**：五路分支独立重试并持久化成功结果；一条分支持续失败时只进入该分支的 HITL。每路的派生证据只在本路证据视图中可见，汇聚时按分支分组保存。
+**决策**：五路分支独立执行并持久化成功结果；网络重试由各自调用的 LLM Gateway 处理。一条分支持续失败时只进入该分支的 HITL。每路的派生证据只在本路证据视图中可见，汇聚时按分支分组保存。
 
 **影响**：分支错误和取证意图不会扩散，其他成功分支继续产出。
 
@@ -184,7 +187,7 @@ trigger_anchor / reveal_anchor
 
 **背景**：少量候选需要人工判断，但人工处理不应导致已完成工作丢失。
 
-**决策**：异常分支进入 `WAITING_FOR_HUMAN`，人工可 `accept`、`edit` 或 `drop`，处理后从检查点恢复；HITL 是异常路径，不是全量审核。
+**决策**：异常分支进入 `WAITING_FOR_HUMAN`，人工通过终端查看可编辑 JSON，并执行 `accept`、`edit` 或 `drop` 后从检查点恢复；HITL 是异常路径，不是全量审核。LangSmith 网页仅作为可选追踪与审计查看界面，不承担人工回写或恢复入口。
 
 **影响**：成功证据与专家结果不重跑，最终发布在需要人工决定时暂停。
 
@@ -192,7 +195,7 @@ trigger_anchor / reveal_anchor
 
 **背景**：同一播放位置的多个互动会争夺用户注意力。
 
-**决策**：候选池可保留多个类型候选，最终选择集在同一局部时刻最多保留一个。冲突组使用 `show_at` 的毫秒阈值显式定义；阈值配置与取值进度统一记录在 PROGRESS。
+**决策**：候选池可保留多个类型候选，最终选择集中的展示半开区间 `[show_at, show_at + duration_ms)` 只要相交即构成冲突，最多保留一个。互动过密仍由独立的间隔、冷却和预算约束控制。
 
 **影响**：冲突判定不依赖证据容器，规则可由基准评测校准。
 
@@ -232,7 +235,7 @@ trigger_anchor / reveal_anchor
 
 **背景**：五路并行、局部修复、故障隔离、人工等待和检查点恢复需要统一的状态编排。
 
-**决策**：V2 后半链路使用 LangGraph `StateGraph`。`EvidenceDocument` 是共享数据契约，工作流状态承载单集元数据和节点进度；一个 `execution_id` 只处理一集，不接收或聚合跨集范围。入口层负责参数校验，图内节点保持单一职责。
+**决策**：V2 后半链路使用 LangGraph `StateGraph`。`EvidenceDocument` 是共享数据契约，工作流状态承载单集元数据和节点进度；五个 Specialist 使用可编译、可嵌入父图的 LangGraph 子图；一个 `execution_id` 只处理一集，不接收或聚合跨集范围。PostgreSQL 是检查点介质，连接只从 `CHECKPOINT_DATABASE_URL` 读取，`execution_id` 同时作为 LangGraph `thread_id`。入口层负责参数校验，图内节点保持单一职责；LangSmith 追踪可选启用且只读。
 
 **影响**：复用框架的持久化和恢复能力，不自建检查点；单集失败或中断不会污染其他集。
 
@@ -251,9 +254,9 @@ reveal_delay = reveal_display_ms
 
 - 生成专家不输出任何毫秒字段；如有结构性违规，可安全置空后由渲染重算。
 - `deferred_vote` 必须满足 `reveal_time >= show_at + duration_ms + reveal_gap_min_ms`，不满足时丢弃并记录原因，不进入定向修复。
-- 投票选项按 `hash(execution_id + candidate_id)` 确定性打乱，并同步重映射 `answer_id`。
+- 投票选项使用固定项目命名空间的 `UUIDv5(execution_id:candidate_id)` 作为局部随机种子确定性打乱，并同步重映射 `answer_id`；不使用 Python 内置 `hash()` 或全局随机状态。
 - 最终输出的 `type` 仅为字符串：`emotion_button`、`repeat_keyline`、`instant_vote`、`deferred_vote`、`side_comment`；不公开数字映射。
-- `side_comment.payload.mood` 为必填小写枚举：`roast`、`shock`、`laugh`、`praise`、`sympathy`、`doubt`。`button_id` 等类型内部业务字段保持各自语义。
+- `side_comment.payload.mood` 为必填小写枚举：`roast`、`shock`、`laugh`、`praise`、`sympathy`、`doubt`；`emotion_button.payload.button_id` 直接使用 `cool`、`laugh`、`tomato`、`protect`、`pity`、`ship`。
 - 最终数组按 `(show_at, duration_ms)` 排序，`id` 为从 1 开始的连续序号。
 
 **影响**：时间校验、冲突处理、调度和导出消费同一份真实毫秒；后端类型契约稳定，选项顺序可复现。
@@ -262,7 +265,7 @@ reveal_delay = reveal_display_ms
 
 **背景**：补充证据必须能被候选引用，同时不能破坏基线幂等、共享证据客观性和五路隔离。
 
-**决策**：`inspect_span` 返回的补充证据使用独立的 `DerivedObservation`：
+**决策**：`inspect_span` 工具返回的补充证据使用独立的 `DerivedObservation`：
 
 ```text
 DerivedObservation

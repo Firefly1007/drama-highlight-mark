@@ -8,7 +8,7 @@
 
 - 处理单位是一集短剧，产物是该集的一组即时互动配置。
 - V2 直接从本集内容中发现互动机会，不再以 V1 的“高光”作为必经入口。
-- V2 只负责离线生成和标注，不包含前端播放器、业务服务、数据库、用户评论区或剧情分支内容生成。
+- V2 只负责离线生成和标注，不包含前端播放器、业务服务、业务数据库、用户评论区或剧情分支内容生成；运行检查点属于工作流基础设施。
 - 输出互动类型固定为五种：
   `emotion_button`、`repeat_keyline`、`instant_vote`、`deferred_vote`、`side_comment`。
 - `episode_comment`、`scene_bookmark` 和 `heatmap_bar` 不属于 V2 工作流。
@@ -41,6 +41,8 @@
 后端消费的互动 JSON
 ```
 
+必要上下文来自 `data/video/drama_info.json` 中按剧名匹配的剧情简介和角色表；它只辅助理解名称与关系，互动事实仍必须引用本集证据。
+
 该流程的技术取舍、证据锚定和调度原则见 [架构决策记录（ADR）](docs/drama-interaction-v2-ADR.md)。最终 JSON 字段以 [输出契约](docs/schema.md) 为准。
 
 ## 目标使用方式
@@ -51,11 +53,11 @@
 pip install -e .
 
 python -m drama_interaction run data/text/某短剧/第1集.json
-python -m drama_interaction resume --thread <execution-id>
-python -m drama_interaction export --thread <execution-id>
+python -m drama_interaction resume --execution-id <execution-id>
+python -m drama_interaction export --execution-id <execution-id>
 ```
 
-`run` 的最终产物是符合 `docs/schema.md` 的 JSON；输入约定、配置与执行细节以模块计划为准，不在 README 重复定义。
+`run` 的最终产物是符合 `docs/schema.md` 的 JSON。当前临时 V1 输入以片段 JSON 中合法 `end` 的最大值暂代集长；真实媒体预处理接入后会只替换这一来源。输入约定、配置与执行细节以模块计划为准，不在 README 重复定义。
 
 ## 文档地图
 

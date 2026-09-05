@@ -1,6 +1,6 @@
 # specialists/side_comment.py 内容计划
 
-本模块实现边看边聊（side_comment）专家，公共执行逻辑复用 [base](base.md)。
+本模块实现边看边聊（side_comment）专家的类型规则，执行逻辑复用 [base](base.md) 的 Specialist 子图。
 
 ## 职责与边界
 
@@ -10,8 +10,8 @@
 
 ## 输入、输出与接口
 
-- 接收 base 提供的专家输入和本分支证据时间线。
-- 输出 specialist_type 为 side_comment 的 SpecialistResult。
+- 接收 base 子图提供的专家输入、本分支证据时间线和 `inspect_span` 工具。
+- 通过 ToolStrategy 输出 specialist_type 为 side_comment 的 SpecialistResult。
 - payload 包含 text 和必填 mood；mood 只能是 roast、shock、laugh、praise、sympathy、doubt。
 
 ## 依赖与消费者
@@ -22,15 +22,16 @@
 ## 目标实现要求
 
 - 评论应贴合可见反差、离谱行为、感人时刻、惊讶点或值得质疑的情节。
+- 只提供 side_comment 的 focus 和类型约束，不复制 ReAct Agent 或结构化输出骨架。
 - mood 与文本语气和证据情境一致，且作为最终契约必填字段输出。
-- 不剧透、不代替角色说出未证实心理，也不以静态上下文充当本集事实。
+- 不剧透、不代替角色说出未证实心理。
 - 取证后仍无法安全支撑评论时弃权。
 
 ## 失败与边界情形
 
 - 缺少 mood、mood 不在六个合法值内、文本无证据或内容剧透时必须拒绝。
 - 不得跨分支借用 D<n> 或用空泛占位评论填充产量。
-- 文案长度和风格细则只维护在 [PROGRESS](../../../../PROGRESS.md)。
+- 完整 V1 评论判定、文案和数量规则只维护在 `config.py` 的 Specialist 提示词中。
 
 ## 验证
 

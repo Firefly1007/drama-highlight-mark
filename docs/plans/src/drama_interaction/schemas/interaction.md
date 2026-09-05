@@ -12,7 +12,7 @@
 
 - FinalInteraction 包含最终 id、type、show_at、duration_ms 和 payload。
 - type 只能是 emotion_button、repeat_keyline、instant_vote、deferred_vote、side_comment，不公开数字类型。
-- emotion_button 的 button_id 仍是 0 到 5 的业务字段，text 与 danmaku 的组合遵循 schema。
+- emotion_button 的 button_id 直接使用 `cool`、`laugh`、`tomato`、`protect`、`pity`、`ship`，text 与 danmaku 的组合遵循 schema。
 - repeat_keyline 要求 text；instant_vote 要求 question 和恰好两个 options。
 - deferred_vote 要求 question、二到四个 options、合法 answer_id、reveal_time 和 reveal_delay。
 - side_comment 要求 text，mood 必填，且只能为 roast、shock、laugh、praise、sympathy、doubt。
@@ -34,8 +34,8 @@
 ## 失败与边界情形
 
 - 未知 type、数字 type、缺少 mood、非法 mood、无效选项数、越界 answer_id 或负时间必须拒绝。
-- button_id 的数字语义仅限 emotion_button payload，不能被误用为顶层 type。
-- 字段增减和未冻结的长度阈值只维护在 [PROGRESS](../../../../PROGRESS.md)。
+- button_id 只接受上述英文名称，不能被误用为顶层 type。
+- 字段增减和长度阈值由 [输出契约](../../../../schema.md) 统一约束；运行状态见 [PROGRESS](../../../../PROGRESS.md)。
 
 ## 验证
 

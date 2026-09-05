@@ -1,4 +1,9 @@
-"""instant_vote Specialist：即时站队找点与 payload 生成（未实现）。
+"""即时投票 Specialist。"""
 
-规划见 docs/plans/src/drama_interaction/specialists/instant_vote.md。
-"""
+from drama_interaction.specialists.base import BaseSpecialist
+
+
+class InstantVoteSpecialist(BaseSpecialist):
+    """将当前证据已明确的冲突或选择生成二选一投票。"""
+
+    specialist_type = "instant_vote"

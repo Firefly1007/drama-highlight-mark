@@ -5,7 +5,7 @@
 """
 
 from enum import Enum
-from typing import Any, Union
+from typing import Union
 
 from pydantic import (
     BaseModel,
@@ -19,8 +19,6 @@ from pydantic import (
 from drama_interaction.config import (
     DEFERRED_VOTE_MAX_OPTIONS,
     DEFERRED_VOTE_MIN_OPTIONS,
-    EMOTION_BUTTON_MAX_ID,
-    EMOTION_BUTTON_MIN_ID,
     INSTANT_VOTE_OPTIONS_COUNT,
 )
 
@@ -28,54 +26,60 @@ from drama_interaction.config import (
 class InteractionType(str, Enum):
     """V2 对外互动类型字符串枚举。"""
 
-    EMOTION_BUTTON = "emotion_button"  # 情绪按钮
-    REPEAT_KEYLINE = "repeat_keyline"  # 跟读金句
-    INSTANT_VOTE = "instant_vote"  # 即时投票
-    DEFERRED_VOTE = "deferred_vote"  # 延时投票
-    SIDE_COMMENT = "side_comment"  # 边看边聊
+    EMOTION_BUTTON = "emotion_button"  # 情绪按钮。
+    REPEAT_KEYLINE = "repeat_keyline"  # 跟读金句。
+    INSTANT_VOTE = "instant_vote"  # 即时投票。
+    DEFERRED_VOTE = "deferred_vote"  # 延时投票。
+    SIDE_COMMENT = "side_comment"  # 边看边聊。
 
 
 class CommentMood(str, Enum):
     """边看边聊（side_comment）确定性情绪类型枚举。"""
 
-    ROAST = "roast"  # 吐槽（离谱反差、降智行为、槽点）
-    SHOCK = "shock"  # 震惊（反转、暴击、不可思议）
-    LAUGH = "laugh"  # 爆笑（搞笑、幽默、欢乐场面）
-    PRAISE = "praise"  # 点赞（打脸爽点、高光反击、霸气）
-    SYMPATHY = "sympathy"  # 同情（虐心、心疼、委屈泪点）
-    DOUBT = "doubt"  # 质疑（怀疑有诈、猜测真相、侦探视角）
+    ROAST = "roast"  # 吐槽。
+    SHOCK = "shock"  # 震惊。
+    LAUGH = "laugh"  # 爆笑。
+    PRAISE = "praise"  # 点赞。
+    SYMPATHY = "sympathy"  # 同情。
+    DOUBT = "doubt"  # 质疑。
 
 
 VALID_COMMENT_MOODS: set[str] = {mood.value for mood in CommentMood}
 
 
+class EmotionButtonName(str, Enum):
+    """情绪按钮对外使用的英文名称。"""
+
+    COOL = "cool"
+    LAUGH = "laugh"
+    TOMATO = "tomato"
+    PROTECT = "protect"
+    PITY = "pity"
+    SHIP = "ship"
+
+
 class EmotionButtonPayload(BaseModel):
     """情绪按钮载荷数据模型。
 
-    根据 button_id（0-5）约束对应的可选文案（text）与弹幕列表（danmaku）。
+    根据 button_id 英文名称约束对应的可选文案（text）与弹幕列表（danmaku）。
 
     button_id 配置规则：
-    - 0 (爽 / cool): 可选 text, 可选 danmaku
-    - 1 (笑 / laugh): 禁止 text, 可选 danmaku
-    - 2 (丢番茄 / tomato): 可选 text, 可选 danmaku
-    - 3 (护住TA / protect): 禁止 text, 禁止 danmaku
-    - 4 (心疼TA / pity): 禁止 text, 禁止 danmaku
-    - 5 (磕到了 / ship): 禁止 text, 可选 danmaku
+    - cool（爽）: 可选 text, 可选 danmaku
+    - laugh（笑）: 禁止 text, 可选 danmaku
+    - tomato（丢番茄）: 可选 text, 可选 danmaku
+    - protect（护住 TA）: 禁止 text, 禁止 danmaku
+    - pity（心疼 TA）: 禁止 text, 禁止 danmaku
+    - ship（磕到了）: 禁止 text, 可选 danmaku
 
     Attributes:
-        button_id: 按钮编号（0-5）。
-        text: 提示文案（仅 0, 2 允许配置）。
-        danmaku: 触发时发射的弹幕列表（0, 1, 2, 5 允许配置）。
+        button_id: 按钮英文名称。
+        text: 提示文案（仅 cool、tomato 允许配置）。
+        danmaku: 触发时发射的弹幕列表（cool、laugh、tomato、ship 允许配置）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    button_id: StrictInt = Field(
-        ...,
-        ge=EMOTION_BUTTON_MIN_ID,
-        le=EMOTION_BUTTON_MAX_ID,
-        description=f"按钮编号（{EMOTION_BUTTON_MIN_ID}-{EMOTION_BUTTON_MAX_ID}）",
-    )
+    button_id: EmotionButtonName = Field(..., description="按钮英文名称")
     text: str | None = Field(default=None, description="可选文案（仅爽/丢番茄支持）")
     danmaku: list[str] | None = Field(default=None, description="可选弹幕列表")
 
@@ -129,12 +133,17 @@ class EmotionButtonPayload(BaseModel):
         Raises:
             ValueError: 当字段与 button_id 规则冲突时抛出。
         """
-        # button_id 1, 3, 4, 5 禁止配置 text
-        if self.button_id in (1, 3, 4, 5) and self.text is not None:
+        # 校验 text 的按钮白名单。
+        if self.button_id in (
+            EmotionButtonName.LAUGH,
+            EmotionButtonName.PROTECT,
+            EmotionButtonName.PITY,
+            EmotionButtonName.SHIP,
+        ) and self.text is not None:
             raise ValueError(f"button_id={self.button_id} 不允许配置 text 字段")
 
-        # button_id 3, 4 禁止配置 danmaku（必须为 None）
-        if self.button_id in (3, 4) and self.danmaku is not None:
+        # 校验 danmaku 的按钮白名单。
+        if self.button_id in (EmotionButtonName.PROTECT, EmotionButtonName.PITY) and self.danmaku is not None:
             raise ValueError(f"button_id={self.button_id} 不允许配置 danmaku 字段")
 
         return self
@@ -167,7 +176,7 @@ class RepeatKeylinePayload(BaseModel):
         Raises:
             ValueError: 当文本为空白时抛出。
         """
-        # 跟读文本不能为空
+        # 先拒绝空白金句。
         if not v.strip():
             raise ValueError("跟读金句文本不能全为空白字符")
         return v
@@ -220,7 +229,7 @@ class InstantVotePayload(BaseModel):
         Raises:
             ValueError: 当选项数量不为 INSTANT_VOTE_OPTIONS_COUNT、存在空白选项或存在重复选项时抛出。
         """
-        # 即时投票严格要求 INSTANT_VOTE_OPTIONS_COUNT 个选项
+        # 校验选项数量。
         if len(v) != INSTANT_VOTE_OPTIONS_COUNT:
             raise ValueError(
                 f"即时投票选项数量必须严格等于 {INSTANT_VOTE_OPTIONS_COUNT}，当前为 {len(v)}"
@@ -228,7 +237,7 @@ class InstantVotePayload(BaseModel):
         for opt in v:
             if not opt.strip():
                 raise ValueError("即时投票选项不能全为空白字符")
-        # 两个选项内容不能相同
+        # 校验选项去重。
         if v[0].strip() == v[1].strip():
             raise ValueError(f"即时投票选项不能重复: '{v[0].strip()}'")
         return v
@@ -299,7 +308,7 @@ class DeferredVotePayload(BaseModel):
         Raises:
             ValueError: 当选项数量超出范围、存在空白选项或存在重复选项时抛出。
         """
-        # 延时投票支持 DEFERRED_VOTE_MIN_OPTIONS 到 DEFERRED_VOTE_MAX_OPTIONS 个选项
+        # 校验选项数量。
         if not (DEFERRED_VOTE_MIN_OPTIONS <= len(v) <= DEFERRED_VOTE_MAX_OPTIONS):
             raise ValueError(
                 f"延时投票选项数量必须在 {DEFERRED_VOTE_MIN_OPTIONS} 到 "
@@ -308,7 +317,7 @@ class DeferredVotePayload(BaseModel):
         for opt in v:
             if not opt.strip():
                 raise ValueError("延时投票选项不能全为空白字符")
-        # 检查选项是否存在重复项
+        # 校验选项去重。
         stripped_options = [opt.strip() for opt in v]
         if len(set(stripped_options)) != len(stripped_options):
             raise ValueError(f"延时投票选项不能包含重复项: {v}")
@@ -324,7 +333,7 @@ class DeferredVotePayload(BaseModel):
         Raises:
             ValueError: 当 answer_id 越界时抛出。
         """
-        # 验证答案索引是否指向合法选项
+        # 校验答案索引。
         if self.answer_id >= len(self.options):
             raise ValueError(
                 f"answer_id ({self.answer_id}) 超出 options 索引范围 [0, {len(self.options) - 1}]"
@@ -368,28 +377,18 @@ class SideCommentPayload(BaseModel):
             raise ValueError("边看边聊评论文本不能全为空白字符")
         return v
 
-    @field_validator("mood", mode="before")
-    @classmethod
-    def validate_mood_known(cls, v: Any) -> Any:
-        """拒绝非小写字符串情绪标签，不进行自动归一化。
 
-        Args:
-            v: 输入情绪标签。
-
-        Returns:
-            原始情绪标签，由枚举字段继续校验。
-
-        Raises:
-            ValueError: 当情绪标签不在合法集合内时抛出。
-        """
-        if not isinstance(v, str) or v not in VALID_COMMENT_MOODS:
-            raise ValueError(
-                f"未知的 mood: '{v}'，可选集合为 {sorted(VALID_COMMENT_MOODS)}"
-            )
-        return v
+# 互动类型到载荷模型的映射。
+INTERACTION_PAYLOAD_TYPES: dict[str, type[BaseModel]] = {
+    InteractionType.EMOTION_BUTTON.value: EmotionButtonPayload,
+    InteractionType.REPEAT_KEYLINE.value: RepeatKeylinePayload,
+    InteractionType.INSTANT_VOTE.value: InstantVotePayload,
+    InteractionType.DEFERRED_VOTE.value: DeferredVotePayload,
+    InteractionType.SIDE_COMMENT.value: SideCommentPayload,
+}
 
 
-# 五类互动 Payload 的联合类型
+# 五类互动载荷联合类型。
 InteractionPayload = Union[  # noqa: UP007
     EmotionButtonPayload,
     RepeatKeylinePayload,
@@ -420,39 +419,6 @@ class FinalInteraction(BaseModel):
     duration_ms: StrictInt = Field(..., gt=0, description="展示持续时间（毫秒）")
     payload: InteractionPayload = Field(..., description="五类互动载荷之一")
 
-    @model_validator(mode="before")
-    @classmethod
-    def parse_payload_by_type(cls, data: Any) -> Any:
-        """根据字符串 type 将字典 payload 解析为对应的强类型模型。
-
-        Args:
-            data: 输入的字典或模型数据。
-
-        Returns:
-            解析并装载好 payload 对象的输入数据。
-
-        Raises:
-            ValueError: 当 type 与 payload 结构不匹配或数据非法时抛出。
-        """
-        if not isinstance(data, dict):
-            return data
-
-        raw_type = data.get("type")
-        type_value = raw_type.value if isinstance(raw_type, InteractionType) else raw_type
-        payload_data = data.get("payload")
-        payload_model = {
-            InteractionType.EMOTION_BUTTON.value: EmotionButtonPayload,
-            InteractionType.REPEAT_KEYLINE.value: RepeatKeylinePayload,
-            InteractionType.INSTANT_VOTE.value: InstantVotePayload,
-            InteractionType.DEFERRED_VOTE.value: DeferredVotePayload,
-            InteractionType.SIDE_COMMENT.value: SideCommentPayload,
-        }.get(type_value)
-        if isinstance(payload_data, dict) and payload_model is not None:
-            parsed_data = dict(data)
-            parsed_data["payload"] = payload_model.model_validate(payload_data)
-            return parsed_data
-        return data
-
     @model_validator(mode="after")
     def validate_type_and_payload_consistency(self) -> "FinalInteraction":
         """校验字符串 type、payload 类型及最终揭晓时间的一致性。
@@ -463,17 +429,9 @@ class FinalInteraction(BaseModel):
         Raises:
             ValueError: 当 type 与 payload 类型不一致时抛出。
         """
-        type_to_model_map = {
-            InteractionType.EMOTION_BUTTON.value: EmotionButtonPayload,
-            InteractionType.REPEAT_KEYLINE.value: RepeatKeylinePayload,
-            InteractionType.INSTANT_VOTE.value: InstantVotePayload,
-            InteractionType.DEFERRED_VOTE.value: DeferredVotePayload,
-            InteractionType.SIDE_COMMENT.value: SideCommentPayload,
-        }
+        expected_model = INTERACTION_PAYLOAD_TYPES[self.type.value]
 
-        expected_model = type_to_model_map[self.type.value]
-
-        # 检查 payload 是否为该类型对应的正确模型
+        # 校验载荷类型。
         if not isinstance(self.payload, expected_model):
             raise ValueError(
                 f"type='{self.type.value}' "

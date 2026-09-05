@@ -21,6 +21,7 @@ venv/
 *.egg-info/
 build/
 dist/
+.ruff_cache/
 
 # ===== 编辑器 / 系统 =====
 .vscode/

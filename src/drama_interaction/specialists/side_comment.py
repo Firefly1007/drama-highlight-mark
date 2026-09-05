@@ -1,4 +1,9 @@
-"""side_comment Specialist：旁白吐槽找点与 payload 生成（未实现）。
+"""边看边聊 Specialist。"""
 
-规划见 docs/plans/src/drama_interaction/specialists/side_comment.md。
-"""
+from drama_interaction.specialists.base import BaseSpecialist
+
+
+class SideCommentSpecialist(BaseSpecialist):
+    """生成由当前集证据支撑的简短旁白评论。"""
+
+    specialist_type = "side_comment"

@@ -1,4 +1,9 @@
-"""deferred_vote Specialist：延迟投票找点与 payload 生成（含 reveal 锚点）（未实现）。
+"""延时投票 Specialist。"""
 
-规划见 docs/plans/src/drama_interaction/specialists/deferred_vote.md。
-"""
+from drama_interaction.specialists.base import BaseSpecialist
+
+
+class DeferredVoteSpecialist(BaseSpecialist):
+    """识别有可靠后续揭晓位置的剧情悬念。"""
+
+    specialist_type = "deferred_vote"

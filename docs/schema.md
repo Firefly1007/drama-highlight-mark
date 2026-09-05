@@ -24,11 +24,11 @@ V2 的 `type` 使用字符串，不接受 V1 的数字类型编码。V2 可以�
 
 | 字段 | 类型 | 必填 | 约束 |
 | --- | --- | --- | --- |
-| `button_id` | integer | 是 | 0 至 5 的按钮业务编号。 |
-| `text` | string | 否 | 仅 `button_id` 为 0 或 2 时允许出现。 |
-| `danmaku` | array of string | 否 | 非空数组；仅 `button_id` 为 0、1、2 或 5 时允许出现。 |
+| `button_id` | string | 是 | 只能是 `cool`、`laugh`、`tomato`、`protect`、`pity`、`ship`。 |
+| `text` | string | 否 | 仅 `button_id` 为 `cool` 或 `tomato` 时允许出现。 |
+| `danmaku` | array of string | 否 | 非空数组；仅 `button_id` 为 `cool`、`laugh`、`tomato` 或 `ship` 时允许出现。 |
 
-`button_id` 的业务含义保持数字编码：0 为 `cool`（爽），1 为 `laugh`（笑），2 为 `tomato`（丢番茄），3 为 `protect`（护住 TA），4 为 `pity`（心疼 TA），5 为 `ship`（磕到了）。`type` 改为字符串不改变这些载荷字段的含义。
+`button_id` 直接使用英文业务名称：`cool`（爽）、`laugh`（笑）、`tomato`（丢番茄）、`protect`（护住 TA）、`pity`（心疼 TA）、`ship`（磕到了）。V2 不接受数字按钮编号。
 
 ### `repeat_keyline`
 
@@ -72,7 +72,7 @@ V2 的 `type` 使用字符串，不接受 V1 的数字类型编码。V2 可以�
     "show_at": 12000,
     "duration_ms": 2800,
     "payload": {
-      "button_id": 0,
+      "button_id": "cool",
       "text": "太解气了",
       "danmaku": [
         "爽到了"

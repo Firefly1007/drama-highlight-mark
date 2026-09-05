@@ -18,7 +18,7 @@
 1. 先读 [PRD](../drama-interaction-v2-PRD.md)、[ADR](../drama-interaction-v2-ADR.md) 与 [输出契约](../schema.md)。
 2. 再读三个基础数据计划：schemas/evidence、schemas/candidate、schemas/interaction。
 3. 接着读 evidence、specialists、validation、scheduling，了解单集互动点生成链路。
-4. 最后读 graph、cli、config、llm 与 [project-config](project-config.md)，了解运行和交付方式。
+4. 最后读 graph、cli、config、llm 与 [project-config](project-config.md)，了解运行和交付方式；剧集 `DramaContext` 的加载与提示词注入由 config/cli 计划共同约束。
 
 ## 模块计划
 
@@ -53,4 +53,5 @@
 
 - 每份模块计划固定写明：职责与边界、输入输出与接口、依赖与消费者、目标实现要求、失败与边界情形、验证。
 - 产品规则改 [PRD](../drama-interaction-v2-PRD.md)，技术取舍改 [ADR](../drama-interaction-v2-ADR.md)，后端 JSON 改 [输出契约](../schema.md)；模块计划只保留实现所需的引用和局部要求。
+- Specialist 的共用提示词、五类完整 V1 规则和调度器提示词只维护在 `src/drama_interaction/config.py`，模块计划不复制全文。
 - 实施状态、暂缓内容、阻塞项和待确认参数统一更新到 [PROGRESS](../PROGRESS.md)，不要复制到模块计划。

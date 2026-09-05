@@ -1,4 +1,9 @@
-"""repeat_keyline Specialist：金句跟读找点与 payload 生成（未实现）。
+"""跟读金句 Specialist。"""
 
-规划见 docs/plans/src/drama_interaction/specialists/repeat_keyline.md。
-"""
+from drama_interaction.specialists.base import BaseSpecialist
+
+
+class RepeatKeylineSpecialist(BaseSpecialist):
+    """从当前集台词中选择值得用户复述的原句。"""
+
+    specialist_type = "repeat_keyline"

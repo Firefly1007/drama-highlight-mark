@@ -14,17 +14,28 @@ from drama_interaction.schemas.evidence import (
 )
 from drama_interaction.schemas.interaction import (
     DeferredVotePayload,
+    EmotionButtonPayload,
     FinalInteraction,
+    InstantVotePayload,
+    RepeatKeylinePayload,
     SideCommentPayload,
 )
 
 
 @pytest.mark.parametrize(
-    ("interaction_type", "payload"),
+    ("interaction_type", "payload", "payload_model"),
     [
-        ("emotion_button", {"button_id": 0, "text": "太解气了"}),
-        ("repeat_keyline", {"text": "我会回来。"}),
-        ("instant_vote", {"question": "你站谁？", "options": ["她", "他"]}),
+        (
+            "emotion_button",
+            {"button_id": "cool", "text": "太解气了"},
+            EmotionButtonPayload,
+        ),
+        ("repeat_keyline", {"text": "我会回来。"}, RepeatKeylinePayload),
+        (
+            "instant_vote",
+            {"question": "你站谁？", "options": ["她", "他"]},
+            InstantVotePayload,
+        ),
         (
             "deferred_vote",
             {
@@ -34,11 +45,18 @@ from drama_interaction.schemas.interaction import (
                 "reveal_time": 5000,
                 "reveal_delay": 1000,
             },
+            DeferredVotePayload,
         ),
-        ("side_comment", {"text": "这也太敢说了吧！", "mood": "shock"}),
+        (
+            "side_comment",
+            {"text": "这也太敢说了吧！", "mood": "shock"},
+            SideCommentPayload,
+        ),
     ],
 )
-def test_final_interaction_uses_only_v2_string_types(interaction_type, payload):
+def test_final_interaction_parses_payload_union(
+    interaction_type, payload, payload_model
+):
     interaction = FinalInteraction(
         id=1,
         type=interaction_type,
@@ -48,6 +66,18 @@ def test_final_interaction_uses_only_v2_string_types(interaction_type, payload):
     )
 
     assert interaction.model_dump(mode="json")["type"] == interaction_type
+    assert isinstance(interaction.payload, payload_model)
+
+
+def test_final_interaction_rejects_mismatched_payload_type():
+    with pytest.raises(ValidationError):
+        FinalInteraction(
+            id=1,
+            type="emotion_button",
+            show_at=0,
+            duration_ms=1000,
+            payload={"text": "这其实是跟读金句"},
+        )
 
 
 @pytest.mark.parametrize("mood", ["ROAST", " roast", "roast ", None])
@@ -63,7 +93,7 @@ def test_final_interaction_rejects_numeric_type_and_invalid_deferred_fields():
             type=1,
             show_at=0,
             duration_ms=1000,
-            payload={"button_id": 0},
+            payload={"button_id": "cool"},
         )
 
     with pytest.raises(ValidationError):
@@ -102,7 +132,7 @@ def test_external_integer_fields_do_not_coerce(value):
             type="emotion_button",
             show_at=0,
             duration_ms=1000,
-            payload={"button_id": 0},
+            payload={"button_id": "cool"},
         )
 
 

@@ -1,4 +1,9 @@
-"""emotion_button Specialist：情绪表达按钮找点与 payload 生成（未实现）。
+"""情绪按钮 Specialist。"""
 
-规划见 docs/plans/src/drama_interaction/specialists/emotion_button.md。
-"""
+from drama_interaction.specialists.base import BaseSpecialist
+
+
+class EmotionButtonSpecialist(BaseSpecialist):
+    """识别适合即时表达情绪的剧情节点。"""
+
+    specialist_type = "emotion_button"

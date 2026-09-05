@@ -38,7 +38,17 @@ class _V1Segment(BaseModel):
 
 
 def parse_time_str_to_ms(value: str) -> int:
-    """将严格的 ``HH:MM:SS.mmm`` 时间码转换为毫秒。"""
+    """将严格的 ``HH:MM:SS.mmm`` 时间码转换为毫秒。
+
+    Args:
+        value: V1 片段中的时间码。
+
+    Returns:
+        对应的毫秒数。
+
+    Raises:
+        ValueError: 当时间码格式或取值非法时抛出。
+    """
     if not isinstance(value, str) or (match := TIME_PATTERN.fullmatch(value)) is None:
         raise ValueError("时间码必须符合 HH:MM:SS.mmm")
     hours, minutes, seconds, milliseconds = map(int, match.groups())
@@ -46,6 +56,14 @@ def parse_time_str_to_ms(value: str) -> int:
 
 
 def _nonblank_items(value: str | list[str]) -> list[str]:
+    """提取并清理非空的 V1 文本项。
+
+    Args:
+        value: 单个文本或文本列表。
+
+    Returns:
+        去除首尾空白后的非空文本列表。
+    """
     values = [value] if isinstance(value, str) else value
     return [item.strip() for item in values if item.strip()]
 
@@ -54,7 +72,18 @@ def convert_v1_segments_to_evidence(
     segments: list[dict[str, Any]],
     episode_duration_ms: int,
 ) -> EvidenceDocument:
-    """将 V1 片段和预处理阶段给出的集长转换为 EvidenceDocument。"""
+    """将 V1 片段和预处理阶段给出的集长转换为证据文档。
+
+    Args:
+        segments: V1 片段 JSON 数组。
+        episode_duration_ms: 媒体预处理阶段确认的单集时长。
+
+    Returns:
+        转换后的共享基线证据文档。
+
+    Raises:
+        ValueError: 当输入结构、片段顺序或时间范围非法时抛出。
+    """
     if type(episode_duration_ms) is not int or episode_duration_ms <= 0:
         raise ValueError("episode_duration_ms 必须为正整数")
     if not isinstance(segments, list):
@@ -66,6 +95,7 @@ def convert_v1_segments_to_evidence(
 
     for expected_id, raw_segment in enumerate(segments, start=1):
         segment = _V1Segment.model_validate(raw_segment)
+        # 保持 V1 编号连续，避免证据标识错配。
         if segment.id != expected_id:
             raise ValueError(f"V1 片段 id 必须从 1 连续递增，期望 {expected_id}")
 
@@ -90,6 +120,7 @@ def convert_v1_segments_to_evidence(
                 )
             )
 
+        # 只有存在客观音频信息或不确定性时才生成观察。
         audio = [
             *(f"说话方式：{value}" for value in _nonblank_items(segment.speech)),
             *(f"嗓音：{value}" for value in _nonblank_items(segment.voice)),
@@ -119,7 +150,18 @@ def save_evidence_document(
     document: EvidenceDocument,
     output_path: str | Path,
 ) -> Path:
-    """将已校验证据文档原子写入 JSON 文件。"""
+    """将已校验证据文档原子写入 JSON 文件。
+
+    Args:
+        document: 已通过模型校验的证据文档。
+        output_path: 目标 JSON 文件路径。
+
+    Returns:
+        实际写入的目标路径。
+
+    Raises:
+        OSError: 当临时文件或目标文件写入失败时抛出。
+    """
     target = Path(output_path)
     target.parent.mkdir(parents=True, exist_ok=True)
     temp_path: Path | None = None
@@ -142,6 +184,7 @@ def save_evidence_document(
             temp_file.write("\n")
             temp_file.flush()
             os.fsync(temp_file.fileno())
+        # 同目录原子替换，避免留下半写文件。
         os.replace(temp_path, target)
     except OSError:
         if temp_path is not None:
@@ -155,7 +198,20 @@ def adapt_file(
     episode_duration_ms: int,
     output_dir: str | Path | None = None,
 ) -> tuple[EvidenceDocument, Path | None]:
-    """读取一集 V1 JSON，使用预处理集长适配并按需落盘。"""
+    """读取一集 V1 JSON，使用预处理集长适配并按需落盘。
+
+    Args:
+        input_path: V1 片段 JSON 文件路径。
+        episode_duration_ms: 媒体预处理阶段确认的单集时长。
+        output_dir: 可选的证据输出根目录。
+
+    Returns:
+        证据文档及可选的落盘路径。
+
+    Raises:
+        FileNotFoundError: 当输入文件不存在时抛出。
+        ValueError: 当输入 JSON 或片段内容非法时抛出。
+    """
     source = Path(input_path)
     if not source.is_file():
         raise FileNotFoundError(f"输入文件不存在: {source}")

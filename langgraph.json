@@ -1,7 +1,7 @@
 {
     "dependencies": ["."],
     "graphs": {
-        "drama_interaction": "./src/drama_interaction/graph/builder.py:graph"
+        "drama_interaction": "./src/drama_interaction/graph/builder.py:create_graph"
     },
     "env": ".env"
 }
