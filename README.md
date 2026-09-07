@@ -179,4 +179,3 @@ data/interaction_v2/      最终互动、执行快照与派生证据
 | [PRD](docs/drama-interaction-v2-PRD.md) | 产品范围、五类互动规则与验收标准。 |
 | [ADR](docs/drama-interaction-v2-ADR.md) | 证据、并发、恢复、HITL 与失败边界的架构原因。 |
 | [输出契约](docs/schema.md) | 后端消费的 JSON 字段与载荷约束。 |
-| [实现计划](IMPLEMENTATION_PLAN.md) | 原始视频取证的实施记录与验证项。 |
