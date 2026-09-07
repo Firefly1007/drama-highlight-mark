@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
-from drama_interaction.config import DEFAULT_MIN_REPORTED_GAP_MS
+from drama_interaction.media import calculate_slices
 from drama_interaction.schemas.evidence import (
     DerivedObservation,
     EvidenceDocument,
@@ -14,14 +14,6 @@ from drama_interaction.schemas.evidence import (
     validate_derived_observations,
 )
 from drama_interaction.schemas.interaction import InteractionType
-
-
-def _timecode(milliseconds: int) -> str:
-    """把毫秒格式化为 ``HH:MM:SS.mmm``。"""
-    hours, remainder = divmod(milliseconds, 3_600_000)
-    minutes, remainder = divmod(remainder, 60_000)
-    seconds, millis = divmod(remainder, 1_000)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{millis:03d}"
 
 
 def _span(entry: Any) -> tuple[int, int]:
@@ -45,19 +37,32 @@ def _content_lines(entry: Observation | DerivedObservation) -> list[str]:
 def _entry_line(entry: Any, *, include_time: bool = True) -> str:
     """渲染一条台词或观察。"""
     start, end = _span(entry)
-    time = f" {_timecode(start)}–{_timecode(end)}" if include_time else ""
+    time_str = f" start_ms={start} end_ms={end}" if include_time else ""
     if isinstance(entry, TranscriptSegment):
         speaker = f"（{entry.speaker_label}）" if entry.speaker_label else ""
-        return f"[{entry.id}]{time} 台词{speaker}：{entry.text}"
+        return f"[{entry.id}{time_str}] 台词{speaker}：{entry.text}"
     content = "；".join(_content_lines(entry))
-    return f"[{entry.id}]{time} {content}"
+    return f"[{entry.id}{time_str}] {content}"
+
+
+def _derive_covered_empty_spans(document: EvidenceDocument) -> list[tuple[int, int]]:
+    """依据提取器使用的同一切片网格推导空切片，并合并相邻切片。"""
+    covered = {(obs.start_ms, obs.end_ms) for obs in document.observations}
+    merged: list[tuple[int, int]] = []
+    for span in calculate_slices(document.episode_duration_ms):
+        if span in covered:
+            continue
+        if merged and merged[-1][1] == span[0]:
+            merged[-1] = (merged[-1][0], span[1])
+        else:
+            merged.append(span)
+    return merged
 
 
 def render_evidence_timeline(
     document: EvidenceDocument,
     specialist_type: InteractionType | str,
     derived_observations: Iterable[DerivedObservation] = (),
-    min_reported_gap_ms: int = DEFAULT_MIN_REPORTED_GAP_MS,
 ) -> str:
     """渲染基线与当前分支派生观察的可引用时间线。
 
@@ -65,7 +70,6 @@ def render_evidence_timeline(
         document: 只读基线证据文档。
         specialist_type: 当前分支的互动类型。
         derived_observations: 当前分支派生观察。
-        min_reported_gap_ms: 输出未覆盖区间的最小跨度。
 
     Returns:
         按时间排序的纯文本时间线。
@@ -75,8 +79,6 @@ def render_evidence_timeline(
     """
     if not isinstance(document, EvidenceDocument):
         raise TypeError("document 必须是 EvidenceDocument")
-    if type(min_reported_gap_ms) is not int or min_reported_gap_ms <= 0:
-        raise ValueError("min_reported_gap_ms 必须为正整数")
     try:
         interaction_type = InteractionType(specialist_type)
     except (TypeError, ValueError) as exc:
@@ -136,32 +138,15 @@ def render_evidence_timeline(
                 entry_lines.append("  " + _entry_line(child, include_time=not same_span))
         blocks.append((entry.start_ms, 1, entry_lines))
 
-    # 只用顶层条目计算覆盖；缩进观察已经由父台词覆盖。
-    coverage = sorted((_span(entry) for entry in top_level), key=lambda item: item[0])
-    merged: list[list[int]] = []
-    for start, end in coverage:
-        if not merged or start > merged[-1][1]:
-            merged.append([start, end])
-        else:
-            merged[-1][1] = max(merged[-1][1], end)
-
-    gaps: list[tuple[int, int]] = []
-    cursor = 0
-    for start, end in merged:
-        if start - cursor >= min_reported_gap_ms:
-            gaps.append((cursor, start))
-        cursor = max(cursor, end)
-    if document.episode_duration_ms - cursor >= min_reported_gap_ms:
-        gaps.append((cursor, document.episode_duration_ms))
-
-    for start, end in gaps:
+    # 推导 covered_empty 状态行并与证据行按时间混合排序
+    empty_spans = _derive_covered_empty_spans(document)
+    for start, end in empty_spans:
         blocks.append(
-            (start, 0, [f"[未覆盖 {_timecode(start)}–{_timecode(end)}]"])
+            (start, 0, [f"[已覆盖、无可记录观察 start_ms={start} end_ms={end}]"])
         )
+
     blocks.sort(key=lambda item: (item[0], item[1], item[2][0]))
     return "\n".join(line for _, _, block in blocks for line in block)
 
 
-__all__ = [
-    "render_evidence_timeline",
-]
+__all__ = ["render_evidence_timeline"]

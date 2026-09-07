@@ -1,7 +1,7 @@
 """命令行入口：单集 ``run``、HITL ``resume`` 和只读 ``export``。
 
 CLI 只负责边界、持久化和人工交互；生成、校验、渲染及调度均由图节点
-实现。每个输入 JSON 都对应一个独立的 ``execution_id``，该值同时作为
+实现。每个输入视频文件都对应一个独立的 ``execution_id``，该值同时作为
 LangGraph 的 ``configurable.thread_id``。
 """
 
@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import uuid
 from collections.abc import Callable, Mapping, Sequence
@@ -18,7 +19,13 @@ from typing import Any, TextIO
 
 from langgraph.types import Command, Interrupt
 
-from drama_interaction.config import Settings, SettingsError, load_settings
+from drama_interaction.config import (
+    EVIDENCE_SLICE_CONCURRENCY,
+    WORKFLOW_RECURSION_LIMIT,
+    Settings,
+    SettingsError,
+    load_settings,
+)
 from drama_interaction.context import load_drama_context
 from drama_interaction.graph.state import state_to_jsonable
 
@@ -51,13 +58,12 @@ def validate_execution_id(execution_id: str) -> str:
         or len(value) > _EXECUTION_ID_MAX_LENGTH
         or value in {".", ".."}
         or any(
-            char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
+            char
+            not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
             for char in value
         )
     ):
-        raise CLIError(
-            "execution_id 非法；只能包含 ASCII 字母、数字、下划线和短横线"
-        )
+        raise CLIError("execution_id 非法；只能包含 ASCII 字母、数字、下划线和短横线")
     return value
 
 
@@ -141,8 +147,12 @@ def _settings_for_cli(settings: Settings | None) -> Settings:
         raise CLIError(str(exc)) from exc
 
 
-def _checkpoint_config(execution_id: str) -> dict[str, dict[str, str]]:
-    return {"configurable": {"thread_id": validate_execution_id(execution_id)}}
+def _checkpoint_config(execution_id: str) -> dict[str, Any]:
+    return {
+        "configurable": {"thread_id": validate_execution_id(execution_id)},
+        "max_concurrency": EVIDENCE_SLICE_CONCURRENCY,
+        "recursion_limit": WORKFLOW_RECURSION_LIMIT,
+    }
 
 
 def _graph_from_factory(
@@ -195,7 +205,9 @@ def _initial_state(
 
 def _interrupt_values(result: Mapping[str, Any]) -> list[Any]:
     raw = result.get("__interrupt__", [])
-    if not isinstance(raw, list) or any(not isinstance(item, Interrupt) for item in raw):
+    if not isinstance(raw, list) or any(
+        not isinstance(item, Interrupt) for item in raw
+    ):
         raise CLIError("工作流 __interrupt__ 必须是 list[Interrupt]")
     return [state_to_jsonable(item.value) for item in raw]
 
@@ -232,24 +244,37 @@ def _failed_state(state: Mapping[str, Any], error: Exception) -> dict[str, Any]:
     return failed
 
 
+def _natural_sort_key(path: Path, base_dir: Path) -> list[tuple[int, int | str]]:
+    """生成相对于 base_dir 的数字感知自然排序键。"""
+    key: list[tuple[int, int | str]] = []
+    for part in path.relative_to(base_dir).parts:
+        for chunk in re.split(r"(\d+)", part):
+            if chunk:
+                if chunk.isdecimal():
+                    key.append((0, int(chunk)))
+                else:
+                    key.append((1, chunk.lower()))
+    return key
+
+
 def _iter_episode_files(input_path: str | Path) -> list[Path]:
     source = Path(input_path)
     if not source.exists():
         raise CLIError(f"输入路径不存在: {source}")
     if source.is_file():
+        if source.suffix.lower() != ".mp4":
+            raise CLIError(f"输入文件必须是 .mp4 视频: {source}")
         return [source]
-    if not source.is_dir():
-        raise CLIError(f"输入路径不是文件或目录: {source}")
     files = sorted(
         (
             item
-            for item in source.iterdir()
-            if item.is_file() and item.suffix.lower() == ".json"
+            for item in source.rglob("*")
+            if item.is_file() and item.suffix.lower() == ".mp4"
         ),
-        key=lambda item: item.name,
+        key=lambda item: _natural_sort_key(item, source),
     )
     if not files:
-        raise CLIError(f"目录中没有 JSON 集文件: {source}")
+        raise CLIError(f"目录中没有 .mp4 视频文件: {source}")
     return files
 
 
@@ -264,8 +289,8 @@ def run_episode(
 
     runtime_settings = _settings_for_cli(settings)
     input_file = Path(source)
-    if not input_file.is_file():
-        raise CLIError(f"输入文件不存在: {input_file}")
+    if input_file.suffix.lower() != ".mp4":
+        raise CLIError(f"输入文件必须是 .mp4 视频: {input_file}")
     if execution_id is None:
         execution_id = _new_execution_id()
     execution_id = validate_execution_id(execution_id)
@@ -276,7 +301,11 @@ def run_episode(
 
     try:
         workflow = _graph_from_factory(runtime_settings, graph_factory)
-        result = workflow.invoke(initial, _checkpoint_config(execution_id))
+        result = workflow.invoke(
+            initial,
+            _checkpoint_config(execution_id),
+            durability="sync",
+        )
         final_state = _merge_graph_result(initial, result, execution_id=execution_id)
     except Exception as exc:
         final_state = _failed_state(initial, exc)
@@ -300,7 +329,12 @@ def run_input(
     output_stream = output or sys.stdout
     results: list[dict[str, Any]] = []
     failures = 0
-    for source in _iter_episode_files(input_path):
+    try:
+        episodes = _iter_episode_files(input_path)
+    except CLIError as exc:
+        print(str(exc), file=sys.stderr)
+        return [], 1
+    for source in episodes:
         try:
             state = run_episode(
                 source,
@@ -327,7 +361,9 @@ def run_input(
 
 def _display_hitl_item(item: Any, index: int, output: TextIO) -> None:
     print(f"\nHITL[{index}]", file=output)
-    print(json.dumps(state_to_jsonable(item), ensure_ascii=False, indent=2), file=output)
+    print(
+        json.dumps(state_to_jsonable(item), ensure_ascii=False, indent=2), file=output
+    )
 
 
 def _read_action(
@@ -338,10 +374,14 @@ def _read_action(
 ) -> str:
     """读取当前 HITL 事件允许的操作。"""
     allowed = tuple(actions)
-    if not allowed or any(action not in {"accept", "edit", "drop"} for action in allowed):
+    if not allowed or any(
+        action not in {"accept", "edit", "drop"} for action in allowed
+    ):
         raise CLIError("HITL 事件缺少合法 actions")
     while True:
-        value = input_fn(f"HITL[{index}] action [{'/'.join(allowed)}]: ").strip().lower()
+        value = (
+            input_fn(f"HITL[{index}] action [{'/'.join(allowed)}]: ").strip().lower()
+        )
         if value in allowed:
             return value
         print(f"请输入 {'、'.join(allowed)}。", file=output)
@@ -402,9 +442,22 @@ def resume_execution(
     validated = validate_execution_id(execution_id)
     target_state, state = _load_state(runtime_settings.runs_dir, validated)
     status = state.get("status")
+    if status == "running":
+        try:
+            workflow = _graph_from_factory(runtime_settings, graph_factory)
+            result = workflow.invoke(
+                None,
+                _checkpoint_config(validated),
+                durability="sync",
+            )
+            resumed = _merge_graph_result(state, result, execution_id=validated)
+        except Exception as exc:
+            raise CLIError(f"恢复 {validated} 失败: {exc}") from exc
+        _atomic_write_json(resumed, target_state)
+        return resumed
     if status != "waiting_for_human":
         raise CLIError(
-            f"执行 {validated} 当前状态为 {status!r}，只有 waiting_for_human 可 resume"
+            f"执行 {validated} 当前状态为 {status!r}，只有 running 或 waiting_for_human 可 resume"
         )
     items = _human_items(state)
     if not items:
@@ -429,6 +482,7 @@ def resume_execution(
         result = workflow.invoke(
             Command(resume=_resume_payload(decisions)),
             _checkpoint_config(validated),
+            durability="sync",
         )
         resumed = _merge_graph_result(state, result, execution_id=validated)
     except Exception as exc:
@@ -475,10 +529,10 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m drama_interaction")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run_parser = subparsers.add_parser("run", help="执行一集或目录中的所有 JSON 集")
-    run_parser.add_argument("input", help="V1 片段 JSON 文件或目录")
+    run_parser = subparsers.add_parser("run", help="执行一集或目录中的所有 .mp4 视频")
+    run_parser.add_argument("input", help=".mp4 视频文件或包含视频的目录")
 
-    resume_parser = subparsers.add_parser("resume", help="恢复待人工处理的执行")
+    resume_parser = subparsers.add_parser("resume", help="恢复中断或待人工处理的执行")
     resume_parser.add_argument("--execution-id", required=True)
 
     export_parser = subparsers.add_parser("export", help="导出已持久化的最终互动")

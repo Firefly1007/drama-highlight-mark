@@ -1,12 +1,13 @@
 # Drama Highlight Mark V2
 
-短剧即时互动点标注/生成引擎（V2）。它以单集短剧的内容证据和必要上下文为输入，生成供后端消费的互动配置 JSON。
+短剧即时互动点标注/生成引擎（V2）。它以单集原始视频和必要上下文为输入，生成供后端消费的互动配置 JSON。
 
-> 开发中：本文描述目标形态；实际完成度、已知差距与下一步见 [当前进度](docs/PROGRESS.md)。
+> 开发中：本文描述目标形态；如需维护进度快照，见 [PROGRESS 使用指南](docs/PROGRESS.md)。
 
 ## 项目边界
 
 - 处理单位是一集短剧，产物是该集的一组即时互动配置。
+- V2 从原始视频提取整集台词、屏幕文字、客观画面和非台词音频观察，组成共享的基线证据。
 - V2 直接从本集内容中发现互动机会，不再以 V1 的“高光”作为必经入口。
 - V2 只负责离线生成和标注，不包含前端播放器、业务服务、业务数据库、用户评论区或剧情分支内容生成；运行检查点属于工作流基础设施。
 - 输出互动类型固定为五种：
@@ -28,7 +29,13 @@
 ## 目标流程
 
 ```text
-内容证据与必要上下文
+单集原始 .mp4
+        ↓
+媒体探测、音轨分离与固定 3 秒切片
+        ↓
+ASR 台词 + OCR 屏幕文字 + VLM 画面观察 + 背景音观察
+        ↓
+EvidenceDocument 与必要上下文
         ↓
 五类互动专家
         ↓
@@ -52,12 +59,14 @@
 ```bash
 pip install -e .
 
-python -m drama_interaction run data/text/某短剧/第1集.json
+python -m drama_interaction run data/video/某短剧/第1集.mp4
+python -m drama_interaction run data/video/某短剧
+python -m drama_interaction run data/video
 python -m drama_interaction resume --execution-id <execution-id>
 python -m drama_interaction export --execution-id <execution-id>
 ```
 
-`run` 的最终产物是符合 `docs/schema.md` 的 JSON。当前临时 V1 输入以片段 JSON 中合法 `end` 的最大值暂代集长；真实媒体预处理接入后会只替换这一来源。输入约定、配置与执行细节以模块计划为准，不在 README 重复定义。
+`run` 的最终产物是符合 `docs/schema.md` 的 JSON。目录输入递归发现 `.mp4`，按相对路径自然排序后逐集处理；单集失败不中断整个批次。V1 片段 JSON 只作为回归 fixture，不进入生产链路。提示词、配置和更细的执行细节以代码和提交记录为准，不在 README 重复定义。
 
 ## 文档地图
 
@@ -66,9 +75,8 @@ python -m drama_interaction export --execution-id <execution-id>
 | [产品需求文档（PRD）](docs/drama-interaction-v2-PRD.md) | 要生成什么互动、什么算合格、哪些不做？ |
 | [架构决策记录（ADR）](docs/drama-interaction-v2-ADR.md) | 为什么采用当前证据、生成、校验和调度方案？ |
 | [输出契约](docs/schema.md) | 后端收到的 JSON 长什么样？ |
-| [模块计划索引](docs/plans/README.md) | 每个目标模块应如何实现和验证？ |
-| [当前进度](docs/PROGRESS.md) | 现在做到哪里、还缺什么、哪些决定尚未落地？ |
+| [PROGRESS 使用指南](docs/PROGRESS.md) | 现在要怎么维护进度快照？ |
 
-推荐阅读顺序：README → PRD / ADR → 输出契约 → 模块计划 → 当前进度。
+推荐阅读顺序：README → PRD / ADR → 输出契约 → PROGRESS 使用指南。
 
 V1 的比赛版本保留在 [v1/](v1/README.md)，用于对照与历史参考。

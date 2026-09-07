@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
+import json
+import os
+import tempfile
 from collections.abc import Mapping, Sequence
+from pathlib import Path
 from typing import Annotated, Any, Literal, TypedDict
 
 from drama_interaction.context import DramaContext
 from drama_interaction.schemas.candidate import Candidate, SpecialistResult
-from drama_interaction.schemas.evidence import DerivedObservation, EvidenceDocument
+from drama_interaction.schemas.evidence import (
+    DerivedObservation,
+    EvidenceDocument,
+    Observation,
+    TranscriptSegment,
+)
 from drama_interaction.schemas.interaction import FinalInteraction, InteractionType
 
 SPECIALIST_TYPES = tuple(interaction_type.value for interaction_type in InteractionType)
@@ -45,6 +54,31 @@ def merge_derived_evidence(
     return merged
 
 
+class SliceState(TypedDict, total=False):
+    """一个固定时间跨度的媒体观察子图状态。"""
+
+    input_path: str
+    run_dir: str
+    background_wav_path: str
+    slice_index: int
+    slice_start_ms: int
+    slice_end_ms: int
+    slice_frame_paths: list[str]
+    slice_audio_path: str
+    slice_onscreen_texts: list[str]
+    slice_visual_observations: list[str]
+    slice_vlm_uncertainty: list[str]
+    slice_audio_observations: list[str]
+    slice_audio_uncertainty: list[str]
+    slice_results: Annotated[dict[str, dict[str, Any]], merge_dicts]
+
+
+class SliceOutput(TypedDict):
+    """切片子图唯一回传给父图的结果。"""
+
+    slice_results: Annotated[dict[str, dict[str, Any]], merge_dicts]
+
+
 class WorkflowState(TypedDict, total=False):
     """一集 V2 运行的可恢复状态。"""
 
@@ -57,14 +91,21 @@ class WorkflowState(TypedDict, total=False):
     output_path: str | None
     episode_duration_ms: int
     drama_context: DramaContext
+    mix_audio_path: str
+    background_audio_path: str
+    dialogue_audio_path: str
+    background_wav_path: str
+    transcript_segments: list[TranscriptSegment]
+    baseline_observations: Annotated[list[Observation], append_items]
+    next_slice_index: int
+    slice_batch_indices: list[int]
+    slice_results: Annotated[dict[str, dict[str, Any]], merge_dicts]
     evidence: EvidenceDocument
     specialist_timelines: Annotated[dict[str, str], merge_dicts]
     derived_evidence: Annotated[
         dict[str, list[DerivedObservation]], merge_derived_evidence
     ]
-    specialist_results: Annotated[
-        dict[str, SpecialistResult], merge_dicts
-    ]
+    specialist_results: Annotated[dict[str, SpecialistResult], merge_dicts]
     branch_results: Annotated[dict[str, dict[str, Any]], merge_dicts]
     candidate_pool: list[Candidate]
     manual_candidates: Annotated[list[Candidate], append_items]
@@ -85,33 +126,6 @@ class WorkflowState(TypedDict, total=False):
     updated_at: str
 
 
-class SpecialistBranchInput(TypedDict, total=False):
-    """Specialist 子图从父图接收的只读上下文。"""
-
-    drama_context: DramaContext
-    evidence: EvidenceDocument
-    specialist_timelines: dict[str, str]
-    derived_evidence: dict[str, list[DerivedObservation]]
-
-
-class SpecialistBranchState(SpecialistBranchInput, total=False):
-    """单个 Specialist 子图的内部状态。"""
-
-    specialist_results: dict[str, SpecialistResult]
-    branch_results: dict[str, dict[str, Any]]
-    repair_log: list[dict[str, Any]]
-    hitl_queue: list[dict[str, Any]]
-
-
-class SpecialistBranchOutput(TypedDict, total=False):
-    """Specialist 子图回写父图的分支结果。"""
-
-    specialist_results: dict[str, SpecialistResult]
-    branch_results: dict[str, dict[str, Any]]
-    repair_log: list[dict[str, Any]]
-    hitl_queue: list[dict[str, Any]]
-
-
 def state_to_jsonable(value: Any) -> Any:
     """递归转换状态，供 JSON 运行产物写入。"""
 
@@ -126,15 +140,43 @@ def state_to_jsonable(value: Any) -> Any:
     return value
 
 
+def write_json_atomic(value: Any, output_path: str | Path) -> Path:
+    """以同目录临时文件 + 替换的方式原子写入 JSON 产物。"""
+
+    target = Path(output_path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=target.parent,
+            prefix=f".{target.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as file:
+            temporary = Path(file.name)
+            json.dump(state_to_jsonable(value), file, ensure_ascii=False, indent=2)
+            file.write("\n")
+            file.flush()
+            os.fsync(file.fileno())
+        os.replace(temporary, target)
+    except OSError:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+        raise
+    return target
+
+
 __all__ = [
     "SPECIALIST_TYPES",
     "RunStatus",
-    "SpecialistBranchInput",
-    "SpecialistBranchOutput",
-    "SpecialistBranchState",
+    "SliceOutput",
+    "SliceState",
     "WorkflowState",
     "append_items",
     "merge_derived_evidence",
     "merge_dicts",
     "state_to_jsonable",
+    "write_json_atomic",
 ]

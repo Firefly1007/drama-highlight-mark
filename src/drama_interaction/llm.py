@@ -15,7 +15,7 @@ from langchain_core.exceptions import (
 )
 from langchain_openai import ChatOpenAI
 
-from drama_interaction.config import Settings
+from drama_interaction.config import MODEL_SDK_MAX_RETRIES, Settings
 
 
 class LLMGatewayError(RuntimeError):
@@ -62,7 +62,9 @@ class LLMCallAudit:
     error_message: str | None = None
 
 
-def _extract_usage(response: Any) -> tuple[Mapping[str, Any], int | None, int | None, int | None]:
+def _extract_usage(
+    response: Any,
+) -> tuple[Mapping[str, Any], int | None, int | None, int | None]:
     """保留 LangChain 标准 usage_metadata。"""
     raw_usage = getattr(response, "usage_metadata", None)
     if not isinstance(raw_usage, Mapping):
@@ -122,7 +124,7 @@ class LLMGateway:
                 temperature=settings.llm_temperature,
                 timeout=settings.llm_timeout_seconds,
                 max_tokens=settings.llm_max_tokens,
-                max_retries=0,
+                max_retries=MODEL_SDK_MAX_RETRIES,
                 use_responses_api=False,
             )
             if model is None
@@ -168,9 +170,7 @@ class LLMGateway:
                         success=False,
                         attempts=attempts,
                         error_type=(
-                            "network_exhausted"
-                            if retryable
-                            else type(error).__name__
+                            "network_exhausted" if retryable else type(error).__name__
                         ),
                         error_message=str(error),
                     )
@@ -188,8 +188,8 @@ class LLMGateway:
                 ) from error
 
             elapsed_ms = max(0.0, (time.perf_counter() - started) * 1000)
-            usage, prompt_tokens, completion_tokens, total_tokens = _extract_agent_usage(
-                response
+            usage, prompt_tokens, completion_tokens, total_tokens = (
+                _extract_agent_usage(response)
             )
             self.audit_records.append(
                 LLMCallAudit(
@@ -217,6 +217,7 @@ class LLMGateway:
             lambda: agent.invoke(input),
             call_label=call_label,
         )
+
 
 __all__ = [
     "LLMCallAudit",

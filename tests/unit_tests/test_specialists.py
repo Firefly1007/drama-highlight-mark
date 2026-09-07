@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
 import pytest
@@ -19,6 +20,7 @@ from drama_interaction.schemas.candidate import (
     SpecialistResult,
 )
 from drama_interaction.schemas.evidence import EvidenceDocument, TranscriptSegment
+from drama_interaction.schemas.interaction import InstantVotePayload
 from drama_interaction.specialists import (
     DeferredVoteSpecialist,
     EmotionButtonSpecialist,
@@ -86,6 +88,22 @@ def test_specialist_agent_is_compiled_react_graph() -> None:
         llm_api_key="test-key",
         llm_base_url="https://example.invalid/v1",
         checkpoint_database_url="postgresql://test:test@localhost/test",
+        audio_separator_access_key_id="test-id",
+        audio_separator_access_key_secret="test-secret",
+        audio_separator_bucket="test-bucket",
+        audio_separator_region="ap-guangzhou",
+        asr_model_id="qwen-audio-3.0-asr-flash-filetrans",
+        asr_api_key="test-key",
+        asr_base_url="https://dashscope.aliyuncs.com/api/v1",
+        audio_observer_model_id="qwen3-omni-flash",
+        audio_observer_api_key="test-key",
+        audio_observer_base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        ocr_model_id="qwen-3.8-flash",
+        ocr_api_key="test-key",
+        ocr_base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+        vlm_model_id="qwen-3.8-flash",
+        vlm_api_key="test-key",
+        vlm_base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
     )
     specialist = InstantVoteSpecialist(
         gateway=LLMGateway(settings, model=object()),
@@ -156,6 +174,12 @@ def test_specialist_uses_tool_strategy_and_passes_branch_timeline(monkeypatch):
     assert '"characters":["甲","乙"]' in prompt
     assert "两个选项必须立场明确、方向相反" in created["system_prompt"]
     assert "不要提供中立选项" in created["system_prompt"]
+    assert json.dumps(
+        InstantVotePayload.model_json_schema(),
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ) in created["system_prompt"]
+    assert "{{PAYLOAD_JSON_SCHEMA}}" not in created["system_prompt"]
 
 
 def test_inspect_span_tool_is_bound_to_the_current_branch(monkeypatch):

@@ -23,6 +23,12 @@ from pydantic import (
     model_validator,
 )
 
+from drama_interaction.prompt_models import (
+    AudioObserverResponse,
+    OCRResponse,
+    VLMResponse,
+)
+
 # =====================================================================
 # 互动形态与渲染契约常量（这些是业务契约，不属于可变运行配置）
 # =====================================================================
@@ -52,8 +58,70 @@ DEFAULT_LLM_MAX_TOKENS: int = 131_072
 DEFAULT_LLM_MAX_RETRIES: int = 3
 DEFAULT_LLM_RETRY_DELAY_SECONDS: float = 1.0
 
-DEFAULT_MIN_REPORTED_GAP_MS: int = 2500
 DEFAULT_DRAMA_INFO_PATH: Path = Path("data/video/drama_info.json")
+
+# 原始视频证据提取的可调运行参数。凭据和模型标识仍由 Settings/.env 提供。
+EVIDENCE_SLICE_DURATION_MS: int = 3000
+EVIDENCE_SAMPLE_BUCKET_MS: int = 250
+EVIDENCE_SAMPLE_FPS: int = 1000 // EVIDENCE_SAMPLE_BUCKET_MS
+EVIDENCE_FRAME_JPEG_QUALITY: int = 2
+EVIDENCE_SLICE_CONCURRENCY: int = 4
+
+AUDIO_SEPARATOR_SDK_RETRIES: int = 3
+AUDIO_SEPARATOR_POLL_INTERVAL_SECONDS: float = 5.0
+AUDIO_SEPARATOR_WAIT_TIMEOUT_SECONDS: float = 3600.0
+AUDIO_SEPARATOR_DIALOGUE_URL_EXPIRES_SECONDS: int = 3600
+
+ASR_WAIT_TIMEOUT_SECONDS: int = 3600
+ASR_TRANSCRIPTION_DOWNLOAD_TIMEOUT_SECONDS: float = 60.0
+ASR_VOCABULARY_WEIGHT: int = 5
+
+MODEL_SDK_MAX_RETRIES: int = 0
+MODEL_RETRY_COUNT: int = 3
+MODEL_RETRY_DELAY_SECONDS: float = 1.0
+
+WORKFLOW_RECURSION_LIMIT: int = 1000
+
+
+def _json_schema_text(model: type[BaseModel]) -> str:
+    """返回供模型阅读的 Pydantic JSON Schema。"""
+    return json.dumps(
+        model.model_json_schema(), ensure_ascii=False, separators=(",", ":")
+    )
+
+
+# 原始视频基线证据的三类观察提示词集中维护；调用与消息组装留在提取器。
+EVIDENCE_OCR_SYSTEM_PROMPT: str = (
+    "你是一个短剧画面文字识别（OCR）引擎。请识别采样帧序列中出现的所有画面文字，"
+    "包括硬字幕、标题、标牌、手机屏幕文字、横幅等。请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
+    "不要进行文字分类、纠错或与台词去重；画面中无文字时输出空数组。"
+)
+EVIDENCE_OCR_USER_PROMPT: str = (
+    "请提取当前切片画面中的所有屏幕文字。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
+    f"{_json_schema_text(OCRResponse)}"
+)
+EVIDENCE_VLM_SYSTEM_PROMPT: str = (
+    "你是一个客观视觉观察模型。根据提供的采样帧序列，只描述可见人物的外观、动作、物体、状态和画面变化。"
+    "严禁猜测角色姓名（使用中性称呼如女子、男子、黑衣人），不要补写采样帧未显示的中间动作，"
+    "不要推测心理、剧情含义或互动价值。"
+    "请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
+    "若观察内容无法可靠判定，将不确定点记入 uncertainty。"
+)
+EVIDENCE_VLM_USER_PROMPT: str = (
+    "请提供当前切片的客观视觉观察。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
+    f"{_json_schema_text(VLMResponse)}"
+)
+EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT: str = (
+    "你是一个客观背景音频观察模型。当前音频为去除台词后的背景音（包含音乐与环境音效）。"
+    "请描述可听见的声源、声音事件和变化（如脚步声、关门声、急促鼓点、音乐骤停等）。"
+    "禁止描述情绪、剧情暗示、心理或互动价值；无可辨识声音返回空数组，不要输出'安静'；"
+    "明确转入或退出静音可以记录。"
+    "请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
+)
+EVIDENCE_AUDIO_OBSERVER_USER_PROMPT: str = (
+    "请描述该背景音频切片中的客观声音事件。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
+    f"{_json_schema_text(AudioObserverResponse)}"
+)
 
 # V1 五类互动提示词的完整判定规则集中维护；仅把输入、输出接口改成 V2。
 SPECIALIST_SYSTEM_PROMPT: str = """
@@ -80,6 +148,12 @@ T/O/D 标识和时间范围由程序提供。候选只能引用消息中出现�
 - T<n>：原始台词文本及其精确时间跨度。
 - O<n>：由本集文本、画面或音频输入直接得到的客观观察。
 - D<n>：当前 Specialist 通过 inspect_span 得到的分支派生观察。
+
+时间线也可能包含程序生成的状态行：
+- `[已覆盖、无可记录观察 起–止]`：该时间范围已经被基线提取器成功检查，但没有可记录的客观观察。
+- 状态行不是 T/O/D 证据，不能写入 evidence_ids 或作为候选事实；它也不表示“这里什么都没有发生”。
+- 不要为了重复确认同一时间范围、同一问题而再次调用 inspect_span；只有需要不同问题、更细粒度或不同观察角度时才补证。
+- 必需提取器失败、超时或媒体损坏会使当前集直接失败，不会生成 `[未覆盖]` 状态行供 Specialist 消费。
 
 时间字段只用于理解先后和定位锚点，不要把绝对毫秒写入 Candidate。
 摘要、情绪、声音、动作和环境信息只有在对应 T/O/D 证据中出现时才可使用。
@@ -261,13 +335,9 @@ SPECIALIST_FOCUS_PROMPTS: MappingProxyType = MappingProxyType(
 3. text、danmaku 的出现与 button_id 类型表严格一致。
 4. danmaku 是 4 到 6 条 4 到 12 个字符的短句。
 
-# SpecialistResult 提交示例
-通过工具提交一条 Candidate 时，payload 形如：
-{
-  "button_id": "cool",
-  "text": "碾压一切",
-  "danmaku": ["太牛了吧", "这谁顶得住", "爽到了", "气场拉满"]
-}
+# SpecialistResult 提交格式
+通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
+{{PAYLOAD_JSON_SCHEMA}}
 
 如果没有合适的情绪按钮，不要生成空 payload；提交包含原因的 Abstention。
 """.strip(),
@@ -329,11 +399,9 @@ repeat_keyline 用于让用户点击复述剧情中的一句核心台词，像�
 2. text 是当前 T<n> 中的连续原文，没有改写或新编。
 3. text 去掉后会明显削弱当前证据机会的记忆点。
 
-# SpecialistResult 提交示例
-通过工具提交一条 Candidate 时，payload 形如：
-{
-  "text": "今天谁也别想走"
-}
+# SpecialistResult 提交格式
+通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
+{{PAYLOAD_JSON_SCHEMA}}
 
 没有合适的 repeat_keyline 时，提交 Abstention。
 """.strip(),
@@ -392,12 +460,9 @@ instant_vote 用于让用户在当前剧情发生时立刻做二选一判断，�
 3. options 恰好两个，立场相反、都能由当前证据支持。
 4. 不含中立选项或缓冲选项。
 
-# SpecialistResult 提交示例
-通过工具提交一条 Candidate 时，payload 形如：
-{
-  "question": "该原谅吗？",
-  "options": ["该", "不该"]
-}
+# SpecialistResult 提交格式
+通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
+{{PAYLOAD_JSON_SCHEMA}}
 
 没有真实分歧时，不要用中立选项凑二选一；提交 Abstention。
 """.strip(),
@@ -525,15 +590,9 @@ deferred_vote 必须有“先猜测、后揭晓”的结构：当前证据提出
 5. 问题和选项不提前泄露揭晓，不输出绝对时间。
 6. answer_id 为 0，reveal_time 和 reveal_delay 为 null。
 
-# SpecialistResult 提交示例
-通过工具提交一条 Candidate 时，payload 形如：
-{
-  "question": "她可信吗？",
-  "options": ["可信", "有问题"],
-  "answer_id": 0,
-  "reveal_time": null,
-  "reveal_delay": null
-}
+# SpecialistResult 提交格式
+通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
+{{PAYLOAD_JSON_SCHEMA}}
 
 没有“当前可猜 + 后续明确揭晓”的组合时，提交 Abstention。
 """.strip(),
@@ -636,12 +695,9 @@ mood 必须是以下小写字符串之一，并与当前评论情绪最贴近：
 1. text 短、轻、口语化，mood 与文本情绪一致。
 2. 评论不重复当前节点更适合的 emotion_button、instant_vote 或 repeat_keyline。
 
-# SpecialistResult 提交示例
-通过工具提交一条 Candidate 时，payload 形如：
-{
-  "text": "这也太敢说了吧！",
-  "mood": "roast"
-}
+# SpecialistResult 提交格式
+通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
+{{PAYLOAD_JSON_SCHEMA}}
 
 没有明确吐槽点、站队点或情绪出口时，提交 Abstention。
 """.strip(),
@@ -713,7 +769,28 @@ class Settings(BaseModel):
     keyline_tail_ms: int = KEYLINE_TAIL_MS
     reveal_display_ms: int = DEFAULT_REVEAL_DISPLAY_MS
     reveal_gap_min_ms: int = DEFAULT_REVEAL_GAP_MIN_MS
-    min_reported_gap_ms: int = DEFAULT_MIN_REPORTED_GAP_MS
+
+    # 托管媒体与多模态模型能力配置（十六项均必填）。
+    audio_separator_access_key_id: str
+    audio_separator_access_key_secret: str
+    audio_separator_bucket: str
+    audio_separator_region: str
+
+    asr_model_id: str
+    asr_api_key: str
+    asr_base_url: str
+
+    audio_observer_model_id: str
+    audio_observer_api_key: str
+    audio_observer_base_url: str
+
+    ocr_model_id: str
+    ocr_api_key: str
+    ocr_base_url: str
+
+    vlm_model_id: str
+    vlm_api_key: str
+    vlm_base_url: str
 
     # 由配置统一声明的产物目录。目录可在运行前不存在，由使用它的阶段创建。
     evidence_dir: Path = Path("data/evidence")
@@ -731,6 +808,22 @@ class Settings(BaseModel):
         "llm_api_key",
         "llm_base_url",
         "checkpoint_database_url",
+        "audio_separator_access_key_id",
+        "audio_separator_access_key_secret",
+        "audio_separator_bucket",
+        "audio_separator_region",
+        "asr_model_id",
+        "asr_api_key",
+        "asr_base_url",
+        "audio_observer_model_id",
+        "audio_observer_api_key",
+        "audio_observer_base_url",
+        "ocr_model_id",
+        "ocr_api_key",
+        "ocr_base_url",
+        "vlm_model_id",
+        "vlm_api_key",
+        "vlm_base_url",
         mode="before",
     )
     @classmethod
@@ -800,7 +893,6 @@ class Settings(BaseModel):
         "instant_vote_duration_ms",
         "deferred_vote_duration_ms",
         "side_comment_duration_ms",
-        "min_reported_gap_ms",
     )
     @classmethod
     def _validate_positive_ms(cls, value: int) -> int:
@@ -870,6 +962,22 @@ _ENV_TO_FIELD: dict[str, str] = {
     "LLM_API_KEY": "llm_api_key",
     "LLM_BASE_URL": "llm_base_url",
     "CHECKPOINT_DATABASE_URL": "checkpoint_database_url",
+    "AUDIO_SEPARATOR_ACCESS_KEY_ID": "audio_separator_access_key_id",
+    "AUDIO_SEPARATOR_ACCESS_KEY_SECRET": "audio_separator_access_key_secret",
+    "AUDIO_SEPARATOR_BUCKET": "audio_separator_bucket",
+    "AUDIO_SEPARATOR_REGION": "audio_separator_region",
+    "ASR_MODEL_ID": "asr_model_id",
+    "ASR_API_KEY": "asr_api_key",
+    "ASR_BASE_URL": "asr_base_url",
+    "AUDIO_OBSERVER_MODEL_ID": "audio_observer_model_id",
+    "AUDIO_OBSERVER_API_KEY": "audio_observer_api_key",
+    "AUDIO_OBSERVER_BASE_URL": "audio_observer_base_url",
+    "OCR_MODEL_ID": "ocr_model_id",
+    "OCR_API_KEY": "ocr_api_key",
+    "OCR_BASE_URL": "ocr_base_url",
+    "VLM_MODEL_ID": "vlm_model_id",
+    "VLM_API_KEY": "vlm_api_key",
+    "VLM_BASE_URL": "vlm_base_url",
     "LLM_TEMPERATURE": "llm_temperature",
     "LLM_TIMEOUT_SECONDS": "llm_timeout_seconds",
     "LLM_MAX_TOKENS": "llm_max_tokens",
@@ -885,7 +993,6 @@ _ENV_TO_FIELD: dict[str, str] = {
     "KEYLINE_TAIL_MS": "keyline_tail_ms",
     "REVEAL_DISPLAY_MS": "reveal_display_ms",
     "REVEAL_GAP_MIN_MS": "reveal_gap_min_ms",
-    "MIN_REPORTED_GAP_MS": "min_reported_gap_ms",
     "EVIDENCE_DIR": "evidence_dir",
     "INTERACTION_V2_DIR": "interaction_v2_dir",
     "RUNS_DIR": "runs_dir",
@@ -902,6 +1009,22 @@ _REQUIRED_FIELDS = (
     "llm_api_key",
     "llm_base_url",
     "checkpoint_database_url",
+    "audio_separator_access_key_id",
+    "audio_separator_access_key_secret",
+    "audio_separator_bucket",
+    "audio_separator_region",
+    "asr_model_id",
+    "asr_api_key",
+    "asr_base_url",
+    "audio_observer_model_id",
+    "audio_observer_api_key",
+    "audio_observer_base_url",
+    "ocr_model_id",
+    "ocr_api_key",
+    "ocr_base_url",
+    "vlm_model_id",
+    "vlm_api_key",
+    "vlm_base_url",
 )
 
 
@@ -918,7 +1041,9 @@ def _parse_int_value(value: Any, name: str, *, minimum: int | None = None) -> in
             parsed = int(text)
         except ValueError as exc:
             raise ValueError(f"{name} 必须为整数，收到 {value!r}") from exc
-        if str(parsed) != text and not (text.startswith("+") and str(parsed) == text[1:]):
+        if str(parsed) != text and not (
+            text.startswith("+") and str(parsed) == text[1:]
+        ):
             raise ValueError(f"{name} 必须为整数，收到 {value!r}")
     else:
         raise ValueError(f"{name} 必须为整数")
@@ -1000,7 +1125,11 @@ def _resolve_value(
 def _coerce_loaded_value(field_name: str, value: Any) -> Any:
     """将字符串环境值转换为 Settings 需要的基础类型。"""
 
-    if field_name in {"llm_temperature", "llm_timeout_seconds", "llm_retry_delay_seconds"}:
+    if field_name in {
+        "llm_temperature",
+        "llm_timeout_seconds",
+        "llm_retry_delay_seconds",
+    }:
         return _parse_float_value(value, field_name)
     if field_name in {
         "llm_max_tokens",
@@ -1014,7 +1143,6 @@ def _coerce_loaded_value(field_name: str, value: Any) -> Any:
         "keyline_tail_ms",
         "reveal_display_ms",
         "reveal_gap_min_ms",
-        "min_reported_gap_ms",
     }:
         if value is None or (isinstance(value, str) and not value.strip()):
             return None
@@ -1089,6 +1217,13 @@ def load_settings(
 
 
 __all__ = [
+    "ASR_TRANSCRIPTION_DOWNLOAD_TIMEOUT_SECONDS",
+    "ASR_VOCABULARY_WEIGHT",
+    "ASR_WAIT_TIMEOUT_SECONDS",
+    "AUDIO_SEPARATOR_DIALOGUE_URL_EXPIRES_SECONDS",
+    "AUDIO_SEPARATOR_POLL_INTERVAL_SECONDS",
+    "AUDIO_SEPARATOR_SDK_RETRIES",
+    "AUDIO_SEPARATOR_WAIT_TIMEOUT_SECONDS",
     "DEFAULT_DEFERRED_VOTE_DURATION_MS",
     "DEFAULT_DRAMA_INFO_PATH",
     "DEFAULT_EMOTION_BUTTON_DURATION_MS",
@@ -1100,17 +1235,30 @@ __all__ = [
     "DEFAULT_LLM_TEMPERATURE",
     "DEFAULT_LLM_TIMEOUT_SECONDS",
     "DEFAULT_MIN_INTERACTION_SPACING_MS",
-    "DEFAULT_MIN_REPORTED_GAP_MS",
     "DEFAULT_REVEAL_DISPLAY_MS",
     "DEFAULT_REVEAL_GAP_MIN_MS",
     "DEFAULT_SIDE_COMMENT_DURATION_MS",
     "DEFAULT_TYPE_COOLDOWN_MS",
     "DEFERRED_VOTE_MAX_OPTIONS",
     "DEFERRED_VOTE_MIN_OPTIONS",
+    "EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT",
+    "EVIDENCE_AUDIO_OBSERVER_USER_PROMPT",
+    "EVIDENCE_FRAME_JPEG_QUALITY",
+    "EVIDENCE_OCR_SYSTEM_PROMPT",
+    "EVIDENCE_OCR_USER_PROMPT",
+    "EVIDENCE_SAMPLE_BUCKET_MS",
+    "EVIDENCE_SAMPLE_FPS",
+    "EVIDENCE_SLICE_CONCURRENCY",
+    "EVIDENCE_SLICE_DURATION_MS",
+    "EVIDENCE_VLM_SYSTEM_PROMPT",
+    "EVIDENCE_VLM_USER_PROMPT",
     "INSTANT_VOTE_OPTIONS_COUNT",
     "KEYLINE_DURATION_CEIL",
     "KEYLINE_DURATION_FLOOR",
     "KEYLINE_TAIL_MS",
+    "MODEL_RETRY_COUNT",
+    "MODEL_RETRY_DELAY_SECONDS",
+    "MODEL_SDK_MAX_RETRIES",
     "Settings",
     "SettingsError",
     "SERIES_CONTEXT_PROMPT_BLOCK",
@@ -1120,5 +1268,6 @@ __all__ = [
     "SPECIALIST_USER_PROMPT_TEMPLATE",
     "SEMANTIC_SCHEDULER_SYSTEM_PROMPT",
     "SEMANTIC_SCHEDULER_USER_PROMPT_TEMPLATE",
+    "WORKFLOW_RECURSION_LIMIT",
     "load_settings",
 ]

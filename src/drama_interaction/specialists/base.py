@@ -22,6 +22,7 @@ from drama_interaction.context import DramaContext
 from drama_interaction.evidence.service import EvidenceService
 from drama_interaction.llm import LLMGateway, LLMGatewayError, LLMNetworkExhaustedError
 from drama_interaction.schemas.candidate import (
+    INTERACTION_PAYLOAD_TYPES,
     Abstention,
     Candidate,
     SpecialistResult,
@@ -135,10 +136,18 @@ class BaseSpecialist:
 
     def _system_prompt(self) -> str:
         """构造固定类型与证据边界提示。"""
+        payload_schema = json.dumps(
+            INTERACTION_PAYLOAD_TYPES[self.specialist_type].model_json_schema(),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
         return (
             f"{SPECIALIST_SYSTEM_PROMPT}\n\n"
             f"当前 Specialist 类型固定为：{self.specialist_type}\n"
-            f"类型专属规则：\n{SPECIALIST_FOCUS_PROMPTS[self.specialist_type]}"
+            "类型专属规则：\n"
+            f"{SPECIALIST_FOCUS_PROMPTS[self.specialist_type]}".replace(
+                "{{PAYLOAD_JSON_SCHEMA}}", payload_schema
+            )
         )
 
     def _generation_prompt(self, evidence_timeline: str) -> str:

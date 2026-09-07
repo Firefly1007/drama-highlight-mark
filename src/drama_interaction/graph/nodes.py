@@ -2,29 +2,44 @@
 
 from __future__ import annotations
 
-import json
-import os
-import tempfile
+import shutil
 from collections.abc import Mapping, Sequence
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
-from langgraph.graph import END, START, StateGraph
-from langgraph.types import interrupt
+from langgraph.types import Send, interrupt
+from openai import OpenAI
 
+from drama_interaction.config import EVIDENCE_SLICE_CONCURRENCY, MODEL_SDK_MAX_RETRIES
 from drama_interaction.context import DramaContext
-from drama_interaction.evidence.adapter import adapt_file, parse_time_str_to_ms
+from drama_interaction.evidence.extract import (
+    frame_data_urls,
+    run_qwen_audio_observer,
+    run_qwen_ocr,
+    run_qwen_vlm,
+    separate_episode_audio,
+    transcribe_episode_dialogue,
+)
 from drama_interaction.evidence.render import render_evidence_timeline
 from drama_interaction.evidence.service import EvidenceService
 from drama_interaction.llm import LLMGatewayError, LLMNetworkExhaustedError
+from drama_interaction.media import (
+    calculate_sample_timestamps_ms,
+    calculate_slices,
+    cut_audio_hard,
+    extract_audio_flac,
+    extract_frames,
+    probe_video_duration_ms,
+    slice_audio,
+)
 from drama_interaction.scheduling.constraints import (
     analyze_constraints,
     assert_final_interactions,
     render_candidate,
 )
 from drama_interaction.schemas.candidate import Candidate, SpecialistResult
-from drama_interaction.schemas.evidence import EvidenceDocument
+from drama_interaction.schemas.evidence import EvidenceDocument, Observation
 from drama_interaction.schemas.interaction import FinalInteraction
 from drama_interaction.specialists import (
     DeferredVoteSpecialist,
@@ -38,11 +53,10 @@ from drama_interaction.validation.rules import validate_candidate
 
 from .state import (
     SPECIALIST_TYPES,
-    SpecialistBranchInput,
-    SpecialistBranchOutput,
-    SpecialistBranchState,
+    SliceState,
     WorkflowState,
     state_to_jsonable,
+    write_json_atomic,
 )
 
 
@@ -52,7 +66,7 @@ def _now() -> str:
 
 
 def _document(state: Mapping[str, Any]) -> EvidenceDocument:
-    """读取已适配的共享证据。"""
+    """读取已提取的共享基线证据。"""
     value = state.get("evidence")
     if not isinstance(value, EvidenceDocument):
         raise ValueError("工作流缺少 EvidenceDocument")
@@ -68,69 +82,18 @@ def _drama_context(state: Mapping[str, Any]) -> DramaContext:
 
 
 def _input_path(state: Mapping[str, Any]) -> Path:
-    """读取已校验的 V1 输入文件。"""
+    """读取已校验的输入视频文件。"""
     value = state.get("input_path")
     if not isinstance(value, str) or not value.strip():
         raise ValueError("工作流缺少 input_path")
     return Path(value)
 
 
-def _write_json_atomic(value: Any, output_path: str | Path) -> Path:
-    """原子写入 JSON 运行产物。"""
-    target = Path(output_path)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            mode="w",
-            encoding="utf-8",
-            dir=target.parent,
-            prefix=f".{target.name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as file:
-            temporary = Path(file.name)
-            json.dump(state_to_jsonable(value), file, ensure_ascii=False, indent=2)
-            file.write("\n")
-            file.flush()
-            os.fsync(file.fileno())
-        os.replace(temporary, target)
-    except OSError:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
-        raise
-    return target
-
-
-def derive_episode_duration_ms(input_path: str | Path) -> int:
-    """从 V1 输入的合法 end 取得临时集长。"""
-    source = Path(input_path)
-    if not source.is_file():
-        raise FileNotFoundError(f"输入文件不存在: {source}")
-    try:
-        segments = json.loads(source.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as error:
-        raise ValueError(f"输入 JSON 无法解析: {source}: {error.msg}") from error
-    if not isinstance(segments, list):
-        raise ValueError("V1 片段 JSON 顶层必须是数组")
-
-    ends: list[int] = []
-    for index, segment in enumerate(segments, start=1):
-        if not isinstance(segment, Mapping):
-            raise ValueError(f"V1 片段 {index} 必须是对象")
-        try:
-            ends.append(parse_time_str_to_ms(segment["end"]))
-        except (KeyError, TypeError, ValueError) as error:
-            raise ValueError(f"V1 片段 {index} 的 end 时间码无效") from error
-    if not ends or max(ends) <= 0:
-        raise ValueError("V1 片段缺少大于 0 的 end 时间码")
-    return max(ends)
-
-
 def media_prepare_node(state: WorkflowState) -> dict[str, Any]:
-    """写入本轮 V1 临时集长。"""
+    """探测主视频轨集长并写入工作流状态。"""
     context = _drama_context(state)
-    duration = derive_episode_duration_ms(_input_path(state))
+    path = _input_path(state)
+    duration = probe_video_duration_ms(path)
     timestamp = _now()
     return {
         "drama_context": context,
@@ -142,25 +105,215 @@ def media_prepare_node(state: WorkflowState) -> dict[str, Any]:
     }
 
 
-def adapter_node(state: WorkflowState) -> dict[str, Any]:
-    """把 V1 输入适配为共享 EvidenceDocument。"""
-    context = _drama_context(state)
-    duration = state.get("episode_duration_ms")
-    if type(duration) is not int or duration <= 0:
-        raise ValueError("adapter_node 需要有效的 episode_duration_ms")
-    document, evidence_path = adapt_file(
-        _input_path(state),
-        duration,
-        state.get("evidence_dir"),
+def extract_mix_node(state: WorkflowState) -> dict[str, Any]:
+    """从原始视频抽取本次分离需要的混音 FLAC。"""
+    mix_path = extract_audio_flac(
+        _input_path(state), Path(state["run_dir"]) / "mix.flac"
     )
-    timestamp = _now()
+    return {"mix_audio_path": str(mix_path)}
+
+
+def separate_audio_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
+    """仅调用 CI 分离并保存 dialogue/background MP3。"""
+    background_path, dialogue_path = separate_episode_audio(
+        _input_path(state), state["mix_audio_path"], settings
+    )
     return {
-        "drama_context": context,
+        "background_audio_path": str(background_path),
+        "dialogue_audio_path": str(dialogue_path),
+    }
+
+
+def transcribe_audio_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
+    """对已分离的 dialogue 执行整集 ASR。"""
+    return {
+        "transcript_segments": transcribe_episode_dialogue(
+            _input_path(state),
+            settings,
+            state["episode_duration_ms"],
+            characters=_drama_context(state).characters,
+        )
+    }
+
+
+def prepare_background_node(state: WorkflowState) -> dict[str, Any]:
+    """硬切背景音，得到本次运行使用的临时 WAV。"""
+    wav_path = Path(state["run_dir"]) / "background.wav"
+    cut_audio_hard(
+        state["background_audio_path"], wav_path, state["episode_duration_ms"]
+    )
+    return {"background_wav_path": str(wav_path), "next_slice_index": 0}
+
+
+def dispatch_slice_batch_node(state: WorkflowState) -> dict[str, Any]:
+    """选择下一批最多四个固定时间跨度。"""
+    start = state["next_slice_index"]
+    stop = min(
+        start + EVIDENCE_SLICE_CONCURRENCY,
+        len(calculate_slices(state["episode_duration_ms"])),
+    )
+    return {"slice_batch_indices": list(range(start, stop))}
+
+
+def dispatch_slice_subgraphs(state: WorkflowState) -> list[Send]:
+    """把当前批次交给互不共享临时状态的切片子图。"""
+    slices = calculate_slices(state["episode_duration_ms"])
+    return [
+        Send(
+            "slice",
+            {
+                "input_path": state["input_path"],
+                "run_dir": state["run_dir"],
+                "background_wav_path": state["background_wav_path"],
+                "slice_index": index,
+                "slice_start_ms": slices[index][0],
+                "slice_end_ms": slices[index][1],
+            },
+        )
+        for index in state["slice_batch_indices"]
+    ]
+
+
+def _slice_workspace(state: Mapping[str, Any]) -> Path:
+    """返回当前切片唯一的临时目录。"""
+    return Path(str(state["run_dir"])) / "slices" / str(state["slice_start_ms"])
+
+
+def prepare_frames_node(state: SliceState) -> dict[str, Any]:
+    """只提取当前切片的固定采样帧。"""
+    frame_paths = extract_frames(
+        _input_path(state),
+        calculate_sample_timestamps_ms(state["slice_start_ms"], state["slice_end_ms"]),
+        _slice_workspace(state) / "frames",
+    )
+    return {"slice_frame_paths": [str(path) for path in frame_paths]}
+
+
+def prepare_slice_audio_node(state: SliceState) -> dict[str, Any]:
+    """只截取当前切片对应的背景音。"""
+    audio_path = slice_audio(
+        state["background_wav_path"],
+        state["slice_start_ms"],
+        state["slice_end_ms"],
+        _slice_workspace(state) / "background.wav",
+    )
+    return {"slice_audio_path": str(audio_path)}
+
+
+def observe_ocr_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
+    """只识别当前采样帧的屏幕文字。"""
+    client = OpenAI(
+        api_key=settings.ocr_api_key,
+        base_url=settings.ocr_base_url.rstrip("/"),
+        max_retries=MODEL_SDK_MAX_RETRIES,
+    )
+    return {
+        "slice_onscreen_texts": run_qwen_ocr(
+            frame_data_urls(state["slice_frame_paths"]), settings, client
+        )
+    }
+
+
+def observe_vlm_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
+    """只生成当前采样帧的客观视觉观察。"""
+    client = OpenAI(
+        api_key=settings.vlm_api_key,
+        base_url=settings.vlm_base_url.rstrip("/"),
+        max_retries=MODEL_SDK_MAX_RETRIES,
+    )
+    observations, uncertainty = run_qwen_vlm(
+        frame_data_urls(state["slice_frame_paths"]), settings, client
+    )
+    return {
+        "slice_visual_observations": observations,
+        "slice_vlm_uncertainty": uncertainty,
+    }
+
+
+def observe_audio_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
+    """只生成当前背景音切片的客观声音观察。"""
+    client = OpenAI(
+        api_key=settings.audio_observer_api_key,
+        base_url=settings.audio_observer_base_url.rstrip("/"),
+        max_retries=MODEL_SDK_MAX_RETRIES,
+    )
+    observations, uncertainty = run_qwen_audio_observer(
+        Path(state["slice_audio_path"]), settings, client
+    )
+    return {
+        "slice_audio_observations": observations,
+        "slice_audio_uncertainty": uncertainty,
+    }
+
+
+def merge_slice_result_node(state: SliceState) -> dict[str, Any]:
+    """合并一个子图的三路结果，不在子图内分配 Observation ID。"""
+    shutil.rmtree(_slice_workspace(state), ignore_errors=True)
+    return {
+        "slice_results": {
+            str(state["slice_index"]): {
+                "start_ms": state["slice_start_ms"],
+                "end_ms": state["slice_end_ms"],
+                "visual_observations": state["slice_visual_observations"],
+                "onscreen_texts": state["slice_onscreen_texts"],
+                "audio_observations": state["slice_audio_observations"],
+                "uncertainty": state["slice_vlm_uncertainty"]
+                + state["slice_audio_uncertainty"],
+            }
+        }
+    }
+
+
+def merge_slice_batch_node(state: WorkflowState) -> dict[str, Any]:
+    """按切片顺序写入当前批次的非空 Observation。"""
+    observations: list[Observation] = []
+    for index in state["slice_batch_indices"]:
+        result = state["slice_results"][str(index)]
+        if any(
+            result[field]
+            for field in (
+                "visual_observations",
+                "onscreen_texts",
+                "audio_observations",
+                "uncertainty",
+            )
+        ):
+            observations.append(
+                Observation(
+                    id=f"O{len(state.get('baseline_observations', [])) + len(observations) + 1}",
+                    start_ms=result["start_ms"],
+                    end_ms=result["end_ms"],
+                    visual_observations=result["visual_observations"],
+                    onscreen_texts=result["onscreen_texts"],
+                    audio_observations=result["audio_observations"],
+                    uncertainty=result["uncertainty"],
+                )
+            )
+    return {
+        "baseline_observations": observations,
+        "next_slice_index": state["next_slice_index"]
+        + len(state["slice_batch_indices"]),
+    }
+
+
+def route_after_merge_slice_batch(
+    state: WorkflowState,
+) -> Literal["dispatch_slice_batch", "assemble_evidence"]:
+    """在最后一批后汇总 Evidence，否则继续下一批。"""
+    if state["next_slice_index"] < len(calculate_slices(state["episode_duration_ms"])):
+        return "dispatch_slice_batch"
+    return "assemble_evidence"
+
+
+def assemble_evidence_node(state: WorkflowState) -> dict[str, Any]:
+    """只汇总已 checkpoint 的提取状态为 EvidenceDocument。"""
+    document = EvidenceDocument(
+        episode_duration_ms=state["episode_duration_ms"],
+        transcript_segments=state["transcript_segments"],
+        observations=state.get("baseline_observations", []),
+    )
+    return {
         "evidence": document,
-        "evidence_path": str(evidence_path) if evidence_path else None,
-        "status": "running",
-        "updated_at": timestamp,
-        "execution": {"updated_at": timestamp},
         "metrics": {
             "transcript_segment_count": len(document.transcript_segments),
             "observation_count": len(document.observations),
@@ -168,15 +321,19 @@ def adapter_node(state: WorkflowState) -> dict[str, Any]:
     }
 
 
-def has_evidence(state: WorkflowState) -> str:
-    """空证据直接输出空数组，避免无意义模型调用。"""
-    document = _document(state)
-    return "render_evidence" if (
-        document.transcript_segments or document.observations
-    ) else "final_check"
+def persist_evidence_node(state: WorkflowState) -> dict[str, Any]:
+    """只原子写正式 Evidence，并清理已不再需要的临时媒体。"""
+    video = _input_path(state)
+    evidence_path = (
+        Path(state["evidence_dir"]) / video.parent.name / f"{video.stem}.json"
+    )
+    write_json_atomic(_document(state), evidence_path)
+    Path(state["background_wav_path"]).unlink(missing_ok=True)
+    Path(state["mix_audio_path"]).unlink(missing_ok=True)
+    return {"evidence_path": str(evidence_path)}
 
 
-def render_evidence_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
+def render_evidence_node(state: WorkflowState) -> dict[str, Any]:
     """为五个 Specialist 构造相互隔离的时间线。"""
     document = _document(state)
     timelines = {
@@ -184,7 +341,6 @@ def render_evidence_node(state: WorkflowState, *, settings: Any) -> dict[str, An
             document,
             specialist,
             state.get("derived_evidence", {}).get(specialist, ()),
-            settings.min_reported_gap_ms,
         )
         for specialist in SPECIALIST_TYPES
     }
@@ -215,7 +371,9 @@ def _specialist(
     )
 
 
-def _event(event_id: str, event_type: str, reason: str, **details: Any) -> dict[str, Any]:
+def _event(
+    event_id: str, event_type: str, reason: str, **details: Any
+) -> dict[str, Any]:
     """构造终端 HITL 可显示的最小事件。"""
     actions = {
         "branch_failure": ["drop"],
@@ -234,12 +392,12 @@ def _event(event_id: str, event_type: str, reason: str, **details: Any) -> dict[
 
 
 def specialist_node(
-    state: SpecialistBranchState,
+    state: WorkflowState,
     *,
     specialist_type: str,
     gateway: Any,
 ) -> dict[str, Any]:
-    """运行一个 Specialist 子图分支，并隔离其校验与修复失败。"""
+    """运行一个 Specialist 分支，并隔离其校验与修复失败。"""
     document = _document(state)
     drama_context = _drama_context(state)
     timeline = state.get("specialist_timelines", {}).get(specialist_type, "")
@@ -366,33 +524,6 @@ def specialist_node(
     }
 
 
-def build_specialist_subgraph(
-    specialist_type: str,
-    gateway: Any,
-) -> Any:
-    """构造一个可嵌入父图的 Specialist 编译子图。"""
-
-    graph = StateGraph(
-        SpecialistBranchState,
-        input_schema=SpecialistBranchInput,
-        output_schema=SpecialistBranchOutput,
-    )
-
-    def run_branch(state: SpecialistBranchState) -> dict[str, Any]:
-        """运行当前类型的分支节点。"""
-
-        return specialist_node(
-            state,
-            specialist_type=specialist_type,
-            gateway=gateway,
-        )
-
-    graph.add_node("run", run_branch)
-    graph.add_edge(START, "run")
-    graph.add_edge("run", END)
-    return graph.compile(name=f"specialist_{specialist_type}")
-
-
 def pool_node(state: WorkflowState) -> dict[str, Any]:
     """按稳定顺序为局部合法候选分配 ID。"""
     pending: list[Candidate] = []
@@ -479,18 +610,24 @@ def constraints_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     conflicted = {candidate_id for group in groups for candidate_id in group}
     return {
         "constraints_report": {
-            "render_failures": state.get("constraints_report", {}).get("render_failures", []),
+            "render_failures": state.get("constraints_report", {}).get(
+                "render_failures", []
+            ),
             "invalid": state_to_jsonable(report.invalid),
             "eligible_ids": eligible_ids,
             "conflict_groups": [list(group) for group in groups],
         },
         "selected_candidate_ids": [
-            candidate_id for candidate_id in eligible_ids if candidate_id not in conflicted
+            candidate_id
+            for candidate_id in eligible_ids
+            if candidate_id not in conflicted
         ],
     }
 
 
-def semantic_node(state: WorkflowState, *, gateway: Any, settings: Any) -> dict[str, Any]:
+def semantic_node(
+    state: WorkflowState, *, gateway: Any, settings: Any
+) -> dict[str, Any]:
     """仅在真实冲突存在时交给语义调度器。"""
     groups = state.get("constraints_report", {}).get("conflict_groups", [])
     if not groups:
@@ -539,9 +676,12 @@ def semantic_node(state: WorkflowState, *, gateway: Any, settings: Any) -> dict[
 
 def _evidence_excerpt(timeline: str, evidence_ids: Sequence[str]) -> str:
     """只把候选引用的证据行发送给语义调度器。"""
-    markers = tuple(f"[{evidence_id}]" for evidence_id in evidence_ids)
+    wanted = set(evidence_ids)
     return "\n".join(
-        line for line in timeline.splitlines() if line.lstrip().startswith(markers)
+        line
+        for line in timeline.splitlines()
+        if line.lstrip().startswith("[")
+        and line.lstrip()[1:].split("]")[0].split(" ")[0] in wanted
     )
 
 
@@ -581,7 +721,11 @@ def _candidate_from_decision(
     """提取人工确认或编辑后的候选。"""
     if decision.get("action") == "drop":
         return None
-    source = decision.get("replacement") if decision.get("action") == "edit" else event.get("candidate")
+    source = (
+        decision.get("replacement")
+        if decision.get("action") == "edit"
+        else event.get("candidate")
+    )
     if not isinstance(source, Mapping):
         return None
     return Candidate.model_validate(source)
@@ -632,7 +776,9 @@ def human_gate_node(state: WorkflowState) -> dict[str, Any]:
                 errors = validate_candidate(
                     candidate,
                     document,
-                    state.get("derived_evidence", {}).get(candidate.specialist_type, ()),
+                    state.get("derived_evidence", {}).get(
+                        candidate.specialist_type, ()
+                    ),
                     specialist_type=candidate.specialist_type,
                     existing_candidates=[*state.get("candidate_pool", ()), *accepted],
                 )
@@ -661,14 +807,15 @@ def human_gate_node(state: WorkflowState) -> dict[str, Any]:
                 groups = event.get("conflict_groups")
                 if (
                     not isinstance(keep_ids, list)
-                    or any(not isinstance(candidate_id, str) for candidate_id in keep_ids)
+                    or any(
+                        not isinstance(candidate_id, str) for candidate_id in keep_ids
+                    )
                     or len(keep_ids) != len(set(keep_ids))
                     or set(keep_ids) - contested
                     or not isinstance(groups, list)
                     or not all(isinstance(group, list) for group in groups)
                     or any(
-                        len(set(keep_ids).intersection(group)) > 1
-                        for group in groups
+                        len(set(keep_ids).intersection(group)) > 1 for group in groups
                     )
                 ):
                     raise ValueError(
@@ -678,7 +825,11 @@ def human_gate_node(state: WorkflowState) -> dict[str, Any]:
             # drop 不保留未被语义确认的冲突候选。
         elif event["event_type"] == "constraint_review":
             contested = set(event.get("candidate_ids", ()))
-            selected = [candidate_id for candidate_id in selected if candidate_id not in contested]
+            selected = [
+                candidate_id
+                for candidate_id in selected
+                if candidate_id not in contested
+            ]
 
     update: dict[str, Any] = {
         "hitl_resolutions": resolutions,
@@ -736,7 +887,11 @@ def final_check_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     rendered = state.get("rendered_candidates", {})
     if selected_ids is None:
         selected_ids = list(rendered)
-    interactions = [rendered[candidate_id] for candidate_id in selected_ids if candidate_id in rendered]
+    interactions = [
+        rendered[candidate_id]
+        for candidate_id in selected_ids
+        if candidate_id in rendered
+    ]
     interactions.sort(key=lambda item: (item.show_at, item.duration_ms, item.id))
     interactions = [
         interaction.model_copy(update={"id": index})
@@ -765,13 +920,15 @@ def final_check_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     if isinstance(output_dir, str) and output_dir:
         source = _input_path(state)
         output_path = Path(output_dir) / source.parent.name / f"{source.stem}.json"
-        _write_json_atomic(
+        write_json_atomic(
             [item.model_dump(mode="json", exclude_none=True) for item in final],
             output_path,
         )
     run_dir = state.get("run_dir")
     if isinstance(run_dir, str) and state.get("derived_evidence"):
-        _write_json_atomic(state["derived_evidence"], Path(run_dir) / "evidence-derived.json")
+        write_json_atomic(
+            state["derived_evidence"], Path(run_dir) / "evidence-derived.json"
+        )
     timestamp = _now()
     result: dict[str, Any] = {
         "final_interactions": final,
@@ -786,21 +943,33 @@ def final_check_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
 
 
 __all__ = [
-    "adapter_node",
-    "build_specialist_subgraph",
+    "assemble_evidence_node",
     "constraints_node",
-    "derive_episode_duration_ms",
+    "dispatch_slice_batch_node",
+    "dispatch_slice_subgraphs",
+    "extract_mix_node",
     "final_check_node",
-    "has_evidence",
     "human_gate_node",
     "media_prepare_node",
+    "merge_slice_batch_node",
+    "merge_slice_result_node",
     "needs_human",
+    "observe_audio_node",
+    "observe_ocr_node",
+    "observe_vlm_node",
     "pool_node",
+    "prepare_background_node",
+    "prepare_frames_node",
+    "prepare_slice_audio_node",
+    "persist_evidence_node",
     "render_evidence_node",
     "render_node",
     "route_after_final",
     "route_after_human",
+    "route_after_merge_slice_batch",
     "route_after_pool",
+    "separate_audio_node",
     "semantic_node",
     "specialist_node",
+    "transcribe_audio_node",
 ]

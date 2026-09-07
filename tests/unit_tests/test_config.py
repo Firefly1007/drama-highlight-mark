@@ -6,7 +6,6 @@ import pytest
 
 from drama_interaction.config import (
     DEFAULT_LLM_MAX_TOKENS,
-    DEFAULT_MIN_REPORTED_GAP_MS,
     SettingsError,
     load_settings,
 )
@@ -18,6 +17,22 @@ def _required() -> dict[str, str]:
         "LLM_API_KEY": "secret",
         "LLM_BASE_URL": "https://llm.example/v1",
         "CHECKPOINT_DATABASE_URL": "postgresql://user:pass@localhost/db",
+        "AUDIO_SEPARATOR_ACCESS_KEY_ID": "separator-id",
+        "AUDIO_SEPARATOR_ACCESS_KEY_SECRET": "separator-secret",
+        "AUDIO_SEPARATOR_BUCKET": "separator-bucket",
+        "AUDIO_SEPARATOR_REGION": "ap-guangzhou",
+        "ASR_MODEL_ID": "qwen-audio-3.0-asr-flash-filetrans",
+        "ASR_API_KEY": "asr-key",
+        "ASR_BASE_URL": "https://dashscope.aliyuncs.com/api/v1",
+        "AUDIO_OBSERVER_MODEL_ID": "qwen3-omni-flash",
+        "AUDIO_OBSERVER_API_KEY": "audio-key",
+        "AUDIO_OBSERVER_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "OCR_MODEL_ID": "qwen-3.8-flash",
+        "OCR_API_KEY": "ocr-key",
+        "OCR_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "VLM_MODEL_ID": "qwen-3.8-flash",
+        "VLM_API_KEY": "vlm-key",
+        "VLM_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
     }
 
 
@@ -27,12 +42,13 @@ def test_load_settings_uses_defaults_and_keeps_optional_limits_unconfigured():
     assert settings.llm_model_id == "model-from-override"
     assert settings.llm_timeout_seconds == 3600.0
     assert settings.llm_max_tokens == DEFAULT_LLM_MAX_TOKENS == 131_072
-    assert settings.min_reported_gap_ms == DEFAULT_MIN_REPORTED_GAP_MS == 2500
     assert settings.interaction_budget is None
     assert settings.min_interaction_spacing_ms is None
     assert settings.type_cooldown_ms == {}
     assert settings.runs_dir == Path("data/interaction_v2/runs")
     assert settings.langsmith_tracing is False
+    assert settings.audio_separator_bucket == "separator-bucket"
+    assert settings.asr_model_id == "qwen-audio-3.0-asr-flash-filetrans"
 
 
 def test_explicit_overrides_win_over_environment_and_dotenv(tmp_path, monkeypatch):
@@ -42,6 +58,22 @@ def test_explicit_overrides_win_over_environment_and_dotenv(tmp_path, monkeypatc
         "LLM_API_KEY=dotenv-key\n"
         "LLM_BASE_URL=https://dotenv.example/v1\n"
         "CHECKPOINT_DATABASE_URL=postgresql://dotenv/db\n"
+        "AUDIO_SEPARATOR_ACCESS_KEY_ID=dotenv-sep-id\n"
+        "AUDIO_SEPARATOR_ACCESS_KEY_SECRET=dotenv-sep-secret\n"
+        "AUDIO_SEPARATOR_BUCKET=dotenv-sep-bucket\n"
+        "AUDIO_SEPARATOR_REGION=ap-guangzhou\n"
+        "ASR_MODEL_ID=qwen-audio-3.0-asr-flash-filetrans\n"
+        "ASR_API_KEY=dotenv-asr-key\n"
+        "ASR_BASE_URL=https://dashscope.aliyuncs.com/api/v1\n"
+        "AUDIO_OBSERVER_MODEL_ID=qwen3-omni-flash\n"
+        "AUDIO_OBSERVER_API_KEY=dotenv-audio-key\n"
+        "AUDIO_OBSERVER_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
+        "OCR_MODEL_ID=qwen-3.8-flash\n"
+        "OCR_API_KEY=dotenv-ocr-key\n"
+        "OCR_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
+        "VLM_MODEL_ID=qwen-3.8-flash\n"
+        "VLM_API_KEY=dotenv-vlm-key\n"
+        "VLM_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
         "INTERACTION_BUDGET=2\n",
         encoding="utf-8",
     )
@@ -63,19 +95,31 @@ def test_missing_required_values_are_reported_together():
         load_settings(env_file=None)
 
     message = str(error.value)
-    for name in (
+    expected_missing = (
         "LLM_MODEL_ID",
         "LLM_API_KEY",
         "LLM_BASE_URL",
         "CHECKPOINT_DATABASE_URL",
-    ):
-        assert name in message
-    assert error.value.missing == (
-        "LLM_MODEL_ID",
-        "LLM_API_KEY",
-        "LLM_BASE_URL",
-        "CHECKPOINT_DATABASE_URL",
+        "AUDIO_SEPARATOR_ACCESS_KEY_ID",
+        "AUDIO_SEPARATOR_ACCESS_KEY_SECRET",
+        "AUDIO_SEPARATOR_BUCKET",
+        "AUDIO_SEPARATOR_REGION",
+        "ASR_MODEL_ID",
+        "ASR_API_KEY",
+        "ASR_BASE_URL",
+        "AUDIO_OBSERVER_MODEL_ID",
+        "AUDIO_OBSERVER_API_KEY",
+        "AUDIO_OBSERVER_BASE_URL",
+        "OCR_MODEL_ID",
+        "OCR_API_KEY",
+        "OCR_BASE_URL",
+        "VLM_MODEL_ID",
+        "VLM_API_KEY",
+        "VLM_BASE_URL",
     )
+    for name in expected_missing:
+        assert name in message
+    assert set(error.value.missing) == set(expected_missing)
 
 
 def test_settings_is_frozen_including_cooldown_mapping():
@@ -110,7 +154,6 @@ def test_type_cooldown_accepts_json_object_only():
     [
         {"LLM_MAX_RETRIES": -1},
         {"LLM_MAX_RETRIES": "not-an-integer"},
-        {"MIN_REPORTED_GAP_MS": 0},
         {"MIN_INTERACTION_SPACING_MS": 100},
         {"CHECKPOINT_DATABASE_URL": "sqlite:///tmp/checkpoints.db"},
     ],
