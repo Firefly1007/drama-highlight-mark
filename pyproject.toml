@@ -41,7 +41,6 @@ filterwarnings = [
 ]
 
 [tool.ruff]
-extend-exclude = ["v1"]
 src = ["src", "tests"]
 
 [tool.ruff.lint]

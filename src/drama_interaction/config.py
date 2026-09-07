@@ -123,7 +123,7 @@ EVIDENCE_AUDIO_OBSERVER_USER_PROMPT: str = (
     f"{_json_schema_text(AudioObserverResponse)}"
 )
 
-# V1 五类互动提示词的完整判定规则集中维护；仅把输入、输出接口改成 V2。
+# 五类互动提示词的完整判定规则集中维护。
 SPECIALIST_SYSTEM_PROMPT: str = """
 # 角色
 你是一名短剧互动生成 Specialist。

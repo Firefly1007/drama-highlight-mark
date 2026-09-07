@@ -1,17 +1,25 @@
 # 原始视频到 V2 基线证据实现计划
 
-状态：`in_progress`
+状态：`completed`
+
+## 0. V2-only 清理（已完成）
+
+目标：移除不再参与 V2 的遗留实现和运行产物，保留 V2 可运行、可测试、可复现所需内容。
+
+- 已删除：遗留源码、遗留 Evidence adapter 及其专属测试、遗留派生产物、无引用数据、本地测试缓存和 agent 学习日志。
+- 保留：`src/`、`tests/`、`docs/`、`benchmark/`、配置与依赖文件、`.env`、`.venv`、`.git`、`data/video` 原始输入、`data/evidence` 和 `data/interaction_v2`。
+- 验证：删除后 `rg` 找不到遗留 adapter 的生产引用；单元测试与已完成的 V2 运行产物仍可读取。
 
 ## 1. 目标与成功标准
 
-把现有 V2 生产入口从 V1 片段 JSON 替换为原始 `.mp4`，生成覆盖整集的文本化 `EvidenceDocument`，再交给五个 Specialist。该阶段只做客观取证，不筛选高光、不判断互动点。
+由原始 `.mp4` 生成覆盖整集的文本化 `EvidenceDocument`，再交给五个 Specialist。该阶段只做客观取证，不筛选高光、不判断互动点。
 
 完成标准：
 
 - 单集能够生成时间合法、至少含一条台词的完整基线证据。
 - 任一必需阶段失败时整集失败，不向 Specialist 提供半成品。
 - 目录任务中，失败集被记录后继续下一集。
-- 生产链路不调用 V1 adapter。
+- 生产链路只消费原始媒体，不调用遗留适配器。
 - 内部及 Specialist 时间线只使用整数毫秒。
 - `EvidenceDocument` 保持现有结构，不新增 coverage、帧或音频证据类型。
 
@@ -27,7 +35,7 @@
 
 本轮不做：
 
-- V1 生产兼容或修改 `v1/`。
+- 遗留生产兼容层。
 - 缓存、半成品 Evidence。
 - `inspect_span` 的真实媒体补证，保留现有桩。
 - 跨集并发。
@@ -64,7 +72,7 @@ START → media_prepare / extract_mix（并行）→ separate_audio → transcri
       → assemble_evidence → persist_evidence → render_evidence → Specialists
 ```
 
-节点边界以能否独立测试、缓存、重试或替换为准：`extract_mix` 只抽取音轨，`separate_audio` 只做 CI 分离，`transcribe_audio` 只做 ASR。父图的 `dispatch_slice_batch` 只选择最多四个跨度，`merge_slice_batch` 只按切片序号写 Observation 并推进索引。每个切片子图只处理一个跨度：`prepare_frames` 和 `prepare_slice_audio` 各自产生一种输入，OCR、VLM、音频观察各自只调用一种模型，最后合并为该片的普通结果。父图使用 LangGraph `Send` 派发子图，并以 `max_concurrency=4` 限制同批切片；子图内原有的三路节点继续由图并行执行。`assemble_evidence` 只构造并校验文档，`persist_evidence` 只原子写正式文件。其条件边决定继续下一批或进入 Evidence 汇聚。删除生产图中的 `adapter` 节点和恒为真的 `has_evidence` 分支；现有下游候选、校验、调度和 HITL 不改。
+节点边界以能否独立测试、缓存、重试或替换为准：`extract_mix` 只抽取音轨，`separate_audio` 只做 CI 分离，`transcribe_audio` 只做 ASR。父图的 `dispatch_slice_batch` 只选择最多四个跨度，`merge_slice_batch` 只按切片序号写 Observation 并推进索引。每个切片子图只处理一个跨度：`prepare_frames` 和 `prepare_slice_audio` 各自产生一种输入，OCR、VLM、音频观察各自只调用一种模型，最后合并为该片的普通结果。父图使用 LangGraph `Send` 派发子图，并以 `max_concurrency=4` 限制同批切片；子图内原有的三路节点继续由图并行执行。`assemble_evidence` 只构造并校验文档，`persist_evidence` 只原子写正式文件。其条件边决定继续下一批或进入 Evidence 汇聚；现有下游候选、校验、调度和 HITL 不改。
 
 ### 3.2 媒体规则
 
@@ -75,7 +83,7 @@ START → media_prepare / extract_mix（并行）→ separate_audio → transcri
 
 不引入 OpenCV、Pillow、NumPy、ffmpeg-python 或异步框架。
 
-集长只读取 `ffprobe -select_streams v:0` 返回的主视频轨 `duration`，转换为最近整数毫秒。缺少主视频轨或有效时长直接失败，不回退到容器时长、音轨时长或 V1 数据。
+集长只读取 `ffprobe -select_streams v:0` 返回的主视频轨 `duration`，转换为最近整数毫秒。缺少主视频轨或有效时长直接失败，不回退到容器时长、音轨时长或历史派生数据。
 
 切片公式：
 
@@ -243,8 +251,8 @@ ASR 直接返回整数毫秒时间戳；不排序、不重切、不补偿、不�
    → 验证：分离与 ASR 每集各调用一次；OCR/VLM/音频每片各调用一次；OCR 与 VLM 收到完全相同的帧内容和顺序。
 
 4. 工作流与 CLI  
-   替换旧媒体时长和 adapter 节点；单文件仅接受 `.mp4`，目录递归发现 `.mp4`，按相对路径进行数字感知自然排序。  
-   → 验证：`第2集` 先于 `第10集`；一集失败后下一集仍运行；生产图中无 V1 adapter 调用。
+   接入媒体节点；单文件仅接受 `.mp4`，目录递归发现 `.mp4`，按相对路径进行数字感知自然排序。
+   → 验证：`第2集` 先于 `第10集`；一集失败后下一集仍运行；生产图中无遗留输入节点。
 
 5. Renderer 与提示词  
    切换 raw-ms 格式和 `covered_empty`，更新 Specialist 对状态行的解释。  
@@ -269,7 +277,7 @@ ASR 直接返回整数毫秒时间戳；不排序、不重切、不补偿、不�
 - 任一必需阶段失败时不落 Evidence。
 - raw-ms 渲染、相邻空切片合并、T/D 不消除空状态。
 - CLI 递归发现、自然排序和失败后继续。
-- 伪 `.mp4` 的图级 smoke test；V1 fixture 只保留在 adapter 专属测试中。
+- 伪 `.mp4` 的图级 smoke test。
 
 真实验证不加入默认 `pytest`：
 
