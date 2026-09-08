@@ -27,7 +27,7 @@ from drama_interaction.config import (
     load_settings,
 )
 from drama_interaction.context import load_drama_context
-from drama_interaction.graph.state import state_to_jsonable
+from drama_interaction.graph.state import SPECIALIST_TYPES, state_to_jsonable
 
 
 class CLIError(RuntimeError):
@@ -150,7 +150,7 @@ def _settings_for_cli(settings: Settings | None) -> Settings:
 def _checkpoint_config(execution_id: str) -> dict[str, Any]:
     return {
         "configurable": {"thread_id": validate_execution_id(execution_id)},
-        "max_concurrency": EVIDENCE_SLICE_CONCURRENCY,
+        "max_concurrency": max(EVIDENCE_SLICE_CONCURRENCY, len(SPECIALIST_TYPES)),
         "recursion_limit": WORKFLOW_RECURSION_LIMIT,
     }
 

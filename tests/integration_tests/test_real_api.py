@@ -10,13 +10,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from openai import OpenAI
 
 from drama_interaction.cli import run_episode
 from drama_interaction.config import (
     EVIDENCE_SAMPLE_BUCKET_MS,
     EVIDENCE_SLICE_DURATION_MS,
-    MODEL_SDK_MAX_RETRIES,
     Settings,
     SettingsError,
     load_settings,
@@ -71,15 +69,6 @@ def _require_video() -> Path:
     return VIDEO_PATH
 
 
-def _client(settings: Settings, api_key: str, base_url: str) -> OpenAI:
-    """与生产一致：按能力读取凭据并关闭 SDK 内置重试。"""
-    return OpenAI(
-        api_key=api_key,
-        base_url=base_url.rstrip("/"),
-        max_retries=MODEL_SDK_MAX_RETRIES,
-    )
-
-
 def test_media_layer_on_local_video(tmp_path: Path) -> None:
     """验证本地真实短视频的媒体层切片、采帧与音频截取。"""
     video_path = _require_video()
@@ -129,20 +118,12 @@ def test_real_qwen_vl_ocr_and_vlm(tmp_path: Path) -> None:
     assert len(data_urls) == len(frames)
     assert all(item.startswith("data:image/jpeg;base64,") for item in data_urls)
 
-    onscreen_texts = run_qwen_ocr(
-        data_urls,
-        settings,
-        _client(settings, settings.ocr_api_key, settings.ocr_base_url),
-    )
+    onscreen_texts = run_qwen_ocr(data_urls, settings)
     assert isinstance(onscreen_texts, list)
     for text in onscreen_texts:
         assert isinstance(text, str)
 
-    visual_obs, uncertainty = run_qwen_vlm(
-        data_urls,
-        settings,
-        _client(settings, settings.vlm_api_key, settings.vlm_base_url),
-    )
+    visual_obs, uncertainty = run_qwen_vlm(data_urls, settings)
     assert isinstance(visual_obs, list)
     assert isinstance(uncertainty, list)
 
@@ -160,15 +141,7 @@ def test_real_qwen_omni_audio_observer(tmp_path: Path) -> None:
     audio_slice_path = tmp_path / "slice_0_3000.wav"
     slice_audio(wav_path, 0, EVIDENCE_SLICE_DURATION_MS, audio_slice_path)
 
-    obs, unc = run_qwen_audio_observer(
-        audio_slice_path,
-        settings,
-        _client(
-            settings,
-            settings.audio_observer_api_key,
-            settings.audio_observer_base_url,
-        ),
-    )
+    obs, unc = run_qwen_audio_observer(audio_slice_path, settings)
     assert isinstance(obs, list)
     assert isinstance(unc, list)
 

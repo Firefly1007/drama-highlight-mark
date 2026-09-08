@@ -80,15 +80,15 @@ EvidenceDocument
 
 **原因与影响**：正常空结果、观察不确定和提取失败三种情况可区分，不需要为覆盖状态新建数据结构。
 
-## ADR-006：托管 API、能力通用配置与 Pydantic JSON Schema
+## ADR-006：托管 API、能力通用配置与 Pydantic 结构化输出
 
 **决策**：音轨分离使用腾讯云 CI 官方 SDK；ASR 使用 DashScope 官方 SDK；OCR、VLM、背景音观察与 Specialist/调度 LLM 使用相应的 OpenAI-compatible SDK。项目不部署本地模型，也不手写供应商签名或请求头。
 
 - `.env` 只存凭据、端点和模型标识，变量以 `ASR_*`、`OCR_*`、`VLM_*`、`AUDIO_OBSERVER_*`、`AUDIO_SEPARATOR_*` 等能力命名。
 - 所有可调运行参数与所有模型提示词集中在 `src/drama_interaction/config.py`；不加 provider factory、注册表或为尚未存在的第二供应商做兼容层。
-- 任何要求模型输出 JSON 的提示词，注入对应 Pydantic 模型的紧凑 `model_json_schema()`；提示词明确要求输出 JSON，且不输出 JSON Schema 本身。
+- Agent 通过 `ToolStrategy` 提交 Pydantic 结构化结果；非 Agent 的 OCR、VLM、背景音与按需视频观察通过 LangChain function calling 提交各自的 Pydantic 输出工具。提示词只要求调用该工具，不嵌入 JSON Schema 或要求 JSON 文本。
 
-**原因与影响**：部署边界小、供应商名称不污染配置接口，模型输出格式有单一可执行来源。
+**原因与影响**：部署边界小、供应商名称不污染配置接口，Pydantic 模型是唯一可执行的输出来源，模型不会把 Schema 当作观察结果返回。
 
 ## ADR-007：切片并发、PostgreSQL checkpoint 与恢复产物
 

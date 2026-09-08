@@ -66,6 +66,7 @@ def repair_candidate(
     evidence_timeline: str = "",
     evidence_document: EvidenceDocument,
     derived_observations: Iterable[DerivedObservation] | None = None,
+    existing_candidates: Sequence[Candidate] = (),
 ) -> RepairOutcome:
     """按安全修复、定向重生、HITL 顺序处理一条候选。"""
     if not isinstance(candidate, Candidate):
@@ -81,6 +82,7 @@ def repair_candidate(
             candidate,
             evidence_document,
             derived_observations,
+            existing_candidates=existing_candidates,
         )
         if not current_errors:
             return RepairOutcome(status="valid", candidate=candidate)
@@ -93,6 +95,7 @@ def repair_candidate(
             repaired,
             evidence_document,
             derived_observations,
+            existing_candidates=existing_candidates,
         )
         if not safe_errors:
             attempts.append(
@@ -134,6 +137,7 @@ def repair_candidate(
                 replacement,
                 evidence_document,
                 derived_observations,
+                existing_candidates=existing_candidates,
             )
             if not regenerated_errors:
                 attempts.append(

@@ -1,4 +1,4 @@
-"""用于生成模型提示词 JSON Schema 的 Pydantic 输出模型。"""
+"""模型结构化输出工具使用的 Pydantic 模型。"""
 
 from __future__ import annotations
 
@@ -41,4 +41,15 @@ class AudioObserverResponse(BaseModel):
     )
 
 
-__all__ = ["AudioObserverResponse", "OCRResponse", "VLMResponse"]
+class VideoObserverResponse(BaseModel):
+    """原始视频按需观察结果。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    visual_observations: list[str] = Field(...)
+    onscreen_texts: list[str] = Field(...)
+    audio_observations: list[str] = Field(...)
+    uncertainty: list[str] = Field(...)
+
+
+__all__ = ["AudioObserverResponse", "OCRResponse", "VLMResponse", "VideoObserverResponse"]

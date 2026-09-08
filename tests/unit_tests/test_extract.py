@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from contextlib import contextmanager
 from http import HTTPStatus
 from pathlib import Path
@@ -22,6 +21,8 @@ from drama_interaction.config import (
     EVIDENCE_OCR_USER_PROMPT,
     EVIDENCE_VLM_SYSTEM_PROMPT,
     EVIDENCE_VLM_USER_PROMPT,
+    VIDEO_OBSERVER_SYSTEM_PROMPT,
+    VIDEO_OBSERVER_USER_PROMPT_TEMPLATE,
     Settings,
 )
 from drama_interaction.evidence.extract import (
@@ -29,6 +30,7 @@ from drama_interaction.evidence.extract import (
     run_qwen_asr,
     run_qwen_audio_observer,
     run_qwen_ocr,
+    run_qwen_video_observer,
     run_qwen_vlm,
     separate_episode_audio,
     transcribe_episode_dialogue,
@@ -36,6 +38,7 @@ from drama_interaction.evidence.extract import (
 from drama_interaction.prompt_models import (
     AudioObserverResponse,
     OCRResponse,
+    VideoObserverResponse,
     VLMResponse,
 )
 from drama_interaction.schemas.evidence import TranscriptSegment
@@ -45,21 +48,29 @@ TRANSCRIPTION_URL = "https://asr.example/result.json"
 
 
 @pytest.mark.parametrize(
-    ("prompt", "response_model"),
+    ("system_prompt", "user_prompt", "response_model"),
     [
-        (EVIDENCE_OCR_USER_PROMPT, OCRResponse),
-        (EVIDENCE_VLM_USER_PROMPT, VLMResponse),
-        (EVIDENCE_AUDIO_OBSERVER_USER_PROMPT, AudioObserverResponse),
+        (EVIDENCE_OCR_SYSTEM_PROMPT, EVIDENCE_OCR_USER_PROMPT, OCRResponse),
+        (EVIDENCE_VLM_SYSTEM_PROMPT, EVIDENCE_VLM_USER_PROMPT, VLMResponse),
+        (
+            EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT,
+            EVIDENCE_AUDIO_OBSERVER_USER_PROMPT,
+            AudioObserverResponse,
+        ),
+        (
+            VIDEO_OBSERVER_SYSTEM_PROMPT,
+            VIDEO_OBSERVER_USER_PROMPT_TEMPLATE.format(query="问题"),
+            VideoObserverResponse,
+        ),
     ],
 )
-def test_evidence_prompts_embed_pydantic_json_schema(prompt, response_model):
-    schema = json.dumps(
-        response_model.model_json_schema(), ensure_ascii=False, separators=(",", ":")
-    )
-    assert "JSON 数据对象" in prompt
-    assert "不要输出 JSON Schema 本身" in prompt
-    assert "JSON Schema" in prompt
-    assert schema in prompt
+def test_evidence_prompts_require_their_pydantic_output_tool(
+    system_prompt, user_prompt, response_model
+):
+    prompt = system_prompt + user_prompt
+    assert f"通过 {response_model.__name__} 工具提交结果" in prompt
+    assert "JSON" not in prompt
+    assert "Schema" not in prompt
 
 
 def _mock_settings(tmp_path: Path) -> Settings:
@@ -78,6 +89,9 @@ def _mock_settings(tmp_path: Path) -> Settings:
         audio_observer_model_id="qwen3-omni-flash",
         audio_observer_api_key="audio-key",
         audio_observer_base_url="https://audio.example/compatible-mode/v1",
+        omni_observer_model_id="qwen3.5-omni-flash",
+        omni_observer_api_key="omni-key",
+        omni_observer_base_url="https://omni.example/compatible-mode/v1",
         ocr_model_id="qwen-ocr-model",
         ocr_api_key="ocr-key",
         ocr_base_url="https://ocr.example/v1",
@@ -88,18 +102,6 @@ def _mock_settings(tmp_path: Path) -> Settings:
         interaction_v2_dir=tmp_path / "interaction_v2",
         runs_dir=tmp_path / "runs",
     )
-
-
-def _completion(content: str) -> MagicMock:
-    """构造与 OpenAI SDK 取值链一致的响应：choices[0].message.content 是 JSON 字符串。"""
-    return MagicMock(choices=[MagicMock(message=MagicMock(content=content))])
-
-
-def _stream_completion(*contents: str) -> list[MagicMock]:
-    return [
-        MagicMock(choices=[MagicMock(delta=MagicMock(content=content))])
-        for content in contents
-    ]
 
 
 @contextmanager
@@ -307,130 +309,159 @@ def test_run_qwen_asr_rejects_illegal_sentences(tmp_path, sentences, message):
             run_qwen_asr(DIALOGUE_URL, settings, episode_duration_ms=3000)
 
 
-def test_run_qwen_ocr_and_vlm_request_shapes(tmp_path):
-    """测试 OCR/VLM 各发出一次有序图片块与 json_object 响应格式的请求。"""
+def test_run_qwen_ocr_and_vlm_use_pydantic_output_tools(tmp_path):
+    """OCR/VLM 保留有序图片输入，并以各自 Pydantic 工具提交结果。"""
     settings = _mock_settings(tmp_path)
     data_urls = ["data:image/jpeg;base64,QUFB", "data:image/jpeg;base64,QkJC"]
 
-    ocr_client = MagicMock(name="ocr_client")
-    ocr_client.chat.completions.create.return_value = _completion(
-        '{"onscreen_texts": ["第一集", "  ", "招牌", 42]}'
+    ocr_chat = MagicMock(name="ocr_chat")
+    ocr_chat.with_structured_output.return_value.invoke.return_value = OCRResponse(
+        onscreen_texts=["第一集", "招牌"]
     )
-    assert run_qwen_ocr(data_urls, settings, ocr_client) == ["第一集", "招牌", "42"]
+    vlm_chat = MagicMock(name="vlm_chat")
+    vlm_chat.with_structured_output.return_value.invoke.return_value = VLMResponse(
+        visual_observations=["男子进入房间"], uncertainty=["神情紧张"]
+    )
+    with patch(
+        "drama_interaction.evidence.extract.ChatOpenAI",
+        side_effect=[ocr_chat, vlm_chat],
+    ) as chat_openai:
+        assert run_qwen_ocr(data_urls, settings) == ["第一集", "招牌"]
+        assert run_qwen_vlm(data_urls, settings) == (
+            ["男子进入房间"],
+            ["神情紧张"],
+        )
 
-    vlm_client = MagicMock(name="vlm_client")
-    vlm_client.chat.completions.create.return_value = _completion(
-        '{"visual_observations": ["男子进入房间"], "uncertainty": ["神情紧张"]}'
-    )
-    assert run_qwen_vlm(data_urls, settings, vlm_client) == (
-        ["男子进入房间"],
-        ["神情紧张"],
-    )
-
-    for client, model in (
-        (ocr_client, "qwen-ocr-model"),
-        (vlm_client, "qwen-vlm-model"),
+    for chat, response_model in (
+        (ocr_chat, OCRResponse),
+        (vlm_chat, VLMResponse),
     ):
-        assert client.chat.completions.create.call_count == 1
-        kwargs = client.chat.completions.create.call_args.kwargs
-        assert kwargs["model"] == model
-        assert kwargs["response_format"] == {"type": "json_object"}
-        assert "modalities" not in kwargs
-        blocks = kwargs["messages"][1]["content"]
+        chat.with_structured_output.assert_called_once_with(
+            response_model, method="function_calling"
+        )
+        blocks = chat.with_structured_output.return_value.invoke.call_args.args[0][1][
+            "content"
+        ]
         assert blocks[:-1] == [
             {"type": "image_url", "image_url": {"url": data_url}}
             for data_url in data_urls
         ]  # 帧内容与顺序逐字透传
     assert (
-        ocr_client.chat.completions.create.call_args.kwargs["messages"][0]["content"]
+        ocr_chat.with_structured_output.return_value.invoke.call_args.args[0][0]["content"]
         == EVIDENCE_OCR_SYSTEM_PROMPT
     )
     assert (
-        ocr_client.chat.completions.create.call_args.kwargs["messages"][1]["content"][
+        ocr_chat.with_structured_output.return_value.invoke.call_args.args[0][1]["content"][
             -1
         ]["text"]
         == EVIDENCE_OCR_USER_PROMPT
     )
     assert (
-        vlm_client.chat.completions.create.call_args.kwargs["messages"][0]["content"]
+        vlm_chat.with_structured_output.return_value.invoke.call_args.args[0][0]["content"]
         == EVIDENCE_VLM_SYSTEM_PROMPT
     )
     assert (
-        vlm_client.chat.completions.create.call_args.kwargs["messages"][1]["content"][
+        vlm_chat.with_structured_output.return_value.invoke.call_args.args[0][1]["content"][
             -1
         ]["text"]
         == EVIDENCE_VLM_USER_PROMPT
     )
+    assert chat_openai.call_args_list[0].kwargs["model"] == "qwen-ocr-model"
+    assert chat_openai.call_args_list[0].kwargs["api_key"] == "ocr-key"
+    assert chat_openai.call_args_list[1].kwargs["model"] == "qwen-vlm-model"
+    assert chat_openai.call_args_list[1].kwargs["api_key"] == "vlm-key"
 
 
-def test_run_qwen_audio_observer_request_shape(tmp_path):
-    """测试音频观察只提交背景切片的 Base64 input_audio，并声明 modalities=[text]。"""
+def test_run_qwen_audio_observer_uses_pydantic_output_tool(tmp_path):
+    """背景音观察只提交音频，并以 Pydantic 工具返回文本模态结果。"""
     settings = _mock_settings(tmp_path)
     wav_file = tmp_path / "slice.wav"
     wav_file.write_bytes(b"riff-wav-data")
 
-    client = MagicMock(name="audio_client")
-    client.chat.completions.create.return_value = _stream_completion(
-        '{"audio_observations": ["脚步声', '急促"], "uncertainty": []}'
+    chat = MagicMock(name="audio_chat")
+    chat.with_structured_output.return_value.invoke.return_value = AudioObserverResponse(
+        audio_observations=["脚步声急促"], uncertainty=[]
     )
-    assert run_qwen_audio_observer(wav_file, settings, client) == (["脚步声急促"], [])
+    with patch("drama_interaction.evidence.extract.ChatOpenAI", return_value=chat) as chat_openai:
+        assert run_qwen_audio_observer(wav_file, settings) == (["脚步声急促"], [])
 
-    kwargs = client.chat.completions.create.call_args.kwargs
-    assert kwargs["model"] == "qwen3-omni-flash"
-    assert kwargs["response_format"] == {"type": "json_object"}
-    assert kwargs["modalities"] == ["text"]
-    assert kwargs["stream"] is True
-    block = kwargs["messages"][1]["content"][0]
+    assert chat_openai.call_args.kwargs["model"] == "qwen3-omni-flash"
+    assert chat_openai.call_args.kwargs["api_key"] == "audio-key"
+    assert chat_openai.call_args.kwargs["streaming"] is True
+    chat.with_structured_output.assert_called_once_with(
+        AudioObserverResponse, method="function_calling"
+    )
+    invoke = chat.with_structured_output.return_value.invoke
+    assert invoke.call_args.kwargs == {"modalities": ["text"]}
+    messages = invoke.call_args.args[0]
+    block = messages[1]["content"][0]
     assert block["type"] == "input_audio"
     assert block["input_audio"] == {
         "data": "data:audio/wav;base64,cmlmZi13YXYtZGF0YQ==",
         "format": "wav",
     }
-    assert kwargs["messages"][0]["content"] == EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT
+    assert messages[0]["content"] == EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT
     assert (
-        kwargs["messages"][1]["content"][1]["text"]
+        messages[1]["content"][1]["text"]
         == EVIDENCE_AUDIO_OBSERVER_USER_PROMPT
     )
 
 
-@pytest.mark.parametrize(
-    ("content", "runner", "message"),
-    [
-        ('{"visual_observations": ["动作"]}', run_qwen_vlm, "uncertainty"),
-        ('{"onscreen_texts": null}', run_qwen_ocr, "onscreen_texts"),
-        ('```json\n{"onscreen_texts": ["字幕"]}\n```', run_qwen_ocr, None),
-        ("[]", run_qwen_ocr, "响应结构非法"),
-        ("不是 JSON", run_qwen_ocr, "非合法 JSON"),
-    ],
-)
-def test_qwen_json_response_schema_failures(tmp_path, content, runner, message):
-    """测试必需字段缺失或结构非法时抛 ExtractionError，绝不降级为空列表。"""
+def test_run_qwen_video_observer_uses_pydantic_output_tool(tmp_path):
     settings = _mock_settings(tmp_path)
-    client = MagicMock(name="client")
-    client.chat.completions.create.return_value = _completion(content)
+    video_path = tmp_path / "inspection.mp4"
+    video_path.write_bytes(b"video-data")
+    chat = MagicMock(name="video_chat")
+    chat.with_structured_output.return_value.invoke.return_value = VideoObserverResponse(
+        visual_observations=["男子举手"],
+        onscreen_texts=["警告"],
+        audio_observations=["关门声"],
+        uncertainty=[],
+    )
 
-    if message is None:
-        assert runner(["data:image/jpeg;base64,QUFB"], settings, client) == ["字幕"]
-    else:
-        with pytest.raises(ExtractionError, match=message):
-            runner(["data:image/jpeg;base64,QUFB"], settings, client)
+    with patch("drama_interaction.evidence.extract.ChatOpenAI", return_value=chat) as chat_openai:
+        assert run_qwen_video_observer(video_path, "谁举手？", settings) == {
+            "visual_observations": ["男子举手"],
+            "onscreen_texts": ["警告"],
+            "audio_observations": ["关门声"],
+            "uncertainty": [],
+        }
+
+    assert chat_openai.call_args.kwargs["model"] == "qwen3.5-omni-flash"
+    assert chat_openai.call_args.kwargs["api_key"] == "omni-key"
+    assert chat_openai.call_args.kwargs["streaming"] is True
+    chat.with_structured_output.assert_called_once_with(
+        VideoObserverResponse, method="function_calling"
+    )
+    invoke = chat.with_structured_output.return_value.invoke
+    assert invoke.call_args.kwargs == {"modalities": ["text"]}
+    messages = invoke.call_args.args[0]
+    assert messages[1]["content"][0] == {
+        "type": "video_url",
+        "video_url": {"url": "data:video/mp4;base64,dmlkZW8tZGF0YQ=="},
+    }
+    assert messages[1]["content"][1]["text"] == "请观察这段视频并回答事实问题。一个 query 可以包含多个相关事实问题。query：谁举手？"
 
 
 def test_run_qwen_ocr_retries_429_until_exhausted(tmp_path):
-    """测试 OCR 走统一重试：429 共四次调用后转换为 ExtractionError。"""
+    """OCR 的工具调用仍走统一重试，绝不降级为空列表。"""
     settings = _mock_settings(tmp_path)
     request = httpx.Request("POST", "https://ocr.example/v1/chat/completions")
     response = httpx.Response(429, request=request)
-    client = MagicMock(name="client")
-    client.chat.completions.create.side_effect = APIStatusError(
+    chat = MagicMock(name="ocr_chat")
+    invoke = chat.with_structured_output.return_value.invoke
+    invoke.side_effect = APIStatusError(
         "slow down", response=response, body=None
     )
 
-    with patch("drama_interaction.retry.time.sleep") as mock_sleep:
+    with (
+        patch("drama_interaction.evidence.extract.ChatOpenAI", return_value=chat),
+        patch("drama_interaction.retry.time.sleep") as mock_sleep,
+    ):
         with pytest.raises(ExtractionError, match="重试耗尽"):
-            run_qwen_ocr(["data:image/jpeg;base64,QUFB"], settings, client)
+            run_qwen_ocr(["data:image/jpeg;base64,QUFB"], settings)
 
-    assert client.chat.completions.create.call_count == 4
+    assert invoke.call_count == 4
     assert mock_sleep.call_args_list == [((1.0,), {})] * 3
 
 

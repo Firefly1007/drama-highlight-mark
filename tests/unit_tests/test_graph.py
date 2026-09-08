@@ -5,14 +5,14 @@ import json
 import threading
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock
 
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
-from pytest import MonkeyPatch
+from pytest import MonkeyPatch, raises
 
 from drama_interaction.config import EVIDENCE_SLICE_CONCURRENCY, Settings
 from drama_interaction.context import DramaContext
+from drama_interaction.evidence.service import EvidenceAuditRecord
 from drama_interaction.graph import nodes as graph_nodes
 from drama_interaction.graph.builder import (
     _checkpoint_serde,
@@ -21,9 +21,20 @@ from drama_interaction.graph.builder import (
 )
 from drama_interaction.graph.nodes import render_node
 from drama_interaction.llm import LLMNetworkExhaustedError
+from drama_interaction.scheduling.constraints import ConstraintIssue, ConstraintsReport
 from drama_interaction.scheduling.semantic import SemanticSelection
 from drama_interaction.schemas.candidate import Candidate, SpecialistResult
-from drama_interaction.schemas.evidence import EvidenceDocument, TranscriptSegment
+from drama_interaction.schemas.evidence import (
+    DerivedObservation,
+    EvidenceDocument,
+    EvidenceProvenance,
+    TranscriptSegment,
+)
+from drama_interaction.schemas.interaction import (
+    FinalInteraction,
+    InstantVotePayload,
+    InteractionType,
+)
 
 
 def _settings(tmp_path: Path) -> Settings:
@@ -118,6 +129,16 @@ def _side_comment_candidate() -> dict[str, Any]:
         "trigger_anchor": {"transcript_segment_id": "T1"},
         "payload": {"text": "这也太敢说了吧！", "mood": "shock"},
     }
+
+
+def _final_instant(identifier: int, show_at: int = 0) -> FinalInteraction:
+    return FinalInteraction(
+        id=identifier,
+        type=InteractionType.INSTANT_VOTE,
+        show_at=show_at,
+        duration_ms=100,
+        payload=InstantVotePayload(question="选谁？", options=["甲", "乙"]),
+    )
 
 
 class FakeGateway:
@@ -259,21 +280,19 @@ def _patch_extraction(
         calls.append(("prepare_slice_audio", start_ms))
         return output_path
 
-    def fake_ocr(
-        data_urls: list[str], _settings: Settings, _client: object
-    ) -> list[str]:
+    def fake_ocr(data_urls: list[str], _settings: Settings) -> list[str]:
         start_ms = marker_from_data_url(data_urls[0])
         record_observer("ocr", start_ms)
         return [] if start_ms in empty else [f"文字 {start_ms}"]
 
     def fake_vlm(
-        data_urls: list[str], _settings: Settings, _client: object
+        data_urls: list[str], _settings: Settings
     ) -> tuple[list[str], list[str]]:
         start_ms = marker_from_data_url(data_urls[0])
         record_observer("vlm", start_ms)
         return ([], []) if start_ms in empty else ([f"画面 {start_ms}"], [])
 
-    def fake_audio(audio_path: Path, _settings: Settings, _client: object):
+    def fake_audio(audio_path: Path, _settings: Settings):
         start_ms = int(audio_path.read_text().split(":")[1])
         record_observer("audio", start_ms)
         return ([], []) if start_ms in empty else ([f"声音 {start_ms}"], [])
@@ -290,7 +309,6 @@ def _patch_extraction(
     monkeypatch.setattr(graph_nodes, "cut_audio_hard", fake_cut)
     monkeypatch.setattr(graph_nodes, "extract_frames", fake_frames)
     monkeypatch.setattr(graph_nodes, "slice_audio", fake_slice_audio)
-    monkeypatch.setattr(graph_nodes, "OpenAI", lambda **_kwargs: MagicMock())
     monkeypatch.setattr(graph_nodes, "run_qwen_ocr", fake_ocr)
     monkeypatch.setattr(graph_nodes, "run_qwen_vlm", fake_vlm)
     monkeypatch.setattr(graph_nodes, "run_qwen_audio_observer", fake_audio)
@@ -519,6 +537,286 @@ def test_render_node_numbers_candidates_after_sorting() -> None:
     assert result["rendered_candidates"]["late"].id == 2
 
 
+def test_constraints_node_queues_targeted_hitl(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    issue = ConstraintIssue(
+        code="spacing_invalid",
+        message="间隔不足",
+        candidate_ids=("candidate-a", "candidate-b"),
+        route="hitl",
+    )
+    monkeypatch.setattr(
+        graph_nodes,
+        "analyze_constraints",
+        lambda *_args, **_kwargs: ConstraintsReport(
+            eligible=[_final_instant(1), _final_instant(2, 200)], invalid=[issue]
+        ),
+    )
+    result = graph_nodes.constraints_node(
+        {
+            "episode_duration_ms": 10_000,
+            "rendered_candidates": {
+                "candidate-a": _final_instant(1),
+                "candidate-b": _final_instant(2, 200),
+            },
+        },
+        settings=None,
+    )
+
+    assert result["hitl_queue"][0]["candidate_ids"] == [
+        "candidate-a",
+        "candidate-b",
+    ]
+
+
+def test_semantic_node_defers_constraint_hitl_until_selection(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    issue = ConstraintIssue(
+        code="spacing_invalid",
+        message="间隔不足",
+        candidate_ids=("candidate-a", "candidate-b"),
+        route="hitl",
+    )
+    monkeypatch.setattr(
+        "drama_interaction.scheduling.semantic.select_candidate_ids",
+        lambda *_args, **_kwargs: SemanticSelection(
+            status="selected",
+            selected_candidate_ids=["candidate-a"],
+            reason="保留候选 a",
+        ),
+    )
+    monkeypatch.setattr(
+        graph_nodes,
+        "analyze_constraints",
+        lambda rendered, **_kwargs: (
+            assert_candidate_ids(rendered, {"candidate-a"})
+            or ConstraintsReport(invalid=[issue])
+        ),
+    )
+
+    result = graph_nodes.semantic_node(
+        {
+            "episode_duration_ms": 10_000,
+            "constraints_report": {"conflict_groups": [["candidate-a", "candidate-b"]]},
+            "drama_context": DramaContext(name="测试剧"),
+            "rendered_candidates": {
+                "candidate-a": _final_instant(1),
+                "candidate-b": _final_instant(2),
+            },
+            "candidate_pool": [],
+        },
+        gateway=object(),
+        settings=None,
+    )
+
+    assert result["hitl_queue"][0]["candidate_ids"] == ["candidate-a"]
+
+
+def test_semantic_node_rechecks_constraints_in_timeline_order(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "drama_interaction.scheduling.semantic.select_candidate_ids",
+        lambda *_args, **_kwargs: SemanticSelection(
+            status="selected", selected_candidate_ids=["early"]
+        ),
+    )
+    monkeypatch.setattr(
+        graph_nodes,
+        "analyze_constraints",
+        lambda rendered, **_kwargs: (
+            assert_candidate_order(rendered, ["early", "late"])
+            or ConstraintsReport()
+        ),
+    )
+
+    graph_nodes.semantic_node(
+        {
+            "episode_duration_ms": 10_000,
+            "selected_candidate_ids": ["late"],
+            "constraints_report": {"conflict_groups": [["early", "other"]]},
+            "drama_context": DramaContext(name="测试剧"),
+            "rendered_candidates": {
+                "early": _final_instant(1, 100),
+                "late": _final_instant(2, 1_000),
+                "other": _final_instant(3, 300),
+            },
+            "candidate_pool": [],
+        },
+        gateway=object(),
+        settings=None,
+    )
+
+
+def assert_candidate_ids(rendered: dict[str, FinalInteraction], expected: set[str]) -> None:
+    """测试语义裁决后的约束分析只接收最终候选。"""
+    assert set(rendered) == expected
+
+
+def assert_candidate_order(
+    rendered: dict[str, FinalInteraction], expected: list[str]
+) -> None:
+    """测试语义裁决后的约束分析遵循展示时间。"""
+    assert list(rendered) == expected
+
+
+def test_semantic_node_does_not_create_constraint_event_when_selection_needs_human(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "drama_interaction.scheduling.semantic.select_candidate_ids",
+        lambda *_args, **_kwargs: SemanticSelection(
+            status="waiting_for_human", reason="需要人工裁决"
+        ),
+    )
+
+    result = graph_nodes.semantic_node(
+        {
+            "episode_duration_ms": 10_000,
+            "constraints_report": {"conflict_groups": [["candidate-a", "candidate-b"]]},
+            "drama_context": DramaContext(name="测试剧"),
+            "rendered_candidates": {
+                "candidate-a": _final_instant(1),
+                "candidate-b": _final_instant(2),
+            },
+            "candidate_pool": [],
+        },
+        gateway=object(),
+        settings=None,
+    )
+
+    assert [event["event_type"] for event in result["hitl_queue"]] == [
+        "semantic_selection"
+    ]
+
+
+def test_constraint_review_edit_and_drop_keep_unaffected_candidates(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        graph_nodes,
+        "interrupt",
+        lambda _payload: {
+            "decisions": [
+                {
+                    "item": {"event_id": "constraint:one"},
+                    "action": "edit",
+                    "replacement": {"selected_candidate_ids": ["candidate-a"]},
+                },
+                {"item": {"event_id": "constraint:two"}, "action": "drop"},
+            ]
+        },
+    )
+    result = graph_nodes.human_gate_node(
+        {
+            "evidence": EvidenceDocument(episode_duration_ms=10_000),
+            "selected_candidate_ids": ["candidate-a", "candidate-b", "candidate-c"],
+            "hitl_queue": [
+                graph_nodes._event(
+                    "constraint:one", "constraint_review", "x",
+                    candidate_ids=["candidate-a", "candidate-b"],
+                ),
+                graph_nodes._event(
+                    "constraint:two", "constraint_review", "y",
+                    candidate_ids=["candidate-c"],
+                ),
+            ],
+        }
+    )
+
+    assert result["selected_candidate_ids"] == ["candidate-a"]
+
+
+def test_constraint_review_edit_cannot_restore_an_earlier_removal(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        graph_nodes,
+        "interrupt",
+        lambda _payload: {
+            "decisions": [
+                {
+                    "item": {"event_id": "constraint:one"},
+                    "action": "edit",
+                    "replacement": {"selected_candidate_ids": ["candidate-a"]},
+                },
+                {
+                    "item": {"event_id": "constraint:two"},
+                    "action": "edit",
+                    "replacement": {"selected_candidate_ids": ["candidate-b"]},
+                },
+            ]
+        },
+    )
+
+    with raises(ValueError, match="约束调度 edit"):
+        graph_nodes.human_gate_node(
+            {
+                "evidence": EvidenceDocument(episode_duration_ms=10_000),
+                "selected_candidate_ids": ["candidate-a", "candidate-b"],
+                "hitl_queue": [
+                    graph_nodes._event(
+                        "constraint:one",
+                        "constraint_review",
+                        "x",
+                        candidate_ids=["candidate-a", "candidate-b"],
+                    ),
+                    graph_nodes._event(
+                        "constraint:two",
+                        "constraint_review",
+                        "y",
+                        candidate_ids=["candidate-b"],
+                    ),
+                ],
+            }
+        )
+
+
+def test_final_check_maps_only_failing_candidates(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        graph_nodes,
+        "validate_final_interactions",
+        lambda *_args, **_kwargs: [
+            ConstraintIssue(
+                code="spacing_invalid",
+                message="间隔不足",
+                candidate_ids=("2",),
+                route="hitl",
+            )
+        ],
+    )
+    result = graph_nodes.final_check_node(
+        {
+            "episode_duration_ms": 10_000,
+            "selected_candidate_ids": ["candidate-a", "candidate-b", "candidate-c"],
+            "rendered_candidates": {
+                "candidate-a": _final_instant(5),
+                "candidate-b": _final_instant(7, 200),
+                "candidate-c": _final_instant(9, 400),
+            },
+        },
+        settings=None,
+    )
+
+    assert result["hitl_queue"][0]["candidate_ids"] == ["candidate-b"]
+
+
+def test_route_after_human_repool_precedes_render() -> None:
+    assert graph_nodes.route_after_human(
+        {"repool_after_human": True, "rendered_candidates": {"candidate-a": object()}}
+    ) == "pool"
+
+
+def test_route_after_human_keeps_existing_render_for_final_check() -> None:
+    assert graph_nodes.route_after_human(
+        {"repool_after_human": False, "rendered_candidates": {"candidate-a": object()}}
+    ) == "final_check"
+
+
 def test_graph_network_exhaustion_interrupts_then_drop_completes(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
@@ -552,6 +850,64 @@ def test_graph_network_exhaustion_interrupts_then_drop_completes(
 
     assert resumed["status"] == "completed"
     assert resumed["final_interactions"] == []
+
+
+def test_specialist_failure_preserves_completed_inspection_state(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    """取证后的分支失败仍须把 D 与审计交给 checkpoint 状态。"""
+
+    class _ToolThenNetworkFailure:
+        def __init__(self, evidence_service: Any) -> None:
+            self.evidence_service = evidence_service
+
+        def run(self, _timeline: str) -> Any:
+            self.evidence_service.derived_observations.append(
+                DerivedObservation(
+                    id="D1",
+                    start_ms=100,
+                    end_ms=200,
+                    provenance=EvidenceProvenance(
+                        specialist="instant_vote",
+                        query_span={"start_ms": 100, "end_ms": 200},
+                        query="补充画面事实",
+                    ),
+                )
+            )
+            self.evidence_service.audit_records.append(
+                EvidenceAuditRecord(
+                    specialist="instant_vote",
+                    query_span={"start_ms": 100, "end_ms": 200},
+                    query="补充画面事实",
+                    result_count=1,
+                    available=True,
+                )
+            )
+            raise LLMNetworkExhaustedError(
+                call_label="specialist:instant_vote",
+                model="test-model",
+                attempts=2,
+                original_error=ConnectionError("test network down"),
+            )
+
+    monkeypatch.setattr(
+        graph_nodes,
+        "_specialist",
+        lambda _type, _gateway, **kwargs: _ToolThenNetworkFailure(
+            kwargs["evidence_service"]
+        ),
+    )
+    result = graph_nodes.specialist_node(
+        {
+            "evidence": EvidenceDocument(episode_duration_ms=1_000),
+            "drama_context": DramaContext(name="测试剧"),
+        },
+        specialist_type="instant_vote",
+        gateway=object(),
+    )
+
+    assert result["derived_evidence"]["instant_vote"][0].id == "D1"
+    assert result["evidence_audits"]["instant_vote"][0].result_count == 1
 
 
 def test_graph_structure_has_isolated_extraction_nodes_and_no_adapter(

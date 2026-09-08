@@ -21,6 +21,7 @@ from drama_interaction.cli import (
     run_input,
 )
 from drama_interaction.config import EVIDENCE_SLICE_CONCURRENCY, Settings
+from drama_interaction.graph.state import SPECIALIST_TYPES
 
 
 def _settings(tmp_path: Path) -> Settings:
@@ -53,9 +54,9 @@ def _settings(tmp_path: Path) -> Settings:
     )
 
 
-def test_checkpoint_config_uses_fixed_slice_concurrency() -> None:
+def test_checkpoint_config_allows_all_specialists() -> None:
     assert _checkpoint_config("run-concurrency")["max_concurrency"] == (
-        EVIDENCE_SLICE_CONCURRENCY
+        max(EVIDENCE_SLICE_CONCURRENCY, len(SPECIALIST_TYPES))
     )
 
 

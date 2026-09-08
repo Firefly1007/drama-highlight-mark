@@ -27,6 +27,9 @@ def _required() -> dict[str, str]:
         "AUDIO_OBSERVER_MODEL_ID": "qwen3-omni-flash",
         "AUDIO_OBSERVER_API_KEY": "audio-key",
         "AUDIO_OBSERVER_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "OMNI_OBSERVER_MODEL_ID": "qwen3.5-omni-flash",
+        "OMNI_OBSERVER_API_KEY": "omni-key",
+        "OMNI_OBSERVER_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "OCR_MODEL_ID": "qwen-3.8-flash",
         "OCR_API_KEY": "ocr-key",
         "OCR_BASE_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1",
@@ -68,6 +71,9 @@ def test_explicit_overrides_win_over_environment_and_dotenv(tmp_path, monkeypatc
         "AUDIO_OBSERVER_MODEL_ID=qwen3-omni-flash\n"
         "AUDIO_OBSERVER_API_KEY=dotenv-audio-key\n"
         "AUDIO_OBSERVER_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
+        "OMNI_OBSERVER_MODEL_ID=qwen3.5-omni-flash\n"
+        "OMNI_OBSERVER_API_KEY=dotenv-omni-key\n"
+        "OMNI_OBSERVER_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
         "OCR_MODEL_ID=qwen-3.8-flash\n"
         "OCR_API_KEY=dotenv-ocr-key\n"
         "OCR_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1\n"
@@ -110,6 +116,9 @@ def test_missing_required_values_are_reported_together():
         "AUDIO_OBSERVER_MODEL_ID",
         "AUDIO_OBSERVER_API_KEY",
         "AUDIO_OBSERVER_BASE_URL",
+        "OMNI_OBSERVER_MODEL_ID",
+        "OMNI_OBSERVER_API_KEY",
+        "OMNI_OBSERVER_BASE_URL",
         "OCR_MODEL_ID",
         "OCR_API_KEY",
         "OCR_BASE_URL",

@@ -13,6 +13,7 @@ from langchain.tools import tool
 from pydantic import BaseModel, ValidationError
 
 from drama_interaction.config import (
+    INSPECTION_MAX_SPAN_MS,
     SPECIALIST_FOCUS_PROMPTS,
     SPECIALIST_REGENERATION_PROMPT_TEMPLATE,
     SPECIALIST_SYSTEM_PROMPT,
@@ -22,7 +23,6 @@ from drama_interaction.context import DramaContext
 from drama_interaction.evidence.service import EvidenceService
 from drama_interaction.llm import LLMGateway, LLMGatewayError, LLMNetworkExhaustedError
 from drama_interaction.schemas.candidate import (
-    INTERACTION_PAYLOAD_TYPES,
     Abstention,
     Candidate,
     SpecialistResult,
@@ -130,24 +130,37 @@ class BaseSpecialist:
                 specialist=specialist_type,
                 existing_derived=existing_derived,
             )
-            return result.model_dump_json()
+            return json.dumps({
+                "available": result.available,
+                "observations": [
+                    {
+                        "id": item.id,
+                        "span": {"start_ms": item.start_ms, "end_ms": item.end_ms},
+                        "visual_observations": item.visual_observations,
+                        "onscreen_texts": item.onscreen_texts,
+                        "audio_observations": item.audio_observations,
+                        "uncertainty": item.uncertainty,
+                    }
+                    for item in result.observations
+                ],
+                **({"failure_reason": result.failure_reason} if not result.available else {}),
+            }, ensure_ascii=False)
 
         return inspect_span
 
     def _system_prompt(self) -> str:
         """构造固定类型与证据边界提示。"""
-        payload_schema = json.dumps(
-            INTERACTION_PAYLOAD_TYPES[self.specialist_type].model_json_schema(),
-            ensure_ascii=False,
-            separators=(",", ":"),
+        max_span = getattr(
+            getattr(self.gateway, "settings", None),
+            "inspection_max_span_ms",
+            INSPECTION_MAX_SPAN_MS,
         )
         return (
             f"{SPECIALIST_SYSTEM_PROMPT}\n\n"
+            f"inspect_span 请求范围不得超过 {max_span}ms；建议请求不超过 {max_span // 2}ms。\n"
             f"当前 Specialist 类型固定为：{self.specialist_type}\n"
             "类型专属规则：\n"
-            f"{SPECIALIST_FOCUS_PROMPTS[self.specialist_type]}".replace(
-                "{{PAYLOAD_JSON_SCHEMA}}", payload_schema
-            )
+            f"{SPECIALIST_FOCUS_PROMPTS[self.specialist_type]}"
         )
 
     def _generation_prompt(self, evidence_timeline: str) -> str:
@@ -232,6 +245,8 @@ class BaseSpecialist:
             raise ValueError("生成侧 Candidate 的 candidate_id 必须为空")
 
         visible_ids = set(_VISIBLE_EVIDENCE_ID.findall(evidence_timeline))
+        visible_ids.update(item.id for item in self.existing_derived)
+        visible_ids.update(item.id for item in self.evidence_service.derived_observations)
         references = set(candidate.evidence_ids)
         for anchor in (candidate.trigger_anchor, candidate.reveal_anchor):
             if anchor is not None:

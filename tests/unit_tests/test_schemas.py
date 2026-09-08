@@ -211,12 +211,8 @@ def test_derived_observations_are_specialist_private_and_acyclic():
         query_span={"start_ms": 100, "end_ms": 200},
         query="这里出现了什么？",
     )
-    first = DerivedObservation(
-        id="D1", start_ms=100, end_ms=200, provenance=provenance, refines="O1"
-    )
-    second = DerivedObservation(
-        id="D2", start_ms=200, end_ms=300, provenance=provenance, refines="D1"
-    )
+    first = DerivedObservation(id="D1", start_ms=100, end_ms=200, provenance=provenance)
+    second = DerivedObservation(id="D2", start_ms=200, end_ms=300, provenance=provenance)
     validate_derived_observations(document, "instant_vote", [first, second])
 
     with pytest.raises(ValueError):
@@ -226,12 +222,9 @@ def test_derived_observations_are_specialist_private_and_acyclic():
             document,
             "instant_vote",
             [
+                first,
                 DerivedObservation(
-                    id="D2",
-                    start_ms=200,
-                    end_ms=300,
-                    provenance=provenance,
-                    refines="D3",
-                )
+                    id="D1", start_ms=200, end_ms=300, provenance=provenance
+                ),
             ],
         )

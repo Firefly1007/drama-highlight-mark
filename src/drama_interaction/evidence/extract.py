@@ -3,16 +3,16 @@
 from __future__ import annotations
 
 import base64
-import json
 from collections.abc import Sequence
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 
 import dashscope
 import httpx
 from dashscope.audio.asr import Transcription
-from openai import OpenAI
+from langchain_openai import ChatOpenAI
+from pydantic import BaseModel
 
 from drama_interaction.config import (
     ASR_TRANSCRIPTION_DOWNLOAD_TIMEOUT_SECONDS,
@@ -24,15 +24,27 @@ from drama_interaction.config import (
     EVIDENCE_OCR_USER_PROMPT,
     EVIDENCE_VLM_SYSTEM_PROMPT,
     EVIDENCE_VLM_USER_PROMPT,
+    MODEL_SDK_MAX_RETRIES,
+    VIDEO_OBSERVER_SYSTEM_PROMPT,
+    VIDEO_OBSERVER_USER_PROMPT_TEMPLATE,
     Settings,
 )
 from drama_interaction.evidence.audio_separator import AudioSeparatorClient
+from drama_interaction.prompt_models import (
+    AudioObserverResponse,
+    OCRResponse,
+    VideoObserverResponse,
+    VLMResponse,
+)
 from drama_interaction.retry import retry_call
 from drama_interaction.schemas.evidence import TranscriptSegment
 
 
 class ExtractionError(RuntimeError):
     """多模态提取或证据校验失败。"""
+
+
+StructuredOutput = TypeVar("StructuredOutput", bound=BaseModel)
 
 
 def run_qwen_asr(
@@ -170,49 +182,31 @@ def run_qwen_asr(
     return segments
 
 
-def _qwen_json_lists(
-    client: OpenAI,
-    model: str,
+def _qwen_tool_output(
+    model_id: str,
+    api_key: str,
+    base_url: str,
     messages: list[dict[str, Any]],
-    fields: tuple[str, ...],
-    **create_kwargs: Any,
-) -> dict[str, list[str]]:
-    """一次 JSON Object 调用，按字段取回非空字符串列表。
-
-    Raises:
-        ExtractionError: 调用重试耗尽，或响应不是带齐 ``fields`` 的 JSON 对象。
-    """
-
-    def _call() -> str:
-        completion = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            response_format={"type": "json_object"},
-            **create_kwargs,
-        )
-        if create_kwargs.get("stream"):
-            return "".join(chunk.choices[0].delta.content or "" for chunk in completion)
-        return completion.choices[0].message.content
-
-    content = retry_call(_call, ExtractionError, f"{model} 调用")
-    json_content = content.strip() if isinstance(content, str) else content
-    if isinstance(json_content, str):
-        json_content = json_content.removeprefix("```json").removeprefix("```")
-        json_content = json_content.removesuffix("```").strip()
-    try:
-        data = json.loads(json_content)
-    except (TypeError, json.JSONDecodeError) as exc:
-        raise ExtractionError(f"{model} 响应非合法 JSON: {content}") from exc
-    if not isinstance(data, dict):
-        raise ExtractionError(f"{model} 响应结构非法: {content}")
-
-    values: dict[str, list[str]] = {}
-    for field in fields:
-        items = data.get(field)
-        if not isinstance(items, list):
-            raise ExtractionError(f"{model} 响应缺少 {field} 字符串列表: {content}")
-        values[field] = [str(item).strip() for item in items if str(item).strip()]
-    return values
+    response_model: type[StructuredOutput],
+    *,
+    streaming: bool = False,
+    modalities: list[str] | None = None,
+) -> StructuredOutput:
+    """通过 Pydantic 输出工具调用一个 OpenAI-compatible 模型。"""
+    model = ChatOpenAI(
+        model=model_id,
+        api_key=api_key,
+        base_url=base_url.rstrip("/"),
+        max_retries=MODEL_SDK_MAX_RETRIES,
+        streaming=streaming,
+        use_responses_api=False,
+    ).with_structured_output(response_model, method="function_calling")
+    invoke_kwargs = {"modalities": modalities} if modalities else {}
+    return retry_call(
+        lambda: model.invoke(messages, **invoke_kwargs),
+        ExtractionError,
+        f"{model_id} 调用",
+    )
 
 
 def frame_data_urls(frame_paths: Sequence[str | Path]) -> list[str]:
@@ -233,7 +227,6 @@ def _image_blocks(data_urls: Sequence[str]) -> list[dict[str, Any]]:
 def run_qwen_ocr(
     data_urls: Sequence[str],
     settings: Settings,
-    client: OpenAI,
 ) -> list[str]:
     """识别当前切片采样帧上的所有屏幕文字。"""
     messages = [
@@ -252,16 +245,19 @@ def run_qwen_ocr(
             ],
         },
     ]
-    values = _qwen_json_lists(
-        client, settings.ocr_model_id, messages, ("onscreen_texts",)
+    response = _qwen_tool_output(
+        settings.ocr_model_id,
+        settings.ocr_api_key,
+        settings.ocr_base_url,
+        messages,
+        OCRResponse,
     )
-    return values["onscreen_texts"]
+    return response.onscreen_texts
 
 
 def run_qwen_vlm(
     data_urls: Sequence[str],
     settings: Settings,
-    client: OpenAI,
 ) -> tuple[list[str], list[str]]:
     """对当前切片采样帧做客观画面观察，不接收任何台词或其它模态结果。"""
     messages = [
@@ -280,19 +276,19 @@ def run_qwen_vlm(
             ],
         },
     ]
-    values = _qwen_json_lists(
-        client,
+    response = _qwen_tool_output(
         settings.vlm_model_id,
+        settings.vlm_api_key,
+        settings.vlm_base_url,
         messages,
-        ("visual_observations", "uncertainty"),
+        VLMResponse,
     )
-    return values["visual_observations"], values["uncertainty"]
+    return response.visual_observations, response.uncertainty
 
 
 def run_qwen_audio_observer(
     background_slice_path: Path,
     settings: Settings,
-    client: OpenAI,
 ) -> tuple[list[str], list[str]]:
     """对当前切片的背景音做客观声音事件观察。"""
     messages = [
@@ -320,15 +316,44 @@ def run_qwen_audio_observer(
             ],
         },
     ]
-    values = _qwen_json_lists(
-        client,
+    response = _qwen_tool_output(
         settings.audio_observer_model_id,
+        settings.audio_observer_api_key,
+        settings.audio_observer_base_url,
         messages,
-        ("audio_observations", "uncertainty"),
+        AudioObserverResponse,
         modalities=["text"],
-        stream=True,
+        streaming=True,
     )
-    return values["audio_observations"], values["uncertainty"]
+    return response.audio_observations, response.uncertainty
+
+
+def run_qwen_video_observer(
+    video_path: str | Path,
+    query: str,
+    settings: Settings,
+) -> dict[str, list[str]]:
+    """将临时 MP4 作为 Base64 视频发送给专用全模态模型。"""
+    video_url = "data:video/mp4;base64," + base64.b64encode(
+        Path(video_path).read_bytes()
+    ).decode("ascii")
+    messages = [
+        {"role": "system", "content": VIDEO_OBSERVER_SYSTEM_PROMPT},
+        {"role": "user", "content": [
+            {"type": "video_url", "video_url": {"url": video_url}},
+            {"type": "text", "text": VIDEO_OBSERVER_USER_PROMPT_TEMPLATE.format(query=query)},
+        ]},
+    ]
+    response = _qwen_tool_output(
+        settings.omni_observer_model_id,
+        settings.omni_observer_api_key,
+        settings.omni_observer_base_url,
+        messages,
+        VideoObserverResponse,
+        modalities=["text"],
+        streaming=True,
+    )
+    return response.model_dump()
 
 
 def _audio_separator(settings: Settings) -> AudioSeparatorClient:
@@ -388,6 +413,7 @@ __all__ = [
     "run_qwen_audio_observer",
     "run_qwen_ocr",
     "run_qwen_vlm",
+    "run_qwen_video_observer",
     "separate_episode_audio",
     "transcribe_episode_dialogue",
 ]

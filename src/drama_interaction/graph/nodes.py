@@ -9,9 +9,8 @@ from pathlib import Path
 from typing import Any, Literal
 
 from langgraph.types import Send, interrupt
-from openai import OpenAI
 
-from drama_interaction.config import EVIDENCE_SLICE_CONCURRENCY, MODEL_SDK_MAX_RETRIES
+from drama_interaction.config import EVIDENCE_SLICE_CONCURRENCY
 from drama_interaction.context import DramaContext
 from drama_interaction.evidence.extract import (
     frame_data_urls,
@@ -35,8 +34,8 @@ from drama_interaction.media import (
 )
 from drama_interaction.scheduling.constraints import (
     analyze_constraints,
-    assert_final_interactions,
     render_candidate,
+    validate_final_interactions,
 )
 from drama_interaction.schemas.candidate import Candidate, SpecialistResult
 from drama_interaction.schemas.evidence import EvidenceDocument, Observation
@@ -202,27 +201,17 @@ def prepare_slice_audio_node(state: SliceState) -> dict[str, Any]:
 
 def observe_ocr_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
     """只识别当前采样帧的屏幕文字。"""
-    client = OpenAI(
-        api_key=settings.ocr_api_key,
-        base_url=settings.ocr_base_url.rstrip("/"),
-        max_retries=MODEL_SDK_MAX_RETRIES,
-    )
     return {
         "slice_onscreen_texts": run_qwen_ocr(
-            frame_data_urls(state["slice_frame_paths"]), settings, client
+            frame_data_urls(state["slice_frame_paths"]), settings
         )
     }
 
 
 def observe_vlm_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
     """只生成当前采样帧的客观视觉观察。"""
-    client = OpenAI(
-        api_key=settings.vlm_api_key,
-        base_url=settings.vlm_base_url.rstrip("/"),
-        max_retries=MODEL_SDK_MAX_RETRIES,
-    )
     observations, uncertainty = run_qwen_vlm(
-        frame_data_urls(state["slice_frame_paths"]), settings, client
+        frame_data_urls(state["slice_frame_paths"]), settings
     )
     return {
         "slice_visual_observations": observations,
@@ -232,13 +221,8 @@ def observe_vlm_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
 
 def observe_audio_node(state: SliceState, *, settings: Any) -> dict[str, Any]:
     """只生成当前背景音切片的客观声音观察。"""
-    client = OpenAI(
-        api_key=settings.audio_observer_api_key,
-        base_url=settings.audio_observer_base_url.rstrip("/"),
-        max_retries=MODEL_SDK_MAX_RETRIES,
-    )
     observations, uncertainty = run_qwen_audio_observer(
-        Path(state["slice_audio_path"]), settings, client
+        Path(state["slice_audio_path"]), settings
     )
     return {
         "slice_audio_observations": observations,
@@ -380,7 +364,7 @@ def _event(
         "network_exhausted": ["drop"],
         "candidate_review": ["accept", "edit", "drop"],
         "semantic_selection": ["edit", "drop"],
-        "constraint_review": ["drop"],
+        "constraint_review": ["edit", "drop"],
     }
     return {
         "event_id": event_id,
@@ -402,17 +386,25 @@ def specialist_node(
     drama_context = _drama_context(state)
     timeline = state.get("specialist_timelines", {}).get(specialist_type, "")
     branch_derived = state.get("derived_evidence", {}).get(specialist_type, ())
+    evidence_service = EvidenceService(
+        document,
+        video_path=state.get("input_path"),
+        run_dir=state.get("run_dir"),
+        settings=getattr(gateway, "settings", None),
+    )
     try:
         specialist = _specialist(
             specialist_type,
             gateway,
             drama_context=drama_context,
-            evidence_service=EvidenceService(document),
+            evidence_service=evidence_service,
             existing_derived=branch_derived,
         )
         result = specialist.run(timeline)
     except LLMNetworkExhaustedError as error:
         return {
+            "derived_evidence": {specialist_type: evidence_service.derived_observations},
+            "evidence_audits": {specialist_type: evidence_service.audit_records},
             "branch_results": {
                 specialist_type: {"status": "network_exhausted", "error": str(error)}
             },
@@ -428,6 +420,8 @@ def specialist_node(
         }
     except (LLMGatewayError, TypeError, ValueError) as error:
         return {
+            "derived_evidence": {specialist_type: evidence_service.derived_observations},
+            "evidence_audits": {specialist_type: evidence_service.audit_records},
             "branch_results": {
                 specialist_type: {"status": "failed", "error": str(error)}
             },
@@ -442,6 +436,8 @@ def specialist_node(
             ],
         }
 
+    current_derived = [*branch_derived, *evidence_service.derived_observations]
+    branch_timeline = render_evidence_timeline(document, specialist_type, current_derived)
     accepted: list[Candidate] = []
     repairs: list[dict[str, Any]] = []
     events: list[dict[str, Any]] = []
@@ -449,7 +445,7 @@ def specialist_node(
         errors = validate_candidate(
             candidate,
             document,
-            branch_derived,
+            current_derived,
             specialist_type=specialist_type,
             existing_candidates=accepted,
         )
@@ -461,9 +457,10 @@ def specialist_node(
                 candidate,
                 errors,
                 specialist=specialist,
-                evidence_timeline=timeline,
+                evidence_timeline=branch_timeline,
                 evidence_document=document,
-                derived_observations=branch_derived,
+                derived_observations=current_derived,
+                existing_candidates=accepted,
             )
         except LLMNetworkExhaustedError as error:
             events.append(
@@ -511,6 +508,8 @@ def specialist_node(
         abstentions=result.abstentions,
     )
     return {
+        "derived_evidence": {specialist_type: evidence_service.derived_observations},
+        "evidence_audits": {specialist_type: evidence_service.audit_records},
         "specialist_results": {specialist_type: resolved},
         "branch_results": {
             specialist_type: {
@@ -598,6 +597,7 @@ def constraints_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     invalid_ids = {
         candidate_id
         for issue in report.invalid
+        if issue.route == "drop"
         for candidate_id in issue.candidate_ids
         if candidate_id in rendered
     }
@@ -608,6 +608,17 @@ def constraints_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     ]
     groups = [tuple(group) for group in report.conflict_groups]
     conflicted = {candidate_id for group in groups for candidate_id in group}
+    selected_ids = [
+        candidate_id
+        for candidate_id in eligible_ids
+        if candidate_id not in conflicted
+    ]
+    selected_set = set(selected_ids)
+    events = (
+        _constraint_hitl_events(report.invalid, selected_set)
+        if not groups
+        else []
+    )
     return {
         "constraints_report": {
             "render_failures": state.get("constraints_report", {}).get(
@@ -617,12 +628,32 @@ def constraints_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
             "eligible_ids": eligible_ids,
             "conflict_groups": [list(group) for group in groups],
         },
-        "selected_candidate_ids": [
-            candidate_id
-            for candidate_id in eligible_ids
-            if candidate_id not in conflicted
-        ],
+        "selected_candidate_ids": selected_ids,
+        "hitl_queue": events,
     }
+
+
+def _constraint_hitl_events(
+    issues: Sequence[Any], selected_ids: set[str]
+) -> list[dict[str, Any]]:
+    """只为最终仍在选择集中的约束问题创建人工事件。"""
+    events: list[dict[str, Any]] = []
+    for index, issue in enumerate(issues, start=1):
+        candidate_ids = [
+            candidate_id
+            for candidate_id in issue.candidate_ids
+            if candidate_id in selected_ids
+        ]
+        if issue.route == "hitl" and candidate_ids:
+            events.append(
+                _event(
+                    f"constraint:{index}:{issue.code}",
+                    "constraint_review",
+                    issue.message,
+                    candidate_ids=candidate_ids,
+                )
+            )
+    return events
 
 
 def semantic_node(
@@ -668,9 +699,29 @@ def semantic_node(
         *state.get("selected_candidate_ids", ()),
         *result.selected_candidate_ids,
     ]
+    ordered_selected = sorted(
+        (
+            (candidate_id, state["rendered_candidates"][candidate_id])
+            for candidate_id in selected
+            if candidate_id in state["rendered_candidates"]
+        ),
+        key=lambda item: (item[1].show_at, item[1].duration_ms, item[0]),
+    )
+    selected_rendered = {
+        candidate_id: interaction.model_copy(update={"id": index})
+        for index, (candidate_id, interaction) in enumerate(ordered_selected, start=1)
+    }
+    remaining = analyze_constraints(
+        selected_rendered,
+        episode_duration_ms=state["episode_duration_ms"],
+        config=settings,
+    )
     return {
         "scheduler_decision": state_to_jsonable(result),
         "selected_candidate_ids": selected,
+        "hitl_queue": _constraint_hitl_events(
+            remaining.invalid, set(selected_rendered)
+        ),
     }
 
 
@@ -825,11 +876,31 @@ def human_gate_node(state: WorkflowState) -> dict[str, Any]:
             # drop 不保留未被语义确认的冲突候选。
         elif event["event_type"] == "constraint_review":
             contested = set(event.get("candidate_ids", ()))
-            selected = [
-                candidate_id
-                for candidate_id in selected
-                if candidate_id not in contested
-            ]
+            if action == "edit":
+                replacement = decision.get("replacement")
+                keep_ids = (
+                    replacement.get("selected_candidate_ids")
+                    if isinstance(replacement, Mapping)
+                    else None
+                )
+                if (
+                    not isinstance(keep_ids, list)
+                    or any(not isinstance(candidate_id, str) for candidate_id in keep_ids)
+                    or len(keep_ids) != len(set(keep_ids))
+                    or set(keep_ids) - contested
+                    or set(keep_ids) - set(selected)
+                ):
+                    raise ValueError(
+                        "约束调度 edit 必须提交合法 selected_candidate_ids"
+                    )
+                selected = [candidate_id for candidate_id in selected if candidate_id not in contested]
+                selected.extend(keep_ids)
+            else:
+                selected = [
+                    candidate_id
+                    for candidate_id in selected
+                    if candidate_id not in contested
+                ]
 
     update: dict[str, Any] = {
         "hitl_resolutions": resolutions,
@@ -850,9 +921,9 @@ def route_after_human(state: WorkflowState) -> str:
     """人工新增候选后重跑纯确定性下游节点。"""
     if _pending_hitl(state):
         return "human_gate"
-    if not state.get("rendered_candidates"):
+    if state.get("repool_after_human") or not state.get("rendered_candidates"):
         return "pool"
-    return "render" if state.get("repool_after_human") else "final_check"
+    return "final_check"
 
 
 def final_check_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
@@ -887,30 +958,43 @@ def final_check_node(state: WorkflowState, *, settings: Any) -> dict[str, Any]:
     rendered = state.get("rendered_candidates", {})
     if selected_ids is None:
         selected_ids = list(rendered)
-    interactions = [
-        rendered[candidate_id]
+    ordered_candidates = [
+        (candidate_id, rendered[candidate_id])
         for candidate_id in selected_ids
         if candidate_id in rendered
     ]
-    interactions.sort(key=lambda item: (item.show_at, item.duration_ms, item.id))
+    ordered_candidates.sort(
+        key=lambda item: (item[1].show_at, item[1].duration_ms, item[1].id)
+    )
+    interactions = [interaction for _, interaction in ordered_candidates]
     interactions = [
         interaction.model_copy(update={"id": index})
         for index, interaction in enumerate(interactions, start=1)
     ]
-    try:
-        assert_final_interactions(
-            interactions,
-            episode_duration_ms=state["episode_duration_ms"],
-            config=settings,
+    errors = validate_final_interactions(
+        interactions,
+        episode_duration_ms=state["episode_duration_ms"],
+        config=settings,
+    )
+    if errors:
+        interaction_to_candidate = {
+            str(index): candidate_id
+            for index, (candidate_id, _) in enumerate(ordered_candidates, start=1)
+        }
+        candidate_ids = list(
+            dict.fromkeys(
+                interaction_to_candidate.get(candidate_id, candidate_id)
+                for issue in errors
+                for candidate_id in issue.candidate_ids
+            )
         )
-    except ValueError as error:
         return {
             "hitl_queue": [
                 _event(
                     f"final:constraints:{len(state.get('hitl_queue', ())) + 1}",
                     "constraint_review",
-                    f"最终确定性校验失败: {error}",
-                    candidate_ids=selected_ids,
+                    "；".join(issue.message for issue in errors),
+                    candidate_ids=candidate_ids,
                 )
             ]
         }

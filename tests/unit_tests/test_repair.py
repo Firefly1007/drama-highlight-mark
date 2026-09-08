@@ -105,3 +105,26 @@ def test_repair_enters_hitl_after_single_failed_regeneration():
         "regenerate",
         "hitl",
     ]
+
+
+def test_repair_rejects_regenerated_duplicate_of_existing_candidate():
+    """定向重生不能重复本批已接纳候选。"""
+
+    replacement = Candidate(
+        specialist_type="emotion_button",
+        evidence_ids=["T1"],
+        trigger_anchor=TriggerAnchor(transcript_segment_id="T1"),
+        payload={"button_id": "cool", "text": "太解气了"},
+    )
+    specialist = _FakeSpecialist(replacement)
+
+    outcome = repair_candidate(
+        _invalid_candidate(),
+        specialist=specialist,
+        evidence_timeline="[T1] 开始",
+        evidence_document=_document(),
+        existing_candidates=[replacement],
+    )
+
+    assert outcome.status == "hitl"
+    assert any(error.code == "duplicate_candidate" for error in outcome.errors)

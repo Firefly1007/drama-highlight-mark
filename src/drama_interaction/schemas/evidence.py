@@ -145,7 +145,6 @@ class DerivedObservation(_ObservationContent):
     """仅对发起 Specialist 可见的派生客观观察。"""
 
     id: DerivedObservationId
-    refines: ObservationId | DerivedObservationId | None = None
     provenance: EvidenceProvenance
 
 
@@ -238,7 +237,6 @@ def validate_derived_observations(
         ValueError: 当分支、引用或时间范围不符合约束时抛出。
     """
     specialist_value = InteractionType(specialist).value
-    baseline_ids = {observation.id for observation in document.observations}
     derived_ids: set[str] = set()
 
     for observation in observations:
@@ -252,13 +250,6 @@ def validate_derived_observations(
             raise ValueError("派生观察及其 query_span 不能超过 episode_duration_ms")
         if observation.id in derived_ids:
             raise ValueError("同一 Specialist 的派生观察 id 必须唯一")
-        if observation.refines is not None:
-            # refines 只允许指向基线或同一分支中更早的派生观察。
-            if observation.refines.startswith("O"):
-                if observation.refines not in baseline_ids:
-                    raise ValueError("refines 必须引用存在的基线 Observation")
-            elif observation.refines not in derived_ids:
-                raise ValueError("refines 只能引用当前 Specialist 中先前的 DerivedObservation")
         derived_ids.add(observation.id)
 
 

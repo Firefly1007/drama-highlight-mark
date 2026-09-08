@@ -23,12 +23,6 @@ from pydantic import (
     model_validator,
 )
 
-from drama_interaction.prompt_models import (
-    AudioObserverResponse,
-    OCRResponse,
-    VLMResponse,
-)
-
 # =====================================================================
 # 互动形态与渲染契约常量（这些是业务契约，不属于可变运行配置）
 # =====================================================================
@@ -66,6 +60,7 @@ EVIDENCE_SAMPLE_BUCKET_MS: int = 250
 EVIDENCE_SAMPLE_FPS: int = 1000 // EVIDENCE_SAMPLE_BUCKET_MS
 EVIDENCE_FRAME_JPEG_QUALITY: int = 2
 EVIDENCE_SLICE_CONCURRENCY: int = 4
+INSPECTION_MAX_SPAN_MS: int = 6000
 
 AUDIO_SEPARATOR_SDK_RETRIES: int = 3
 AUDIO_SEPARATOR_POLL_INTERVAL_SECONDS: float = 5.0
@@ -83,44 +78,36 @@ MODEL_RETRY_DELAY_SECONDS: float = 1.0
 WORKFLOW_RECURSION_LIMIT: int = 1000
 
 
-def _json_schema_text(model: type[BaseModel]) -> str:
-    """返回供模型阅读的 Pydantic JSON Schema。"""
-    return json.dumps(
-        model.model_json_schema(), ensure_ascii=False, separators=(",", ":")
-    )
-
-
 # 原始视频基线证据的三类观察提示词集中维护；调用与消息组装留在提取器。
 EVIDENCE_OCR_SYSTEM_PROMPT: str = (
     "你是一个短剧画面文字识别（OCR）引擎。请识别采样帧序列中出现的所有画面文字，"
-    "包括硬字幕、标题、标牌、手机屏幕文字、横幅等。请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
-    "不要进行文字分类、纠错或与台词去重；画面中无文字时输出空数组。"
+    "包括硬字幕、标题、标牌、手机屏幕文字、横幅等。不要进行文字分类、纠错或与台词去重；"
+    "画面中无文字时提交空数组。通过 OCRResponse 工具提交结果。"
 )
-EVIDENCE_OCR_USER_PROMPT: str = (
-    "请提取当前切片画面中的所有屏幕文字。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
-    f"{_json_schema_text(OCRResponse)}"
-)
+EVIDENCE_OCR_USER_PROMPT: str = "请提取当前切片画面中的所有屏幕文字。"
 EVIDENCE_VLM_SYSTEM_PROMPT: str = (
     "你是一个客观视觉观察模型。根据提供的采样帧序列，只描述可见人物的外观、动作、物体、状态和画面变化。"
     "严禁猜测角色姓名（使用中性称呼如女子、男子、黑衣人），不要补写采样帧未显示的中间动作，"
     "不要推测心理、剧情含义或互动价值。"
-    "请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
-    "若观察内容无法可靠判定，将不确定点记入 uncertainty。"
+    "若观察内容无法可靠判定，将不确定点记入 uncertainty。通过 VLMResponse 工具提交结果。"
 )
-EVIDENCE_VLM_USER_PROMPT: str = (
-    "请提供当前切片的客观视觉观察。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
-    f"{_json_schema_text(VLMResponse)}"
-)
+EVIDENCE_VLM_USER_PROMPT: str = "请提供当前切片的客观视觉观察。"
 EVIDENCE_AUDIO_OBSERVER_SYSTEM_PROMPT: str = (
     "你是一个客观背景音频观察模型。当前音频为去除台词后的背景音（包含音乐与环境音效）。"
     "请描述可听见的声源、声音事件和变化（如脚步声、关门声、急促鼓点、音乐骤停等）。"
     "禁止描述情绪、剧情暗示、心理或互动价值；无可辨识声音返回空数组，不要输出'安静'；"
     "明确转入或退出静音可以记录。"
-    "请输出 JSON，具体字段和类型严格遵循用户消息中的 JSON Schema。"
+    "通过 AudioObserverResponse 工具提交结果。"
 )
-EVIDENCE_AUDIO_OBSERVER_USER_PROMPT: str = (
-    "请描述该背景音频切片中的客观声音事件。输出符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：\n"
-    f"{_json_schema_text(AudioObserverResponse)}"
+EVIDENCE_AUDIO_OBSERVER_USER_PROMPT: str = "请描述该背景音频切片中的客观声音事件。"
+VIDEO_OBSERVER_SYSTEM_PROMPT: str = (
+    "你是原始视频客观观察器。只回答视频中直接可见或可听见的事实，"
+    "可以包含画面、屏幕文字、对白和声音；不得提供互动决策、姓名、角色、模型时间戳，"
+    "不得改写 T/O 基线证据。通过 VideoObserverResponse 工具提交结果。"
+)
+VIDEO_OBSERVER_USER_PROMPT_TEMPLATE: str = (
+    "请观察这段视频并回答事实问题。一个 query 可以包含多个相关事实问题。"
+    "query：{query}"
 )
 
 # 五类互动提示词的完整判定规则集中维护。
@@ -335,10 +322,6 @@ SPECIALIST_FOCUS_PROMPTS: MappingProxyType = MappingProxyType(
 3. text、danmaku 的出现与 button_id 类型表严格一致。
 4. danmaku 是 4 到 6 条 4 到 12 个字符的短句。
 
-# SpecialistResult 提交格式
-通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
-{{PAYLOAD_JSON_SCHEMA}}
-
 如果没有合适的情绪按钮，不要生成空 payload；提交包含原因的 Abstention。
 """.strip(),
         "repeat_keyline": """
@@ -399,10 +382,6 @@ repeat_keyline 用于让用户点击复述剧情中的一句核心台词，像�
 2. text 是当前 T<n> 中的连续原文，没有改写或新编。
 3. text 去掉后会明显削弱当前证据机会的记忆点。
 
-# SpecialistResult 提交格式
-通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
-{{PAYLOAD_JSON_SCHEMA}}
-
 没有合适的 repeat_keyline 时，提交 Abstention。
 """.strip(),
         "instant_vote": """
@@ -459,10 +438,6 @@ instant_vote 用于让用户在当前剧情发生时立刻做二选一判断，�
 2. 用户看完当前证据即可投票，不需要等待后续剧情。
 3. options 恰好两个，立场相反、都能由当前证据支持。
 4. 不含中立选项或缓冲选项。
-
-# SpecialistResult 提交格式
-通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
-{{PAYLOAD_JSON_SCHEMA}}
 
 没有真实分歧时，不要用中立选项凑二选一；提交 Abstention。
 """.strip(),
@@ -590,10 +565,6 @@ deferred_vote 必须有“先猜测、后揭晓”的结构：当前证据提出
 5. 问题和选项不提前泄露揭晓，不输出绝对时间。
 6. answer_id 为 0，reveal_time 和 reveal_delay 为 null。
 
-# SpecialistResult 提交格式
-通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
-{{PAYLOAD_JSON_SCHEMA}}
-
 没有“当前可猜 + 后续明确揭晓”的组合时，提交 Abstention。
 """.strip(),
         "side_comment": """
@@ -695,10 +666,6 @@ mood 必须是以下小写字符串之一，并与当前评论情绪最贴近：
 1. text 短、轻、口语化，mood 与文本情绪一致。
 2. 评论不重复当前节点更适合的 emotion_button、instant_vote 或 repeat_keyline。
 
-# SpecialistResult 提交格式
-通过工具提交一条 Candidate 时，payload 必须是符合以下 JSON Schema 的 JSON 数据对象，不要输出 JSON Schema 本身：
-{{PAYLOAD_JSON_SCHEMA}}
-
 没有明确吐槽点、站队点或情绪出口时，提交 Abstention。
 """.strip(),
     }
@@ -783,6 +750,11 @@ class Settings(BaseModel):
     audio_observer_model_id: str
     audio_observer_api_key: str
     audio_observer_base_url: str
+
+    omni_observer_model_id: str = "qwen3.5-omni-flash"
+    omni_observer_api_key: str = ""
+    omni_observer_base_url: str = ""
+    inspection_max_span_ms: int = INSPECTION_MAX_SPAN_MS
 
     ocr_model_id: str
     ocr_api_key: str
@@ -900,6 +872,13 @@ class Settings(BaseModel):
             raise ValueError("时长与阈值必须为正整数")
         return value
 
+    @field_validator("inspection_max_span_ms")
+    @classmethod
+    def _validate_inspection_max_span(cls, value: int) -> int:
+        if isinstance(value, bool) or value <= 0:
+            raise ValueError("inspection_max_span_ms 必须为正整数")
+        return value
+
     @field_validator("keyline_tail_ms", "reveal_display_ms", "reveal_gap_min_ms")
     @classmethod
     def _validate_non_negative_ms(cls, value: int) -> int:
@@ -978,6 +957,10 @@ _ENV_TO_FIELD: dict[str, str] = {
     "VLM_MODEL_ID": "vlm_model_id",
     "VLM_API_KEY": "vlm_api_key",
     "VLM_BASE_URL": "vlm_base_url",
+    "OMNI_OBSERVER_MODEL_ID": "omni_observer_model_id",
+    "OMNI_OBSERVER_API_KEY": "omni_observer_api_key",
+    "OMNI_OBSERVER_BASE_URL": "omni_observer_base_url",
+    "INSPECTION_MAX_SPAN_MS": "inspection_max_span_ms",
     "LLM_TEMPERATURE": "llm_temperature",
     "LLM_TIMEOUT_SECONDS": "llm_timeout_seconds",
     "LLM_MAX_TOKENS": "llm_max_tokens",
@@ -1025,6 +1008,9 @@ _REQUIRED_FIELDS = (
     "vlm_model_id",
     "vlm_api_key",
     "vlm_base_url",
+    "omni_observer_model_id",
+    "omni_observer_api_key",
+    "omni_observer_base_url",
 )
 
 
@@ -1143,6 +1129,7 @@ def _coerce_loaded_value(field_name: str, value: Any) -> Any:
         "keyline_tail_ms",
         "reveal_display_ms",
         "reveal_gap_min_ms",
+        "inspection_max_span_ms",
     }:
         if value is None or (isinstance(value, str) and not value.strip()):
             return None
@@ -1252,6 +1239,9 @@ __all__ = [
     "EVIDENCE_SLICE_DURATION_MS",
     "EVIDENCE_VLM_SYSTEM_PROMPT",
     "EVIDENCE_VLM_USER_PROMPT",
+    "INSPECTION_MAX_SPAN_MS",
+    "VIDEO_OBSERVER_SYSTEM_PROMPT",
+    "VIDEO_OBSERVER_USER_PROMPT_TEMPLATE",
     "INSTANT_VOTE_OPTIONS_COUNT",
     "KEYLINE_DURATION_CEIL",
     "KEYLINE_DURATION_FLOOR",

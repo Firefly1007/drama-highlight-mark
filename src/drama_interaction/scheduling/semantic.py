@@ -96,10 +96,6 @@ def _prompt(
             "interaction_budget": (
                 config.interaction_budget if config is not None else None
             ),
-            "output": {
-                "selected_candidate_ids": ["candidate_id"],
-                "reason": "可选的简短理由",
-            },
             "rule": "每个 conflict_group 至多选择一个 candidate_id；可全部舍弃。",
         },
         ensure_ascii=False,

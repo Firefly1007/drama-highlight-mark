@@ -11,6 +11,7 @@ from langgraph.graph import END, START, StateGraph
 
 from drama_interaction.config import Settings, load_settings
 from drama_interaction.context import DramaContext
+from drama_interaction.evidence.service import EvidenceAuditRecord
 from drama_interaction.llm import LLMGateway
 from drama_interaction.schemas.candidate import (
     Abstention,
@@ -81,6 +82,7 @@ _CHECKPOINT_MODELS = (
     DeferredVotePayload,
     DramaContext,
     DerivedObservation,
+    EvidenceAuditRecord,
     EmotionButtonName,
     EmotionButtonPayload,
     EvidenceDocument,

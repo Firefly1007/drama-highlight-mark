@@ -173,6 +173,30 @@ def cut_audio_hard(
     return output
 
 
+def slice_video(
+    input_video_path: str | Path,
+    start_ms: int,
+    end_ms: int,
+    output_video_path: str | Path,
+) -> Path:
+    """重新编码并精确截取原始视频的半开区间。"""
+    if type(start_ms) is not int or type(end_ms) is not int or not 0 <= start_ms < end_ms:
+        raise MediaError("视频切片要求 0 <= start_ms < end_ms")
+    input_path = Path(input_video_path)
+    output = Path(output_video_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    _run(
+        [
+            "ffmpeg", "-y", "-ss", f"{start_ms / 1000:.6f}", "-i", str(input_path),
+            "-t", f"{(end_ms - start_ms) / 1000:.6f}", "-c:v", "libx264", "-c:a", "aac", str(output),
+        ],
+        f"视频切片失败 [{start_ms}, {end_ms})",
+    )
+    if not output.is_file() or output.stat().st_size == 0:
+        raise MediaError(f"视频切片为空或不存在: {output}")
+    return output
+
+
 def calculate_slices(duration_ms: int) -> list[tuple[int, int]]:
     """按配置跨度生成非重叠切片列表，保留不足周期的尾片。
 
@@ -342,4 +366,5 @@ __all__ = [
     "extract_frames",
     "probe_video_duration_ms",
     "slice_audio",
+    "slice_video",
 ]

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 import pytest
@@ -20,7 +19,6 @@ from drama_interaction.schemas.candidate import (
     SpecialistResult,
 )
 from drama_interaction.schemas.evidence import EvidenceDocument, TranscriptSegment
-from drama_interaction.schemas.interaction import InstantVotePayload
 from drama_interaction.specialists import (
     DeferredVoteSpecialist,
     EmotionButtonSpecialist,
@@ -174,12 +172,8 @@ def test_specialist_uses_tool_strategy_and_passes_branch_timeline(monkeypatch):
     assert '"characters":["甲","乙"]' in prompt
     assert "两个选项必须立场明确、方向相反" in created["system_prompt"]
     assert "不要提供中立选项" in created["system_prompt"]
-    assert json.dumps(
-        InstantVotePayload.model_json_schema(),
-        ensure_ascii=False,
-        separators=(",", ":"),
-    ) in created["system_prompt"]
     assert "{{PAYLOAD_JSON_SCHEMA}}" not in created["system_prompt"]
+    assert "JSON Schema" not in created["system_prompt"]
 
 
 def test_inspect_span_tool_is_bound_to_the_current_branch(monkeypatch):
@@ -200,7 +194,7 @@ def test_inspect_span_tool_is_bound_to_the_current_branch(monkeypatch):
         {"start_ms": 0, "end_ms": 1000, "query": "画面发生了什么？"}
     )
 
-    assert "按需取证尚未接入媒体提取器" in output
+    assert "视频观察不可用" in output
 
 
 def test_specialist_accepts_structured_abstention(monkeypatch):

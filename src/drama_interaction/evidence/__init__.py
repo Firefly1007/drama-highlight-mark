@@ -10,6 +10,7 @@ from drama_interaction.evidence.extract import (
     run_qwen_asr,
     run_qwen_audio_observer,
     run_qwen_ocr,
+    run_qwen_video_observer,
     run_qwen_vlm,
     separate_episode_audio,
     transcribe_episode_dialogue,
@@ -34,6 +35,7 @@ __all__ = [
     "run_qwen_audio_observer",
     "run_qwen_ocr",
     "run_qwen_vlm",
+    "run_qwen_video_observer",
     "separate_episode_audio",
     "transcribe_episode_dialogue",
 ]

@@ -12,7 +12,11 @@ from drama_interaction.scheduling.constraints import (
     intervals_conflict,
     render_candidate,
 )
-from drama_interaction.scheduling.semantic import SemanticDecision, select_candidate_ids
+from drama_interaction.scheduling.semantic import (
+    SemanticDecision,
+    _prompt,
+    select_candidate_ids,
+)
 from drama_interaction.schemas.candidate import Candidate, RevealAnchor, TriggerAnchor
 from drama_interaction.schemas.evidence import EvidenceDocument, TranscriptSegment
 from drama_interaction.schemas.interaction import FinalInteraction
@@ -105,6 +109,21 @@ def test_semantic_scheduler_accepts_only_existing_candidate_id():
     assert result.selected_candidate_ids == ["c2"]
     assert len(gateway.calls) == 1
     assert "测试简介" in gateway.calls[0][1]["messages"][0]["content"]
+
+
+def test_semantic_prompt_does_not_handwrite_structured_output_example():
+    """结构化输出由 SemanticDecision 的 ToolStrategy 提供。"""
+
+    _, prompt = _prompt(
+        {"c1": _interaction(1, 0), "c2": _interaction(2, 500)},
+        [("c1", "c2")],
+        {"c1": "[T1] 证据甲", "c2": "[T2] 证据乙"},
+        DRAMA_CONTEXT,
+        None,
+    )
+
+    assert '"output"' not in prompt
+    assert '"selected_candidate_ids": ["candidate_id"]' not in prompt
 
 
 def test_semantic_scheduler_routes_illegal_selection_to_hitl():

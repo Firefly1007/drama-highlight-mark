@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Annotated, Any, Literal, TypedDict
 
 from drama_interaction.context import DramaContext
+from drama_interaction.evidence.service import EvidenceAuditRecord
 from drama_interaction.schemas.candidate import Candidate, SpecialistResult
 from drama_interaction.schemas.evidence import (
     DerivedObservation,
@@ -105,6 +106,7 @@ class WorkflowState(TypedDict, total=False):
     derived_evidence: Annotated[
         dict[str, list[DerivedObservation]], merge_derived_evidence
     ]
+    evidence_audits: Annotated[dict[str, list[EvidenceAuditRecord]], merge_dicts]
     specialist_results: Annotated[dict[str, SpecialistResult], merge_dicts]
     branch_results: Annotated[dict[str, dict[str, Any]], merge_dicts]
     candidate_pool: list[Candidate]
